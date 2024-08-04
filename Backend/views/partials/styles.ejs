@@ -1,7 +1,10 @@
-<!-- Default stylesheet -->
-<link rel="stylesheet" href="/css/style.css">
-
 <!-- Conditionally include page-specific stylesheet if defined -->
 <% if (typeof pageStyles !== 'undefined') { %>
-  <link rel="stylesheet" href="/css/<%= pageStyles %>">
+  <% if (pageStyles === 'Login.css') { %>
+    <link rel="stylesheet" href="/css/Login.css">
+  <% } else if (pageStyles === 'errors.css') { %>
+    <link rel="stylesheet" href="/css/errors.css">
+  <% } else if (pageStyles === 'about.css') { %>
+    <link rel="stylesheet" href="/css/about.css">
+  <% } %> 
 <% } %>
