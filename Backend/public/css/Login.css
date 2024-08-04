@@ -1,4 +1,4 @@
-body {
+.login-page main {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-image: url("#");
   display: flex;
@@ -6,15 +6,20 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  align-items: center;
 }
+
 .login-container {
   background-color: #ffffff;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 350px;
+  width: 400px;
   text-align: center;
+  margin: 20px;
+  margin-left: 35%;
 }
+
 .login-container h2 {
   margin-bottom: 20px;
   color: #444;

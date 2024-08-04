@@ -1,0 +1,7 @@
+<!-- Default stylesheet -->
+<link rel="stylesheet" href="/css/style.css">
+
+<!-- Conditionally include page-specific stylesheet if defined -->
+<% if (typeof pageStyles !== 'undefined') { %>
+  <link rel="stylesheet" href="/css/<%= pageStyles %>">
+<% } %>
