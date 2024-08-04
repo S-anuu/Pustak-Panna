@@ -33,10 +33,10 @@ app.listen(port, () => {
 })
 
 //connect to MongoDB
-mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
+// mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
 
-const db = mongoose.connection
-db.on('error', console.error.bind(console, 'MongoDB connection error: '))
+// const db = mongoose.connection
+// db.on('error', console.error.bind(console, 'MongoDB connection error: '))
 
 //public
 app.use(express.static('public'))
