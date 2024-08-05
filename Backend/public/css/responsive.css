@@ -36,7 +36,7 @@
 	margin-top: 8px;
 }
 .header.shop .right-bar .sinlge-bar .single-icon {
-	font-size: 18px;
+	font-size: 12px;
 }
 .header .shopping .shopping-item {
 	top: 62px;
@@ -999,7 +999,7 @@
 	font-size: 13px;
 }
 .footer .footer-top{
-	padding: 15px 0px;
+	padding: 5px 0px;
 }
 .footer .copyright .left {
 	float:none;
@@ -1011,7 +1011,7 @@
 	margin-top:10px;
 }
 .footer .single-footer {
-	padding:20px 0;
+	padding:10px 0;
 }
 .modal-dialog .quickview-slider-active {
 	display: none;
