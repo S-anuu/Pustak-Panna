@@ -4,129 +4,57 @@
             <div class="row">
 				<div class="col-12">
 					<div class="section-title">
-						<h2>Trending Item</h2>
+						<h2>Trending Items</h2>
 					</div>
 				</div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="owl-carousel popular-slider">
-						<!-- Start Single Product -->
-						<div class="single-product">
-							<div class="product-img">
-								<a href="product-details.html">
-									<img class="default-img" src="images/book5.png" alt="#">
-									<img class="hover-img" src="images/book5.png" alt="#">
-									<span class="out-of-stock">Hot</span>
-								</a>
-								<div class="button-head">
-									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="checkout.html"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="cart.html"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										
+						<% books.forEach(book => { %>
+							<div class="single-product">
+								<div class="product-img">
+									<a href="/product-details/<%= book._id %>">
+										<img class="default-img" src="images/<%= book.image %>>" alt="<% book.title %>">
+										<img class="hover-img" src="images/<%= book.image %>" alt="<%= book.title %>">
+										<% if (book.isNew) {%>
+										<span class="new">New</span>
+										<% } %>
+										<% if (book.isHot) { %>
+										<span class="hot">Hot</span>
+										<% } %>
+									</a>
+									<div class="button-head">
+										<div class="product-action">
+											<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="/checkout"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+											<a title="Wishlist" href="/wishlist"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+											
+										</div>
+										<div class="product-action-2">
+											<a title="Add to cart" href="/cart/add/<%= book.id %>">Add to cart</a>
+										</div>
 									</div>
-									<div class="product-action-2">
-										<a title="Add to cart" href="cart.html">Add to cart</a>
+								</div>
+								<div class="product-content">
+									<h3><a href="/product-details/<%= book._id  %>"><%= book.title %></a></h3>
+									<div class="product-price">
+										<% if (book.discountedPrice) {%>
+										<span class="old">Rs. <%= book.price %></span>
+										<span>Rs.<%= book.discountedPrice %></span>
+										<% } else { %>
+											<span>Rs.<%= book.price %></span>
+											<% } %>
 									</div>
 								</div>
 							</div>
-							<div class="product-content">
-								<h3><a href="product-details.html">Bright Young Women</a></h3>
-								<div class="product-price">
-									<span class="old">Rs.1300</span>
-									<span>Rs.1100</span>
-								</div>
-							</div>
-						</div>
-						<!-- End Single Product -->
-						<!-- Start Single Product -->
-						<div class="single-product">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="images/book3.png" alt="#">
-                                    <img class="hover-img" src="images/book3.png" alt="#">
-                                </a>
-								<div class="button-head">
-									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="cart.html"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										
-									</div>
-									<div class="product-action-2">
-										<a title="Add to cart" href="cart.html">Add to cart</a>
-									</div>
-								</div>
-                            </div>
-                            <div class="product-content">
-                                <h3><a href="product-details.html">DISAPPEARING EARTH</a></h3>
-                                <div class="product-price">
-                                    <span>Rs.990</span>
-                                </div>
-                            </div>
-                        </div>
-						<!-- End Single Product -->
-						<!-- Start Single Product -->
-						<div class="single-product">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="images/book8.png" alt="#">
-                                    <img class="hover-img" src="images/book8.png" alt="#">
-									<span class="new">New</span>
-                                </a>
-								<div class="button-head">
-									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="checkout.html"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="cart.html"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										
-									</div>
-									<div class="product-action-2">
-										<a title="Add to cart" href="cart.html">Add to cart</a>
-									</div>
-								</div>
-                            </div>
-                            <div class="product-content">
-                                <h3><a href="product-details.html">The Fervor</a></h3>
-                                <div class="product-price">
-                                    <span>Rs.1050</span>
-                                </div>
-                            </div>
-                        </div>
-						<!-- End Single Product -->
-						<!-- Start Single Product -->
-						<div class="single-product">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="images/book6.png" alt="#">
-                                    <img class="hover-img" src="images/book6.png" alt="#">
-									<span class="out-of-stock">30% off</span>
-                                </a>
-								<div class="button-head">
-									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="checkout.html"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="cart.html"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
-										
-									</div>
-									<div class="product-action-2">
-										<a title="Add to cart" href="cart.html">Add to cart</a>
-									</div>
-								</div>
-                            </div>
-                            <div class="product-content">
-                                <h3><a href="product-details.html">How Beautiful We Were</a></h3>
-                                <div class="product-price">
-                                    <span>Rs.800</span>
-                                </div>
-                            </div>
-                        </div>
-						<!-- End Single Product -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+						<% }) %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+						
 	<!-- End Most Popular Area -->
-	
-	
 	
 	<!-- Start Shop Home List  -->
 	<section class="shop-home-list section">
@@ -363,7 +291,7 @@
 					<!-- Start Single Service -->
 					<div class="single-service">
 						<i class="ti-tag"></i>
-						<h4>Best Peice</h4>
+						<h4>Best Price</h4>
 						<p>Guaranteed price</p>
 					</div>
 					<!-- End Single Service -->

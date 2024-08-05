@@ -40,6 +40,14 @@ router.get('/login', (req, res) => {
       });
 })
 
+
+router.get('/forgot-password', (req, res) => {
+    res.render('forgot-password', {
+        title: 'Pustak-Panna',
+        pageStyles: 'forgot-password.css' // Specify the stylesheet for this page
+      });
+})
+
 router.get('/404', (req, res) => {
     res.render('404', {
         title: 'Pustak-Panna',
@@ -53,5 +61,13 @@ router.get('/500', (req, res) => {
         pageStyles: 'errors.css' // Specify the stylesheet for this page
       });
 })
+
+router.get('/admin-login', (req, res) => {
+    res.render('admin-login', {
+        title: 'Pustak-Panna',
+        pageStyles: 'login.css' // Specify the stylesheet for this page
+      });
+})
+
 
 module.exports = router
