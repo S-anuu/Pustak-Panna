@@ -1,28 +1,31 @@
 const mongoose = require('mongoose');
-const Admin = require('./models/Admin'); // Adjust the path as necessary
-const bcrypt = require('bcryptjs');
+const Admin = require('./models/Admin');
 
-mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
+const dbURI = 'mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0'
+mongoose.connect(dbURI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log('MongoDB connection error:', err));
 
 const createAdmin = async () => {
     try {
-        const hashedPassword = await bcrypt.hash('yourpassword', 10); // Set the initial admin password
+        const username = 'admin'; 
+        const password = '123456789'; 
 
-        const newAdmin = new Admin({
-            firstname: 'Admin',
-            lastname: 'User',
-            username: 'admin',
-            email: 'admin@example.com',
-            password: hashedPassword,
-            phone: '1234567890',
-        });
+        // Check if the admin already exists
+        const existingAdmin = await Admin.findOne({ username });
+        if (existingAdmin) {
+            console.log('Admin already exists');
+            return;
+        }
 
-        await newAdmin.save();
-        console.log('Admin account created successfully');
-        mongoose.connection.close();
+        // Create new admin
+        const admin = new Admin({ username, password });
+        await admin.save();
+        console.log('Admin created successfully');
     } catch (err) {
-        console.error('Error creating admin account:', err);
-        mongoose.connection.close();
+        console.error('Error creating admin:', err);
+    } finally {
+        mongoose.disconnect();
     }
 };
 

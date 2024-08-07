@@ -12,6 +12,7 @@
             </div>
             <button type="submit" class="button">Login</button>
         </form>
+        <a href="/forgot-password" class="link">Forgot Password?</a><br>
         <a href="/" class="link">Back to Home</a>
     </div>
 </main>
@@ -22,7 +23,7 @@
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
-            
+
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
 
@@ -35,12 +36,22 @@
                     body: JSON.stringify(data)
                 });
 
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error response:', text);
+                    alert('Error: ' + text);
+                    return;
+                }
+
                 const result = await response.json();
-                if (response.ok) {
+                if (result.message) {
                     alert(result.message);
+                }
+
+                if (response.ok && result.token) {
+                    // Store the token in local storage
+                    localStorage.setItem('adminToken', result.token);
                     window.location.href = '/admin-dashboard'; // Redirect to the admin dashboard
-                } else {
-                    alert(result.message);
                 }
             } catch (error) {
                 console.error('Error:', error);

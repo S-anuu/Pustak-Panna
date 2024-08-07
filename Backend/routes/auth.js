@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secretKey = 'your_secret_key'; // Make sure to use a secure and environment-specific key
+const secretKey = process.env.SECRET_KEY; 
 
 router.get('/register', (req, res) => {
     res.render('register', {
@@ -39,6 +39,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
+
 // Handle user login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -61,7 +62,7 @@ router.post('/login', async (req, res) => {
         // Send response with token
         res.status(200).json({ message: 'Login successful', token });
     } catch (err) {
-        console.log('Error', err);
+        console.error('Error', err);
         res.status(500).json({ message: 'Server error' });
     }
 });
