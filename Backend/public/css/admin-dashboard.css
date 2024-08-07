@@ -1,0 +1,29 @@
+.admin-dashboard-page {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.admin-dashboard-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.admin-dashboard-container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.admin-dashboard-container p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.admin-dashboard-container .link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.admin-dashboard-container .link:hover {
+    text-decoration: underline;
+}
