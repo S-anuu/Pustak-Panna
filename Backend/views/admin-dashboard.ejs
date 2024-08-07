@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <div id="protectedData"></div>
+
+    <script>
+        async function fetchProtectedData() {
+            const token = localStorage.getItem('adminToken');
+            console.log('Token from localStorage:', token); // Debugging line
+            if (!token) {
+                alert('No token found');
+                return;
+            }
+
+            try {
+                const response = await fetch('/admin-dashboard', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error response:', text);
+                    alert('Error: ' + text);
+                    return;
+                }
+
+                const result = await response.json();
+                console.log('Protected data:', result);
+
+                // Update the page with the fetched data
+                document.getElementById('protectedData').innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error fetching protected data.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchProtectedData);
+    </script>
+</body>
+</html>
