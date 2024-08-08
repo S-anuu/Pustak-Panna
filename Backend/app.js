@@ -80,4 +80,3 @@ const storage = multer.diskStorage({
   });
 
   app.use('/images', express.static(path.join(__dirname, 'public/images')));
-

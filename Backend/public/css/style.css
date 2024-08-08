@@ -367,6 +367,7 @@ Version:1.0
 .header.shop .logo {
 	float: left;
 	margin-top: 35px;
+
 }
 .header.shop .top-contact {
 	margin-top:0px;
@@ -459,7 +460,7 @@ Version:1.0
 	display: inline-block;
 	z-index: 9999;
 }
-.header .shopping .icon {
+.header.shopping .icon {
 	position: relative;
 	cursor:pointer;
 	color:#222;
@@ -624,15 +625,17 @@ Version:1.0
 }
 .header.shop .logo {
 	float: left;
-	margin: 19px 0 0;
+	margin: 10px 30px 0 0;
 }
 .header.shop .top-contact {
 	margin-top:0px;
 }
+
 /* Header Middle */
 .header.shop .search-bar-top {
 	text-align: center;
 	margin-top: 10px;
+	margin-left: 80px;
 }
 .header.shop .search-bar {
 	margin-top: 33px;
@@ -1033,7 +1036,7 @@ Version:1.0
 }
 .header.shop .right-bar .sinlge-bar .single-icon{
 	color:#333;
-	font-size:20px;
+	font-size:12px;
 	position:relative;
 }
 .header.shop .right-bar .sinlge-bar .single-icon:hover{
