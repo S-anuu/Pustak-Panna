@@ -37,7 +37,7 @@ router.get('/about', (req, res) => {
 router.get('/admin-login', (req, res) => {
     res.render('admin-login', {
         title: 'Pustak-Panna',
-        pageStyles: 'login.css' 
+        pageStyles: 'admin-login.css' 
       });
 })
 
@@ -77,7 +77,6 @@ router.get('/500', (req, res) => {
         pageStyles: 'errors.css' // Specify the stylesheet for this page
       });
 })
-
 
 
 module.exports = router
