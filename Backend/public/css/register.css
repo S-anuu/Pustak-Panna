@@ -4,62 +4,59 @@
 /* Overall page styles */
 .register-page {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url("#");
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 ;
-  align-items: center;
+    background-image: url("#");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 140vh;
+    margin: 0;
 }
 
 /* Container styling */
 .register-container {
     background-color: #ffffff;
-    padding: 30px;
+    padding: 5px 30px 5px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 450px;
     text-align: center;
     margin: auto;
-    
 }
 
 /* Header styling */
 .register-container h2 {
     margin-bottom: 20px;
-  color: #444;
-  font-weight: 600;
+    color: #444;
+    font-weight: 600;
 }
 
 /* Form styling */
 .register-container .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: left;
+}
 
 .register-container label {
     display: block;
     margin-bottom: 8px;
     color: #555;
     font-weight: 500;
-    
-  
 }
 
 .register-container input[type="text"],
 .register-container input[type="email"],
 .register-container input[type="password"] {
     width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-}
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 /* Button styling */
 .register-container .button {
-    width: 100%;
+    width: 40%;
     padding: 12px;
     background-color: #007bff;
     border: none;
