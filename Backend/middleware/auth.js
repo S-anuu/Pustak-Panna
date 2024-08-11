@@ -4,7 +4,7 @@ const secretKey = process.env.SECRET_KEY || 'default_secret_key'; // Fallback fo
 function isAdmin(req, res, next) {
     // Extract token from cookies
     const token = req.cookies.token;
-
+    console.log(token)
     if (!token) return res.status(403).json({ message: 'No token provided' });
 
     jwt.verify(token, secretKey, (err, decoded) => {

@@ -1,10 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin'); 
+const Book = require('../models/Book'); 
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY;
 const isAdmin = require('../middleware/auth');
+const multer = require('multer')
+const path = require('path');
+const bookController = require('../controllers/bookController');
+
+//multer setup
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
 
 // Admin login route
 router.post('/admin-login', async (req, res) => {
@@ -69,9 +84,43 @@ router.post('/refresh-token', (req, res) => {
 router.get('/admin-dashboard', isAdmin, (req, res) => {
     res.render('admin-dashboard', {
         title: 'Admin Dashboard',
-        pageStyles: 'admin-dashboard.css'
+        pageStyles: 'admin-dashboard.css',
+        headerStyle: 'admin-header'
     });
 });
+
+router.get('/admin/books', async (req, res) => {
+    try {
+        const books = await Book.find(); // Fetch all books from the database
+        res.render('books', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', books }); // Pass books to the view
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+//Fetch a single book
+router.get('/admin/books/:id', async (req, res) => {
+    const book = await Book.findById(req.params.id)
+    res.json(book)
+})
+
+
+router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
+
+router.get('/admin/users', (req, res) => {
+    res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+});
+
+router.get('/admin/orders', (req, res) => {
+    res.render('orders', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+});
+
+router.get('/admin/reports', (req, res) => {
+    res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+});
+
+router.get('/admin/add-book', bookController.getAddBookPage);
 
 module.exports = router;
 
