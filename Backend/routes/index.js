@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const isAdmin = require('../middleware/auth'); // Ensure this middleware checks cookies
 
 // Public routes
 router.get('', (req, res) => {
@@ -29,11 +28,6 @@ router.get('/admin-login', (req, res) => {
 
 router.get('/login', (req, res) => {
     res.render('login', { title: 'Pustak-Panna', pageStyles: 'Login.css', headerStyle: 'header' });
-});
-
-// Protected routes
-router.get('/admin-dashboard', isAdmin, (req, res) => {
-    res.render('admin-dashboard', { title: 'Admin Dashboard', pageStyles: 'admin-dashboard.css', headerStyle: 'admin-header' });
 });
 
 router.get('/forgot-password', (req, res) => {

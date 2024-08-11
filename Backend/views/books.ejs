@@ -1,0 +1,22 @@
+<main>
+    <section class="books-list">
+        <% if (books.length > 0) { %>
+            <div class="book-grid">
+                <% books.forEach(book => { %>
+                    <div class="book-card">
+                        <img src="<%= book.imageUrl %>" alt="<%= book.title %>" class="book-cover">
+                        <h2><%= book.title %></h2>
+                        <p><strong>Author:</strong> <%= book.author %></p>
+                        <p><strong>Category:</strong> <%= book.category %></p>
+                        <p><strong>Price:</strong> $<%= book.price %></p>
+                        <p><strong>Description:</strong> <%= book.description %></p>
+                        <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
+                        <a href="/admin/delete-book/<%= book._id %>" class="btn btn-danger">Delete</a>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <p>No books found.</p>
+        <% } %>
+    </section>
+</main>

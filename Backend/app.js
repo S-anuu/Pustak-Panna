@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const authRoutes = require('./routes/auth');
 const isAdmin = require('./middleware/auth');
+const multer = require('multer');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -54,6 +55,28 @@ app.use('/', authRoutes);
 app.use('/cart', cartRouter);
 app.use('/', adminRouter);
 
+// Multer setup for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/'); // Folder where images will be saved
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname)); // File name with timestamp
+    }
+  });
+
+  const upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+      if (file.fieldname === 'imageURL') { // Ensure this matches the field in your form
+        cb(null, true);
+      } else {
+        cb(new Error('Unexpected field'), false);
+      }
+    }
+  });
+
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Port
 app.listen(port, () => {
     console.log(`Server running on port http://localhost:${port}/`);
@@ -69,3 +92,4 @@ app.use(express.static('public'));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
