@@ -8,7 +8,7 @@
                         <h2><%= book.title %></h2>
                         <p><strong>Author:</strong> <%= book.author %></p>
                         <p><strong>Category:</strong> <%= book.category %></p>
-                        <p><strong>Price:</strong> $<%= book.price %></p>
+                        <p><strong>Price:</strong> Rs. <%= book.price %></p>
                         <p><strong>Description:</strong> <%= book.description %></p>
                         <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
                         <a href="/admin/delete-book/<%= book._id %>" class="btn btn-danger">Delete</a>
@@ -18,5 +18,6 @@
         <% } else { %>
             <p>No books found.</p>
         <% } %>
+        <a href="/admin/add-book" class="btn btn-primary">Add Book</a>
     </section>
 </main>

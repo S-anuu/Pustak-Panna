@@ -19,7 +19,7 @@ exports.getAddBookPage =  (req, res) => {
 exports.addBook = async (req, res) => {
     try {
         const { title, author, category, price, description } = req.body;
-        console.log(req.body)
+        // console.log(req.body)
         let imagePath = '';
         
         if (req.file) {
