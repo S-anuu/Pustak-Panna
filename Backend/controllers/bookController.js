@@ -23,7 +23,7 @@ exports.addBook = async (req, res) => {
         let imagePath = '';
         
         if (req.file) {
-            imagePath = `/uploads/${req.file.filename}`;
+            imagePath= "/" + req.file.path; 
         }
 
         const newBook = new Book({
@@ -32,7 +32,7 @@ exports.addBook = async (req, res) => {
             category,
             price,
             description,
-            imageUrl: imagePath
+            imageURL: imagePath
         });
 
         await newBook.save();
