@@ -1,93 +1,97 @@
-<main class="register-page">
-    <div class="register-container">
-        <h2>Create an Account</h2>
-        <form action="/register" method="POST" id="registerForm">
-            <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" id="firstname" name="firstname" required>
-            </div>
-            <div class="form-group">
-                <label for="middlename">Middle Name</label>
-                <input type="text" id="middlename" name="middlename">
-            </div>
-            <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" id="lastname" name="lastname" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" minlength="6" required>
-            </div>
-            <div class="form-group">
-                <label for="confirmpassword">Confirm Password</label>
-                <input type="password" id="confirmpassword" name="confirmpassword" required>
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <button type="submit" class="button">Register</button>
-        </form>
-        <a href="/login" class="link">Already have an account? Login</a>
-    </div>
-</main>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('registerForm')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Account</title>
+</head>
+<body>
+    <main class="register-page">
+        <div class="register-container">
+            <h2>Create an Account</h2>
+            <form action="/register" method="POST" id="registerForm">
+                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" id="firstname" name="firstname" required>
+                </div>
+                <div class="form-group">
+                    <label for="middlename">Middle Name</label>
+                    <input type="text" id="middlename" name="middlename">
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" id="lastname" name="lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" id="confirmpassword" name="confirmpassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <button type="submit" class="button">Register</button>
+            </form>
+            <a href="/login" class="link">Already have an account? Login</a>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
 
-        form.addEventListener('submit',async function(event) {
-            const password = document.getElementById('password').value
-            const confirmPassword = document.getElementById('confirmpassword').value
-            
-            if (password !== confirmPassword){
-                event.preventDefault()
-                alert('Passwords do not match. Please try again')
-            }
-            
-        })
-    })
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('registerForm');
-
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-
-            try {
-                const response = await fetch('/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-                if (response.ok) {
-                    alert(result.message);
-                    window.location.href = '/login'; // Redirect to login page
-                } else {
-                    alert(result.message);
+            form.addEventListener('submit', async function(event) {
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmpassword').value;
+                
+                if (password !== confirmPassword) {
+                    event.preventDefault();
+                    alert('Passwords do not match. Please try again.');
+                    return;
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error processing your registration.');
-            }
+                
+                event.preventDefault();
+                
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+
+                try {
+                    const response = await fetch('/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+                    if (response.ok) {
+                        alert(result.message);
+                        window.location.href = '/login'; // Redirect to login page
+                    } else {
+                        alert(result.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('There was an error processing your registration.');
+                }
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>
