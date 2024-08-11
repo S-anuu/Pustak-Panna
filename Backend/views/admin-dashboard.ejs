@@ -1,76 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
-<body>
+
     <h1>Admin Dashboard</h1>
     <div id="protectedData"></div>
 
     <script>
         async function fetchProtectedData() {
-    let token = localStorage.getItem('adminToken');
-    console.log('Token from localStorage:', token);
+            let token = localStorage.getItem('adminToken');
+            console.log('Token from localStorage:', token);
 
-    if (!token) {
-        alert('No token found');
-        return;
-    }
-
-    // Decode the token to check expiration
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const now = Math.floor(Date.now() / 1000);
-    
-    if (payload.exp < now) {
-        // Token expired, attempt to refresh
-        const refreshResponse = await fetch('/refresh-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ token })
-        });
-
-        if (refreshResponse.ok) {
-            const result = await refreshResponse.json();
-            token = result.token;
-            localStorage.setItem('adminToken', token); // Store new token
-            // Retry the original request with the new token
-            return fetchProtectedData();
-        } else {
-            alert('Session expired. Please log in again.');
-            window.location.href = '/admin-login';
-            return;
-        }
-    }
-
-    try {
-        const response = await fetch('/admin-dashboard', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
+            if (!token) {
+                alert('No token found. Please log in again.');
+                window.location.href = '/admin-login';
+                return;
             }
-        });
 
-        if (!response.ok) {
-            const text = await response.text();
-            console.error('Error response:', text);
-            alert('Error: ' + text);
-            return;
+            // Decode the token to check expiration
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            const now = Math.floor(Date.now() / 1000);
+            
+            if (payload.exp < now) {
+                // Token expired, attempt to refresh
+                const refreshResponse = await fetch('/refresh-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token })
+                });
+
+                if (refreshResponse.ok) {
+                    const result = await refreshResponse.json();
+                    token = result.token;
+                    localStorage.setItem('adminToken', token); // Store new token
+                    // Retry the original request with the new token
+                    return fetchProtectedData();
+                } else {
+                    alert('Session expired. Please log in again.');
+                    window.location.href = '/admin-login';
+                    return;
+                }
+            }
+
+            try {
+                const response = await fetch('/admin-dashboard', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const text = await response.text();
+                    console.error('Error response:', text);
+                    alert('Error fetching protected data: ' + text);
+                    return;
+                }
+
+                const result = await response.json();
+                console.log('Protected data:', result);
+                document.getElementById('protectedData').innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error fetching protected data.');
+            }
         }
 
-        const result = await response.json();
-        console.log('Protected data:', result);
-        document.getElementById('protectedData').innerText = JSON.stringify(result, null, 2);
-    } catch (error) {
-        console.error('Error:', error);
-        alert('There was an error fetching protected data.');
-    }
-}
-
-document.addEventListener('DOMContentLoaded', fetchProtectedData);
+        document.addEventListener('DOMContentLoaded', fetchProtectedData);
     </script>
-</body>
-</html>

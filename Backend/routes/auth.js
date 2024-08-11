@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY; 
 
+// Render registration page
 router.get('/register', (req, res) => {
     res.render('register', {
         title: 'Pustak-Panna',
@@ -31,14 +32,11 @@ router.post('/register', async (req, res) => {
         const newUser = new User({ firstname, middlename, lastname, email, username, password, address, phone });
         await newUser.save();
 
-        
-
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
         res.status(500).json({ message: 'Server error' });
     }
 });
-
 
 // Handle user login
 router.post('/login', async (req, res) => {
@@ -59,8 +57,14 @@ router.post('/login', async (req, res) => {
         // Generate a token
         const token = jwt.sign({ id: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
 
-        // Send response with token
-        res.status(200).json({ message: 'Login successful', token });
+        // Set token in a cookie
+        res.cookie('token', token, {
+            httpOnly: true, // Prevents JavaScript access to the cookie
+            secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
+            maxAge: 3600000 // 1 hour
+        });
+
+        res.status(200).json({ message: 'Login successful' });
     } catch (err) {
         console.error('Error', err);
         res.status(500).json({ message: 'Server error' });
@@ -69,8 +73,9 @@ router.post('/login', async (req, res) => {
 
 // Handle user logout
 router.get('/logout', (req, res) => {
-    res.clearCookie('token'); // Clear the token cookie if you use cookies for token storage
+    res.clearCookie('token'); // Clear the token cookie
     res.redirect('/'); // Redirect to home or login page
 });
 
 module.exports = router;
+

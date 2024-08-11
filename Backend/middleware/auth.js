@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const secretKey = process.env.SECRET_KEY;
+const secretKey = process.env.SECRET_KEY || 'default_secret_key'; // Fallback for development
 
 function isAdmin(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
+    // Extract token from cookies
+    const token = req.cookies.token;
 
     if (!token) return res.status(403).json({ message: 'No token provided' });
 
@@ -15,10 +15,11 @@ function isAdmin(req, res, next) {
             return res.status(500).json({ message: 'Failed to authenticate token' });
         }
         if (!decoded.isAdmin) return res.status(403).json({ message: 'Not authorized' });
-        req.userId = decoded.id;
+        req.userId = decoded.id; // Attach user ID to the request object
         next();
     });
 }
 
 module.exports = isAdmin;
+
 
