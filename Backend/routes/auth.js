@@ -4,14 +4,10 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY; 
+const authController = require('../controllers/authController')
 
 // Render registration page
-router.get('/register', (req, res) => {
-    res.render('register', {
-        title: 'Pustak-Panna',
-        pageStyles: 'register.css'
-    });
-});
+router.get('/register', authController.register)
 
 // Handle user registration
 router.post('/register', async (req, res) => {
