@@ -1307,10 +1307,10 @@ pre code {
         margin-left: 41.666667%
     }
     .offset-md-6 {
-        margin-left: 50%
+        margin-left: 43%
     }
     .offset-md-7 {
-        margin-left: 58.333333%
+        margin-left: 50.333333%
     }
     .offset-md-8 {
         margin-left: 66.666667%
@@ -1353,12 +1353,12 @@ pre code {
     .col-lg-3 {
         -ms-flex: 0 0 25%;
         flex: 0 0 25%;
-        max-width: 25%
+        max-width: 21%
     }
     .col-lg-4 {
         -ms-flex: 0 0 33.333333%;
         flex: 0 0 33.333333%;
-        max-width: 33.333333%
+        max-width: 33.333333%;
     }
     .col-lg-5 {
         -ms-flex: 0 0 41.666667%;
@@ -1368,12 +1368,12 @@ pre code {
     .col-lg-6 {
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
-        max-width: 50%
+        max-width: 45%
     }
     .col-lg-7 {
         -ms-flex: 0 0 58.333333%;
         flex: 0 0 58.333333%;
-        max-width: 58.333333%
+        max-width: 53.333333%
     }
     .col-lg-8 {
         -ms-flex: 0 0 66.666667%;
