@@ -55,6 +55,7 @@ router.post('/admin-login', async (req, res) => {
     }
 });
 
+
 // Refresh token route
 router.post('/refresh-token', (req, res) => {
     const token = req.cookies.token; // Get token from cookies
@@ -89,15 +90,7 @@ router.get('/admin-dashboard', isAdmin, (req, res) => {
     });
 });
 
-router.get('/admin/books', async (req, res) => {
-    try {
-        const books = await Book.find(); // Fetch all books from the database
-        res.render('books', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', books }); // Pass books to the view
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
-    }
-});
+router.get('/admin/books', bookController.getAllBooks);
 
 //Fetch a single book
 router.get('/admin/books/:id', async (req, res) => {
@@ -105,12 +98,20 @@ router.get('/admin/books/:id', async (req, res) => {
     res.json(book)
 })
 
+router.get('/admin/edit-book/:_id', bookController.getEditPage)
+
+router.post('/admin/edit-book/:_id', upload.single('imageURL'), bookController.editBook);
+
+router.get('/admin/delete/:_id', bookController.deleteBook)
 
 router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
 
 router.get('/admin/users', (req, res) => {
     res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
 });
+
+// Check if a book with the same title and author exists
+router.post('/admin/check-book', bookController.checkBook);
 
 router.get('/admin/orders', (req, res) => {
     res.render('orders', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
