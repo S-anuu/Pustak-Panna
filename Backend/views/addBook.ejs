@@ -1,3 +1,4 @@
+
 <main>
     <section class="form-container">
         <form id="addBookForm" action="/admin/add-book" method="post" enctype="multipart/form-data">
@@ -39,7 +40,46 @@
                 <input type="file" class="form-control-file" id="imageURL" name="imageURL">
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Book</button>
+            <button type="submit" class="btn btn-primary" id="addBookButton">Add Book</button>
         </form>
     </section>
 </main>
+<script>
+    document.getElementById('addBookButton').addEventListener('click', async (e) => {
+        e.preventDefault(); // Prevent the form from submitting immediately
+        const form = document.getElementById('addBookForm');
+        const formData = new FormData(form);
+        const title = formData.get('title');
+        const author = formData.get('author');
+
+        try {
+            const response = await fetch('/admin/check-book', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ title, author })
+            });
+
+            const result = await response.json();
+
+            if (result.exists) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'A book with this title and author already exists!'
+                });
+            } else {
+                form.submit(); // Submit the form if no duplicate is found
+            }
+        } catch (err) {
+            console.error('Error checking book existence:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while checking the book.'
+            });
+        }
+    });
+</script>

@@ -1,0 +1,48 @@
+<h1><%= title %></h1>    
+<form method="post" action="/admin/edit-book/<%= book._id %>" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="<%= book.title %>" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" class="form-control" id="author" name="author" placeholder="Enter Author Name" value="<%= book.author %>" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <select id="category" name="category" class="form-control" required>
+            <option value="" disabled>Select category</option>
+            <option value="Fiction" <%= book.category === 'Fiction' ? 'selected' : '' %>>Fiction</option>
+            <option value="Non-Fiction" <%= book.category === 'Non-Fiction' ? 'selected' : '' %>>Non-Fiction</option>
+            <option value="Mystery" <%= book.category === 'Mystery' ? 'selected' : '' %>>Mystery</option>
+            <option value="Science Fiction" <%= book.category === 'Science Fiction' ? 'selected' : '' %>>Science Fiction</option>
+            <option value="Romance" <%= book.category === 'Romance' ? 'selected' : '' %>>Romance</option>
+            <option value="Self Help" <%= book.category === 'Self Help' ? 'selected' : '' %>>Self Help</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" class="form-control" id="price" name="price" value="<%= book.price %>" step="1" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required><%= book.description %></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label for="imageURL">Cover Image:</label>
+        <% if (book.imageURL) { %>
+            <div>
+                <img src="<%= book.imageURL %>" alt="Current Cover Image" style="max-width: 200px;">
+            </div>
+        <% } %>
+        <label for="imageURL">Upload New Cover Image (optional):</label>
+        <input type="file" class="form-control-file" id="imageURL" name="imageURL">
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="action">Submit</button>
+</form>
