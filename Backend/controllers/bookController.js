@@ -5,9 +5,24 @@ const fs = require('fs');
 
 exports.getAllBooks = async (req, res) => {
     try {
-        // Fetch and sort books by creation date (or _id) in descending order
-        const books = await Book.find().sort({ createdAt: -1 }); // or .sort({ _id: -1 })
-        res.render('books', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', books });
+        const pageSize = 5; // Number of books per page
+        const currentPage = parseInt(req.query.page) || 1; // Current page number
+        const skip = (currentPage - 1) * pageSize;
+
+        // Fetch books, sorting by creation date or _id, and limiting the results
+        const books = await Book.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
+        const totalBooks = await Book.countDocuments();
+        const totalPages = Math.ceil(totalBooks / pageSize);
+
+        res.render('books', { 
+            title: 'Pustak-Panna', 
+            pageStyles: '', 
+            headerStyle: 'admin-header', 
+            books, 
+            currentPage, 
+            pageSize, 
+            totalPages 
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -20,12 +35,11 @@ exports.getAddBookPage =  (req, res) => {
 
 exports.addBook = async (req, res) => {
     try {
-        const { title, author, category, price, description } = req.body;
-        // console.log(req.body)
+        const { title, author, category, price, description, isUsed, condition } = req.body;
         let imagePath = '';
-        
+
         if (req.file) {
-            imagePath= "/" + req.file.path; 
+            imagePath = "/" + req.file.path;
         }
 
         const newBook = new Book({
@@ -34,7 +48,9 @@ exports.addBook = async (req, res) => {
             category,
             price,
             description,
-            imageURL: imagePath
+            imageURL: imagePath,
+            isUsed: !!isUsed,
+            condition: isUsed ? parseInt(condition, 10) : undefined
         });
 
         await newBook.save();
@@ -69,15 +85,13 @@ exports.getEditPage = async (req, res, next) => {
 
 exports.editBook = async (req, res, next) => {
     try {
-        const { title, author, category, price, description } = req.body;
+        const { title, author, category, price, description, isUsed, condition } = req.body;
         let imagePath = '';
 
-        // Check if a new file is uploaded
         if (req.file) {
-            // Update the imagePath to the new file
             imagePath = "/" + req.file.path;
 
-            // If an old image exists, delete it
+            // Delete old image if it's different from the new one
             const book = await Book.findById(req.params._id);
             if (book.imageURL && book.imageURL !== imagePath) {
                 const oldImagePath = path.join(__dirname, '../uploads', book.imageURL);
@@ -86,12 +100,10 @@ exports.editBook = async (req, res, next) => {
                 });
             }
         } else {
-            // Keep the existing image path if no new file is uploaded
             const book = await Book.findById(req.params._id);
             imagePath = book.imageURL;
         }
 
-        // Update the book details
         await Book.updateOne(
             { _id: req.params._id },
             {
@@ -101,7 +113,9 @@ exports.editBook = async (req, res, next) => {
                     category,
                     price,
                     description,
-                    ...(imagePath && { imageURL: imagePath }) // Only update imageURL if a new image is uploaded
+                    ...(imagePath && { imageURL: imagePath }),
+                    isUsed: !!isUsed,
+                    condition: isUsed ? parseInt(condition, 10) : undefined
                 }
             }
         );
@@ -112,6 +126,7 @@ exports.editBook = async (req, res, next) => {
         res.status(500).send('Server Error');
     }
 };
+
 
 exports.deleteBook = async(req, res, next) => {
     const result = await Book.deleteOne({_id: req.params._id})

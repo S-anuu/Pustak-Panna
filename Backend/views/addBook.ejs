@@ -21,6 +21,7 @@
                     <option value="Science Fiction">Science Fiction</option>
                     <option value="Romance">Romance</option>
                     <option value="Self Help">Self Help</option>
+                    <option value="Auto Biography">Auto Biography</option>
                 </select>
             </div>
             
@@ -39,11 +40,27 @@
                 <input type="file" class="form-control-file" id="imageURL" name="imageURL">
             </div>
 
+            <!-- New fields for used books -->
+            <div class="form-group">
+                <label for="isUsed">Is it used?</label>
+                <input type="checkbox" id="isUsed" name="isUsed">
+                <label for="isUsed" style="margin-left: 5px;">Yes</label>
+            </div>
+
+            <div class="form-group" id="condition-group" style="display: none;">
+                <label for="condition">Condition (1-5):</label>
+                <input type="number" id="condition" name="condition" min="1" max="5">
+            </div>
+
             <button type="submit" class="btn btn-primary" id="addBookButton">Add Book</button>
         </form>
     </section>
 </main>
 <script>
+    document.getElementById('isUsed').addEventListener('change', function() {
+        document.getElementById('condition-group').style.display = this.checked ? 'block' : 'none';
+    });
+
     document.getElementById('addBookButton').addEventListener('click', async (e) => {
         e.preventDefault(); // Prevent the form from submitting immediately
         const form = document.getElementById('addBookForm');
@@ -82,4 +99,3 @@
         }
     });
 </script>
-

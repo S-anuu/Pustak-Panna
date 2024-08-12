@@ -7,7 +7,9 @@ const bookSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     description: { type: String, required: true },
     imageURL: { type: String },
-    createdAt: { type: Date, default: Date.now } // Use this field to track when a book was added
+    isUsed: { type: Boolean, default: false }, // New field
+    condition: { type: Number, min: 1, max: 5 }, // New field
+    createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Book', bookSchema);
