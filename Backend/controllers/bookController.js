@@ -15,7 +15,7 @@ exports.getAllBooks = async (req, res) => {
 };
 
 exports.getAddBookPage =  (req, res) => {
-    res.render('addBook', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+    res.render('addBook', { title: 'Pustak-Panna', pageStyles: 'addBook.css', headerStyle: 'admin-header' });
 };
 
 exports.addBook = async (req, res) => {
