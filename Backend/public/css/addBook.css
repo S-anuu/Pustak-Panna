@@ -1,0 +1,82 @@
+/* Container styling */
+.form-container {
+    max-width: 550px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Inline form group for category and price */
+.form-group-inline {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Label styling */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group-inline label {
+    margin-bottom: 0; /* Ensures label stays aligned in the inline form */
+}
+
+/* Input, select, and textarea styling */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.form-group-inline input[type="number"] {
+    flex-grow: 1;
+}
+
+/* Smaller textarea for description */
+.form-group textarea {
+    resize: none;
+}
+
+/* Select dropdown styling */
+.form-group select {
+    appearance: none;
+    background-color: #fff;
+}
+
+/* File input styling */
+.form-group input[type="file"] {
+    border: none;
+}
+
+/* Button styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
