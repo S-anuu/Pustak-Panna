@@ -100,7 +100,6 @@ router.get('/admin/books/:id', async (req, res) => {
 
 router.get('/admin/edit-book/:_id', bookController.getEditPage)
 
-router.post('/admin/edit-book/:_id', upload.single('imageURL'), bookController.editBook);
 
 router.get('/admin/delete/:_id', bookController.deleteBook)
 
@@ -121,7 +120,14 @@ router.get('/admin/reports', (req, res) => {
     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
 });
 
+// Add book
+router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
+
 router.get('/admin/add-book', bookController.getAddBookPage);
+
+// Edit book
+router.post('/admin/edit-book/:_id', upload.single('imageURL'), bookController.editBook);
+
 
 module.exports = router;
 

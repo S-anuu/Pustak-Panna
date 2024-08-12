@@ -9,11 +9,15 @@ exports.index = async (req, res) => {
         const today = new Date();
         const pastDate = new Date(today.setDate(today.getDate() - 7)); // Date 7 days ago
 
+        let trending = await Book.find({
+
+        }).limit(6);
+
         let newArrivals = await Book.find({
-            createdAt: { $gte: pastDate } // Books added in the last 7 days
+            createdAt: { $gte: pastDate }, // Books added in the last 7 days
         })
         .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-        .limit(5); // Limit to 5 books
+        .limit(3); // Limit to 3 books
 
         // If no new arrivals, get the last 5 books regardless of date
         if (newArrivals.length === 0) {
@@ -22,14 +26,28 @@ exports.index = async (req, res) => {
                 .limit(5); // Limit to 5 books
         }
 
+        let usedBooks = await Book.find({
+            isUsed: true,
+        })
+        .sort({createdAt: -1})
+        .limit(3)
+
+        let bestSeller = await Book.find({
+        })
+        .limit(3)
+
         // Render the index page with books and newArrivals data
-        res.render('demoIndex', { 
+        res.render('index', { 
             title: 'Pustak-Panna', 
             pageStyles: '', 
             headerStyle: 'header', 
             books, 
-            newArrivals 
+            newArrivals,
+            usedBooks,
+            bestSeller,
+            trending 
         });
+
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');

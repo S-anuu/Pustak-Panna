@@ -5,10 +5,6 @@ const indexController = require('../controllers/indexController')
 // Public routes
 router.get('/', indexController.index);
 
-router.get('/index', (req, res) => {
-    res.render('index', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
-});
-
 router.get('/cart', (req, res) => {
     res.render('cart', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
 });
