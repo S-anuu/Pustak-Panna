@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const indexController = require('../controllers/indexController')
 
 // Public routes
-router.get('', (req, res) => {
-    res.render('index', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
-});
+router.get('/', indexController.index);
 
 router.get('/cart', (req, res) => {
     res.render('cart', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
