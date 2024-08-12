@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const indexController = require('../controllers/indexController')
 
 // Public routes
-router.get('', (req, res) => {
+router.get('/', indexController.index);
+
+router.get('/index', (req, res) => {
     res.render('index', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
 });
 
