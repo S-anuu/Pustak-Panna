@@ -12,17 +12,10 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const isAdmin = require('./middleware/auth');
 const multer = require('multer');
+const flash = require('connect-flash');
 
 const app = express();
 const port = process.env.PORT || 5000;
-
-// Middleware
-app.use(expressLayout);
-app.set('layout', './layouts/main');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(express.json());
 
 // Session configuration
 app.use(session({
@@ -35,52 +28,55 @@ app.use(session({
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 } // 1 day
 }));
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+// Set up flash middleware after session middleware
+//app.use(flash());
+
+// Middleware
+app.use(expressLayout);
+app.set('layout', './layouts/main');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.json());
+
+// Middleware to make flash messages available in views
+// app.use((req, res, next) => {
+//     res.locals.success = req.flash('success');
+//     res.locals.error = req.flash('error');
+//     next();
+// });
 
 // Set view engine
 app.set('view engine', 'ejs');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var cartRouter = require('./routes/cart');
-var adminRouter = require('./routes/admin');
-
 // Routes
-app.use('/', indexRouter);
+app.use('/', require('./routes/index'));
 app.use('/', authRoutes);
-app.use('/cart', cartRouter);
-app.use('/', adminRouter);
+app.use('/cart', require('./routes/cart'));
+app.use('/', require('./routes/admin'));
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/'); // Folder where images will be saved
+        cb(null, 'uploads/'); // Folder where images will be saved
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname)); // File name with timestamp
+        cb(null, Date.now() + path.extname(file.originalname)); // File name with timestamp
     }
-  });
+});
 
-  const upload = multer({ 
+const upload = multer({ 
     storage: storage,
     fileFilter: (req, file, cb) => {
-      if (file.fieldname === 'imageURL') { // Ensure this matches the field in your form
-        cb(null, true);
-      } else {
-        cb(new Error('Unexpected field'), false);
-      }
+        if (file.fieldname === 'imageURL') { // Ensure this matches the field in your form
+            cb(null, true);
+        } else {
+            cb(new Error('Unexpected field'), false);
+        }
     }
-  });
-
-  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// Port
-app.listen(port, () => {
-    console.log(`Server running on port http://localhost:${port}/`);
 });
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
@@ -89,7 +85,15 @@ mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.
 
 // Public files
 app.use(express.static('public'));
-
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+// Port
+app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}/`);
+});
