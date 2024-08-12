@@ -27,9 +27,7 @@ html,body {
 body {
 	margin: 0;
 }
-img{
-	max-width:100%;
-}
+
 article,
 aside,
 details,
@@ -79,9 +77,7 @@ a:hover {
 	display: table-cell;
 	vertical-align: middle;
 }
-img {
-	border: 0;
-}
+
 svg:not(:root) {
 	overflow: hidden;
 }
@@ -586,12 +582,6 @@ dd {
 	margin: 0 1.5em 1.5em;
 }
 
-img {
-	height: auto;
-	/* Make sure images are scaled correctly. */
-	max-width: 200%;
-	/* Adhere to container width. */
-}
 
 figure {
 	margin: 1em 0;
