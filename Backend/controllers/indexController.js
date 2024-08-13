@@ -1,5 +1,6 @@
 const Book = require('../models/Book'); 
 
+
 exports.index = async (req, res) => {
     try {
         // Fetch all books
@@ -13,9 +14,7 @@ exports.index = async (req, res) => {
 
         }).limit(6);
 
-        let newArrivals = await Book.find({
-            createdAt: { $gte: pastDate }, // Books added in the last 7 days
-        })
+        let newArrivals = await Book.find({})
         .sort({ createdAt: -1 }) // Sort by createdAt in descending order
         .limit(3); // Limit to 3 books
 
@@ -53,3 +52,47 @@ exports.index = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+exports.newReleases = async (req, res) => {
+    const pageSize = 10; // Number of books per page
+    const currentPage = parseInt(req.query.page) || 1; // Current page number
+    const skip = (currentPage - 1) * pageSize;
+
+        // Fetch books, sorting by creation date or _id, and limiting the results
+    const newBooks = await Book.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
+    const totalBooks = await Book.countDocuments();
+    const totalPages = Math.ceil(totalBooks / pageSize);
+
+
+    res.render('newReleases', {
+        title: 'New Releases',
+        pageStyles: '',
+        headerStyle: 'header',
+        newBooks,
+        totalBooks,
+        totalPages
+        
+    })
+}
+
+exports.bestSellers = async (req, res) => {
+    const pageSize = 10; // Number of books per page
+    const currentPage = parseInt(req.query.page) || 1; // Current page number
+    const skip = (currentPage - 1) * pageSize;
+
+        // Fetch books, sorting by creation date or _id, and limiting the results
+    const bestSellers = await Book.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
+    const totalBooks = await Book.countDocuments();
+    const totalPages = Math.ceil(totalBooks / pageSize);
+
+
+    res.render('bestSellers', {
+        title: 'Best Sellers',
+        pageStyles: '',
+        headerStyle: 'header',
+        bestSellers,
+        totalBooks,
+        totalPages
+       
+    })
+}

@@ -5,6 +5,10 @@ const indexController = require('../controllers/indexController')
 // Public routes
 router.get('/', indexController.index);
 
+router.get('/new-releases', indexController.newReleases);
+
+router.get('/best-sellers', indexController.bestSellers);
+
 router.get('/cart', (req, res) => {
     res.render('cart', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
 });
@@ -32,6 +36,8 @@ router.get('/login', (req, res) => {
 router.get('/forgot-password', (req, res) => {
     res.render('forgot-password', { title: 'Pustak-Panna', pageStyles: 'forgot-password.css', headerStyle: 'header' });
 });
+
+
 
 // router.get('/404', (req, res) => {
 //     res.render('404', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });

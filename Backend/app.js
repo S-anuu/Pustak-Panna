@@ -54,6 +54,7 @@ app.use('/', require('./routes/index'));
 app.use('/', authRoutes);
 app.use('/cart', require('./routes/cart'));
 app.use('/', require('./routes/admin'));
+app.use('/', require('./routes/book'));
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
