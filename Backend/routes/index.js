@@ -37,6 +37,8 @@ router.get('/forgot-password', (req, res) => {
     res.render('forgot-password', { title: 'Pustak-Panna', pageStyles: 'forgot-password.css', headerStyle: 'header' });
 });
 
+
+
 // router.get('/404', (req, res) => {
 //     res.render('404', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });
 // });

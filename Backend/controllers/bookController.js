@@ -1,6 +1,7 @@
 const Book = require('../models/Book');
 const path = require('path');
 const fs = require('fs');
+const slugify = require('slugify');
 //const flash = require('connect-flash')
 
 exports.getAllBooks = async (req, res) => {
@@ -138,4 +139,32 @@ exports.deleteBook = async(req, res, next) => {
       }
 
     res.redirect('/admin/books')
+}
+
+exports.getBookDetails = async(req, res, next) => {
+    try {
+        // Extract the slug from the URL parameter
+        const slug = req.params.slug;
+
+        // Find the book by slug
+        const book = await Book.findOne({ slug });
+        
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+
+        // Fetch reviews if applicable
+        const reviews = []; 
+
+        res.render('bookDetails', {
+            title: book.title,
+            pageStyles: '',
+            headerStyle: 'header',
+            book,
+            reviews,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
 }
