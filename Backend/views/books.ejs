@@ -3,7 +3,7 @@
         <!-- Used Books Section -->
         <h1>Used Books</h1>
         <% const usedBooks = books.filter(book => book.isUsed); %>
-        <% const usedBooksToShow = usedBooks.slice(0, pageSize); %> <!-- Ensure only `pageSize` books are shown -->
+        <% const usedBooksToShow = usedBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize); %>
         <% if (usedBooksToShow.length > 0) { %>
             <div class="book-grid">
                 <% usedBooksToShow.forEach(book => { %>
@@ -13,9 +13,14 @@
                         <p><strong>Author:</strong> <%= book.author %></p>
                         <p><strong>Category:</strong> <%= book.category %></p>
                         <p><strong>Price:</strong> Rs. <%= book.price %></p>
+
                         <p><strong>Description:</strong> <span class="short-description"><%= book.description %></span></p>
 
                         <p><strong>Condition:</strong> <%= book.condition %></p>
+
+                        <p><strong>Description:</strong> <%= book.description %></p>
+                        <p><strong>Condition:</strong> <%= book.condition %>/5</p>
+
                         <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
@@ -37,10 +42,9 @@
         <!-- New Books Section -->
         <h1>New Books</h1>
         <% const newBooks = books.filter(book => !book.isUsed); %>
-        <% const newBooksToShow = newBooks.slice(0, pageSize); %> <!-- Ensure only `pageSize` books are shown -->
-        <% if (newBooksToShow.length > 0) { %>
+        <% if (newBooks.length > 0) { %>
             <div class="book-grid">
-                <% newBooksToShow.forEach(book => { %>
+                <% newBooks.forEach(book => { %>
                     <div class="book-card">
                         <img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-cover">
                         <h2><%= book.title %></h2>
@@ -97,6 +101,7 @@
 
 
 <style>
+
    /* General Styles */
 body {
     font-family: Arial, sans-serif;
@@ -223,3 +228,23 @@ main {
 
 
 </style>
+
+    .pagination {
+        margin: 20px 0;
+        text-align: center;
+    }
+    .pagination a {
+        margin: 0 5px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+        color: #333;
+        border-radius: 3px;
+    }
+    .pagination a.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+
