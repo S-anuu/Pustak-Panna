@@ -1,5 +1,6 @@
 <main>
     <section class="books-list">
+        <a href="/admin/add-book" class="btn btn-primary">Add Book</a>
         <!-- Used Books Section -->
         <h1>Used Books</h1>
         <% const usedBooks = books.filter(book => book.isUsed); %>
@@ -18,7 +19,7 @@
 
                         <p><strong>Condition:</strong> <%= book.condition %></p>
 
-                        <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
+                        <a href="/admin/edit-book/<%= book._id %>" class="btn btn-box">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
                 <% }) %>
@@ -50,7 +51,7 @@
                         <p><strong>Price:</strong> Rs. <%= book.price %></p>
                         <p><strong>Description:</strong> <span class="short-description"><%= book.description %></span></p>
                        
-                        <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
+                        <a href="/admin/edit-book/<%= book._id %>" class="btn btn-box">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
                 <% }) %>
@@ -59,7 +60,7 @@
             <p>No new books found.</p>
         <% } %>
 
-        <a href="/admin/add-book" class="btn btn-primary">Add Book</a>
+        
     </section>
 </main>
 
@@ -186,7 +187,13 @@ main {
 }
 
 .btn-primary {
-    background-color: #007bff;
+    background-color: #95c1ef;
+    float: right;
+    margin: 0;
+}
+
+.btn-box {
+    background-color: #95c1ef;
 }
 
 .btn-danger {
@@ -194,6 +201,10 @@ main {
 }
 
 .btn-primary:hover,
+.btn-danger:hover {
+    opacity: 0.9;
+}
+.btn-box:hover,
 .btn-danger:hover {
     opacity: 0.9;
 }
