@@ -18,9 +18,6 @@
 
                         <p><strong>Condition:</strong> <%= book.condition %></p>
 
-                        <p><strong>Description:</strong> <%= book.description %></p>
-                        <p><strong>Condition:</strong> <%= book.condition %>/5</p>
-
                         <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
@@ -229,22 +226,4 @@ main {
 
 </style>
 
-    .pagination {
-        margin: 20px 0;
-        text-align: center;
-    }
-    .pagination a {
-        margin: 0 5px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-decoration: none;
-        color: #333;
-        border-radius: 3px;
-    }
-    .pagination a.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-</style>
-
+    
