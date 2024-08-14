@@ -13,8 +13,14 @@
                         <p><strong>Author:</strong> <%= book.author %></p>
                         <p><strong>Category:</strong> <%= book.category %></p>
                         <p><strong>Price:</strong> Rs. <%= book.price %></p>
+
+                        <p><strong>Description:</strong> <span class="short-description"><%= book.description %></span></p>
+
+                        <p><strong>Condition:</strong> <%= book.condition %></p>
+
                         <p><strong>Description:</strong> <%= book.description %></p>
                         <p><strong>Condition:</strong> <%= book.condition %>/5</p>
+
                         <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
@@ -45,7 +51,8 @@
                         <p><strong>Author:</strong> <%= book.author %></p>
                         <p><strong>Category:</strong> <%= book.category %></p>
                         <p><strong>Price:</strong> Rs. <%= book.price %></p>
-                        <p><strong>Description:</strong> <%= book.description %></p>
+                        <p><strong>Description:</strong> <span class="short-description"><%= book.description %></span></p>
+                       
                         <a href="/admin/edit-book/<%= book._id %>" class="btn btn-primary">Edit</a>
                         <a href="javascript:void(0)" class="btn btn-danger" onclick="confirmDelete('<%= book._id %>')">Delete</a>
                     </div>
@@ -77,9 +84,151 @@
             }
         });
     }
+
+    document.querySelectorAll('.read-more').forEach(button => {
+        button.addEventListener('click', function() {
+            const description = this.previousElementSibling;
+            if (description.classList.contains('short-description')) {
+                description.classList.remove('short-description');
+                this.textContent = 'Read Less';
+            } else {
+                description.classList.add('short-description');
+                this.textContent = 'Read More';
+            }
+        });
+    });
 </script>
 
+
 <style>
+
+   /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Main Section */
+main {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+/* Books List Section */
+.books-list h1 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Book Grid */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* Book Card */
+.book-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.book-card:hover {
+    transform: scale(1.02);
+}
+
+.book-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.book-card h2 {
+    font-size: 20px;
+    margin: 10px 0;
+    color: #007bff;
+}
+
+.book-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Short Description */
+.short-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Read More Button */
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}
+
+.btn-primary:hover,
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+/* Pagination */
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.pagination a {
+    color: #007bff;
+    text-decoration: none;
+    margin: 0 5px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination .active {
+    background-color: #007bff;
+    color: white;
+}
+
+
+</style>
+
     .pagination {
         margin: 20px 0;
         text-align: center;
@@ -98,3 +247,4 @@
         border-color: #007bff;
     }
 </style>
+
