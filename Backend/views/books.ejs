@@ -1,6 +1,6 @@
 <main>
     <section class="books-list">
-        <a href="/admin/add-book" class="btn btn-primary">Add Book</a>
+        
         <!-- Used Books Section -->
         <h1>Used Books</h1>
         <% const usedBooks = books.filter(book => book.isUsed); %>
@@ -60,7 +60,7 @@
             <p>No new books found.</p>
         <% } %>
 
-        
+        <a href="/admin/add-book" class="btn btn-primary fixed-button">Add Book</a>
     </section>
 </main>
 
@@ -95,8 +95,23 @@
             }
         });
     });
-</script>
 
+    // Adjust Add Book Button Position
+    window.addEventListener('scroll', function() {
+        const addButton = document.querySelector('.fixed-button');
+        const footer = document.getElementById('footer');
+        const footerTop = footer.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (footerTop <= windowHeight) {
+            addButton.style.position = 'absolute';
+            addButton.style.top = (window.pageYOffset + footerTop - addButton.offsetHeight - 20) + 'px';
+        } else {
+            addButton.style.position = 'fixed';
+            addButton.style.top = '20px';
+        }
+    });
+</script>
 
 <style>
 
@@ -184,6 +199,13 @@ main {
     font-size: 14px;
     margin-top: 10px;
     cursor: pointer;
+}
+/* Fixed Add Book Button */
+.fixed-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index:1000;
 }
 
 .btn-primary {
