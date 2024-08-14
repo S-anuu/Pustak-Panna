@@ -6,7 +6,7 @@ const slugify = require('slugify');
 
 exports.getAllBooks = async (req, res) => {
     try {
-        const pageSize = 5; // Number of books per page
+        const pageSize = 6; // Number of books per page
         const currentPage = parseInt(req.query.page) || 1; // Current page number
         const skip = (currentPage - 1) * pageSize;
 
