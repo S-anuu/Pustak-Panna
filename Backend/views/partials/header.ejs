@@ -6,8 +6,7 @@
                 <div class="col-lg-3 col-md-4 col-12">
                     <!-- Logo -->
                     <div class="logo">
-                        <a href="/"><img src="/images/logo3.png" alt="PustakPanna" style="width: 240px; height: 67px;  margin-bottom: 0px;">
-                        
+                        <a href="/"><img src="/images/logo3.png" alt="PustakPanna" style="width: 240px; height: 67px; margin-bottom: 0px;"></a>
                     </div>
                     <!--/ End Logo -->
                 </div>
@@ -25,17 +24,26 @@
                 </div>
                 <div class="col-lg-4 col-md-3 col-12">
                     <div class="right-bar">
-                        <!-- Account and Login Links -->
-                        <div class="sinlge-bar account">
-                            <a href="/profile" class="single-icon"><i class="ti-user"></i> <span>My Account</span></a>
-                        </div>
-                        <div class="sinlge-bar login">
-                            <a href="/login" class="single-icon"><i class="ti-power-off"></i> <span>Login</span></a>
-                        </div>
-                        <div class="sinlge-bar admin-login">
-                            <a href="/admin-login" class="single-icon"><i class="ti-user"></i> <span>Admin</span></a>
-                        </div>
-
+                        <!-- Conditional Account and Login Links -->
+                        <% if (isAuthenticated) { %>
+                            <div class="sinlge-bar logout">
+                                <a href="#" onclick="confirmLogout(event)" class="single-icon"><i class="ti-power-off"></i> <span>Logout</span></a>
+                            </div>
+                            <div class="sinlge-bar account">
+                                <a href="/profile" class="single-icon"><i class="ti-user"></i> <span>My Account</span></a>
+                            </div>                          
+                        <% } else { %>
+                            <div class="sinlge-bar register">
+                                <a href="/register" class="single-icon"><i class="ti-user"></i> <span>Sign Up</span></a>
+                            </div>
+                            <div class="sinlge-bar login">
+                                <a href="/login" class="single-icon"><i class="ti-power-off"></i> <span>Login</span></a>
+                            </div>
+                            <div class="sinlge-bar admin-login">
+                                <a href="/admin-login" class="single-icon"><i class="ti-user"></i> <span>Admin</span></a>
+                            </div>
+                        <% } %>
+                        
                     </div>
                 </div>
             </div>
@@ -77,7 +85,6 @@
                                             </li>
                                             <li><a href="/about">About</a></li>
                                             <li><a href="/contact">Contact Us</a></li>
-                                            
                                             <!-- Shopping Cart -->
                                             <li class="sinlge-bar shopping">
                                                 <a class="single-icon"><i class="ti-bag"></i> <span class="total-count">2</span></a>
@@ -112,15 +119,40 @@
                                                 <!--/ End Shopping Item -->
                                             </li>
                                         </ul>
-                                        
                                     </div>
                                 </div>
                             </nav>
-                            <!--/ End Main Menu -->    
+                            <!--/ End Main Menu -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--/ End Header Inner -->
 </header>
+
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Confirmation Script -->
+<script>
+    function confirmLogout(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/logout'; // Redirect to logout route
+            }
+        });
+    }
+</script>

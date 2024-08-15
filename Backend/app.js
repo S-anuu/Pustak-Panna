@@ -10,9 +10,11 @@ const bcryptjs = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const authRoutes = require('./routes/auth');
-const isAdmin = require('./middleware/auth');
+const isAdmin = require('./middleware/authMiddleware');
 const multer = require('multer');
 const flash = require('connect-flash');
+const User = require('./models/User')
+const jwt = require('jsonwebtoken')
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -46,6 +48,27 @@ app.use(express.json());
 //     next();
 // });
 
+app.use(async (req, res, next) => {
+    const token = req.cookies.token;
+    //console.log('Token from cookies:', token); // Debugging line
+
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+            req.user = await User.findById(decoded.id);
+            //console.log('User from token:', req.user); // Debugging line
+            res.locals.isAuthenticated = true;
+            res.locals.user = req.user;
+        } catch (err) {
+            //console.error('JWT Verification Error:', err); // Debugging line
+            res.locals.isAuthenticated = false;
+        }
+    } else {
+        res.locals.isAuthenticated = false;
+    }
+    next();
+});
+
 // Set view engine
 app.set('view engine', 'ejs');
 
@@ -55,6 +78,8 @@ app.use('/', authRoutes);
 app.use('/cart', require('./routes/cart'));
 app.use('/', require('./routes/admin'));
 app.use('/', require('./routes/book'));
+
+
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
