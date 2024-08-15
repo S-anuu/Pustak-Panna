@@ -1,13 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY; 
 const authController = require('../controllers/authController')
+const authenticate = require('../middleware/authenticate');
 
 // Render registration page
 router.get('/register', authController.register)
+
+router.get('/profile', authController.profile)
+
+router.get('/edit-profile', authController.getEditProfile)
+
+router.post('/edit-profile', authController.editProfile)
+
+router.post('/change-password', authenticate, authController.changePassword);
 
 // Handle user registration
 router.post('/register', async (req, res) => {
@@ -53,13 +62,13 @@ router.post('/login', async (req, res) => {
         // Generate a token
         const token = jwt.sign({ id: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
 
-        // Set token in a cookie
+        //console.log('Setting cookie:', token);
         res.cookie('token', token, {
-            httpOnly: true, // Prevents JavaScript access to the cookie
-            secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
-            maxAge: 3600000 // 1 hour
+            httpOnly: true,
+            secure: false,
+            maxAge: 3600000
         });
-
+        //console.log('isAuthenticated:', res.locals.isAuthenticated);
         res.status(200).json({ message: 'Login successful' });
     } catch (err) {
         console.error('Error', err);
@@ -70,7 +79,7 @@ router.post('/login', async (req, res) => {
 // Handle user logout
 router.get('/logout', (req, res) => {
     res.clearCookie('token'); // Clear the token cookie
-    res.redirect('/'); // Redirect to home or login page
+    res.redirect('/login'); // Redirect to login page or home
 });
 
 module.exports = router;
