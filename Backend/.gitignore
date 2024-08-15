@@ -1,7 +1,6 @@
 node_modules/
 
-.env
-
 # Optional scripts
 createAdmin.js
 updateSlugs.js
+.vercel
