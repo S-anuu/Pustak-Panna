@@ -9,15 +9,15 @@ const MongoStore = require('connect-mongo');
 const bcryptjs = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const authRoutes = require('./routes/auth');
-const isAdmin = require('./middleware/authMiddleware');
+const authRoutes = require('../routes/auth');
+const isAdmin = require('../middleware/authMiddleware');
 const multer = require('multer');
 const flash = require('connect-flash');
-const User = require('./models/User')
+const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Session configuration
 app.use(session({
@@ -73,18 +73,18 @@ app.use(async (req, res, next) => {
 app.set('view engine', 'ejs');
 
 // Routes
-app.use('/', require('./routes/index'));
+app.use('/', require('../routes/index'));
 app.use('/', authRoutes);
-app.use('/cart', require('./routes/cart'));
-app.use('/', require('./routes/admin'));
-app.use('/', require('./routes/book'));
+app.use('/cart', require('../routes/cart'));
+app.use('/', require('../routes/admin'));
+app.use('/', require('../routes/book'));
 
 
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Folder where images will be saved
+        cb(null, '../uploads'); 
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // File name with timestamp
@@ -102,7 +102,7 @@ const upload = multer({
     }
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
