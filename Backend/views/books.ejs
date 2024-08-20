@@ -3,10 +3,9 @@
         <!-- Used Books Section -->
         <h1>Used Books</h1>
         <% const usedBooks = books.filter(book => book.isUsed); %>
-        <% const usedBooksToShow = usedBooks.slice((currentPage - 1) * pageSize, currentPage * pageSize); %>
-        <% if (usedBooksToShow.length > 0) { %>
+        <% if (usedBooks.length > 0) { %>
             <div class="book-grid">
-                <% usedBooksToShow.forEach(book => { %>
+                <% usedBooks.forEach(book => { %>
                     <div class="book-card">
                         <img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-cover">
                         <h2><%= book.title %></h2>

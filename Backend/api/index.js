@@ -6,13 +6,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const authRoutes = require('../routes/auth');
-const isAdmin = require('../middleware/authMiddleware');
+//const {isAdmin, authMiddleware} = require('../middleware/authMiddleware');
 const multer = require('multer');
-const flash = require('connect-flash');
+//const flash = require('connect-flash');
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
 
@@ -75,7 +75,7 @@ app.set('view engine', 'ejs');
 // Routes
 app.use('/', require('../routes/index'));
 app.use('/', authRoutes);
-app.use('/cart', require('../routes/cart'));
+app.use('/', require('../routes/cart'));
 app.use('/', require('../routes/admin'));
 app.use('/', require('../routes/book'));
 

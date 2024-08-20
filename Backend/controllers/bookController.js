@@ -81,7 +81,7 @@ exports.checkBook = async (req, res, next) => {
 exports.getEditPage = async (req, res, next) => {
     const book = await Book.findOne({_id: req.params._id})
     res.render('editBooks', {title: 'Edit Books', book, pageStyles: '', headerStyle: 'admin-header'}, )
-    console.log(book)   
+    //console.log(book)   
 }
 
 exports.editBook = async (req, res, next) => {

@@ -18,9 +18,7 @@ function authMiddleware(req, res, next) {
 }
 
 function isAdmin(req, res, next) {
-    // Extract token from cookies
     const token = req.cookies.token;
-    console.log(token)
     if (!token) return res.status(403).json({ message: 'No token provided' });
 
     jwt.verify(token, secretKey, (err, decoded) => {
@@ -36,6 +34,4 @@ function isAdmin(req, res, next) {
     });
 }
 
-module.exports = isAdmin;
-
-
+module.exports = { authMiddleware, isAdmin };
