@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const secretKey = process.env.SECRET_KEY || 'default_secret_key'; // Fallback for development
+const Cart = require('../models/Cart');
 
 async function authMiddleware(req, res, next) {
     console.log('Request Headers:', req.headers);
@@ -21,7 +22,6 @@ async function authMiddleware(req, res, next) {
         
         // Optionally fetch the user from the database if needed
         req.user = await User.findById(decoded.id);
-        
         next();
     } catch (err) {
         if (err.name === 'TokenExpiredError') {

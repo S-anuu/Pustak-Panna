@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/indexController')
+const cartMiddleware = require("../middleware/cartMiddleware");
 
 // Public routes
-router.get('/', indexController.index);
+router.get('/', cartMiddleware, indexController.index);
 
 router.get('/new-releases', indexController.newReleases);
 
