@@ -14,7 +14,9 @@ const authRoutes = require('../routes/auth');
 const multer = require('multer');
 //const flash = require('connect-flash');
 const User = require('../models/User')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { authMiddleware } = require('../middleware/authMiddleware');
+const cartMiddleware = require('../middleware/cartMiddleware');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -34,6 +36,7 @@ app.use(session({
 //app.use(flash());
 
 // Middleware
+app.use(cartMiddleware)
 app.use(expressLayout);
 app.set('layout', './layouts/main');
 app.use(bodyParser.json());
@@ -74,6 +77,7 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.use('/', require('../routes/index'));
+app.use('/cart', authMiddleware)
 app.use('/', authRoutes);
 app.use('/', require('../routes/cart'));
 app.use('/', require('../routes/admin'));
