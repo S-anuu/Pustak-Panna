@@ -9,10 +9,6 @@ router.get('/new-releases', indexController.newReleases);
 
 router.get('/best-sellers', indexController.bestSellers);
 
-router.get('/cart', (req, res) => {
-    res.render('cart', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
-});
-
 router.get('/checkout', (req, res) => {
     res.render('checkout', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
 });
