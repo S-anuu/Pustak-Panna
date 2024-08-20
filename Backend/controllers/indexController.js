@@ -1,6 +1,5 @@
 const Book = require('../models/Book'); 
 
-
 exports.index = async (req, res) => {
     try {
         // Fetch all books
@@ -40,11 +39,12 @@ exports.index = async (req, res) => {
             title: 'Pustak-Panna', 
             pageStyles: '', 
             headerStyle: 'header', 
+            cartLength: res.locals.cartLength,
             books, 
             newArrivals,
             usedBooks,
             bestSeller,
-            trending 
+            trending,
         });
 
     } catch (error) {
