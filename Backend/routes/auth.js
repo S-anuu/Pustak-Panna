@@ -61,13 +61,14 @@ router.post('/login', async (req, res) => {
 
         // Generate a token
         const token = jwt.sign({ id: user._id, username: user.username }, secretKey, { expiresIn: '1h' });
-
+        // console.log('token:',token)
         //console.log('Setting cookie:', token);
         res.cookie('token', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV==='production',
+            secure: false, //process.env.NODE_ENV==='production',
             maxAge: 3600000
         });
+
         //console.log('isAuthenticated:', res.locals.isAuthenticated);
         res.status(200).json({ message: 'Login successful' });
     } catch (err) {

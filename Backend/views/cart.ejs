@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <!-- Shopping Summery -->
+                <!-- Shopping Summary -->
                 <table class="table shopping-summery">
                     <thead>
                         <tr class="main-hading">
@@ -19,11 +19,12 @@
                         <% cartItems.forEach(item => { %>
                         <tr>
                             <td class="image" data-title="No">
-                                <img src="<%= item.bookId.imageUrl %>" alt="#">
+                                <img src="<%= item.bookId.imageURL %>" alt="<%= item.bookId.title %>">
                             </td>
                             <td class="product-des" data-title="Description">
-                                <p class="product-name"><a href="#"><%= item.bookId.title %></a></p>
-                                <p class="product-des"><%= item.bookId.description %></p>
+                                <p class="product-name"><a href="/book/<%= item.bookId.slug %>"><%= item.bookId.title %></a></p>
+                                <p class="product-author"><%= item.bookId.author %></p>
+                                <p class="product-genre">Genre: <%= item.bookId.category  %></p>
                             </td>
                             <td class="price" data-title="Price"><span>Rs.<%= item.bookId.price %></span></td>
                             <td class="qty" data-title="Qty">
@@ -46,10 +47,10 @@
                             <td class="total-amount" data-title="Total"><span>Rs.<%= item.bookId.price * item.quantity %></span></td>
                             <td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
                         </tr>
-                        <% }) %>
+                        <% }); %>
                     </tbody>
                 </table>
-                <!--/ End Shopping Summery -->
+                <!--/ End Shopping Summary -->
             </div>
         </div>
         <div class="row">

@@ -9,6 +9,25 @@ exports.register = (req, res) => {
     });
 }
 
+exports.getCart = async (req, res) => {
+    const userId = req.userId; // Use the userId from the middleware
+    console.log('userid',userId)
+    try {
+        // Fetch cart items for the user and populate the book details
+        const cartItems = await CartItem.find({ userId }).populate('bookId');
+        //console.log(cartItems)
+        // Render the cart.ejs template and pass the cart items to it
+        res.render('cart', { 
+            cartItems,
+            title: 'Pustak-Panna',
+            pageStyles: '', 
+            headerStyle: 'header',
+         });
+    } catch (err) {
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+}
+
 exports.profile = (req, res) => {
     res.render('profile', {
         title: 'My Account',
