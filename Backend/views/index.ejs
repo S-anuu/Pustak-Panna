@@ -1,179 +1,175 @@
-
 <!-- Start Most Popular -->
 <div class="product-area most-popular section">
-	<div class="container">
-		<div class="row">
-			<div class="col-12">
-				<div class="section-title">
-					<h2>Trending Item</h2>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-12">
-				<div class="owl-carousel popular-slider">
-					<% trending.forEach(book=> { %>
-						<!-- Start Single Product -->
-						<div class="single-product">
-							<div class="product-img">
-								<a href="/book/<%= book.slug %>">
-									<img class="default-img" src="<%= book.imageURL %>" alt="<%= book.title %>">
-									<img class="hover-img" src="<%= book.imageURL %>" alt="<%= book.title %>">
-									<% if (book.isNew) { %>
-										<span class="new">New</span>
-										<% } %>
-											<% if (book.isHot) { %>
-												<span class="out-of-stock">Hot</span>
-												<% } %>
-													<% if (book.discount) { %>
-														<span class="out-of-stock">
-															<%= book.discount %> off
-														</span>
-														<% } %>
-								</a>
-								<div class="button-head">
-									<div class="product-action">
-										<a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-											href="/book/<%= book.slug %>"><i class="ti-eye"></i><span>Quick Shop</span></a>
-										<a title="Wishlist" href="cart.html"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
-									</div>
-									<div class="product-action-2">
-										<a title="Add to cart" href="cart.html">Add to cart</a>
-									</div>
-								</div>
-							</div>
-							<div class="product-content">
-								<h3><a href="/book/<%= book.slug %>">
-										<%= book.title %>
-									</a></h3>
-								<div class="product-price">
-									<% if (book.discountPrice) { %>
-										<span class="old">Rs.<%= book.price %></span>
-										<span>Rs.<%= book.discountPrice %></span>
-										<% } else { %>
-											<span>Rs.<%= book.price %></span>
-											<% } %>
-								</div>
-							</div>
-						</div>
-						<!-- End Single Product -->
-						<% }); %>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Trending Item</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="owl-carousel popular-slider">
+                    <% trending.forEach(book=> { %>
+                        <!-- Start Single Product -->
+                        <div class="single-product">
+                            <div class="product-img">
+                                <a href="/book/<%= book.slug %>">
+                                    <img class="default-img" src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                    <img class="hover-img" src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                    <% if (book.isNew) { %>
+                                        <span class="new">New</span>
+                                    <% } %>
+                                    <% if (book.isHot) { %>
+                                        <span class="out-of-stock">Hot</span>
+                                    <% } %>
+                                    <% if (book.discount) { %>
+                                        <span class="out-of-stock">
+                                            <%= book.discount %> off
+                                        </span>
+                                    <% } %>
+                                </a>
+                                <div class="button-head">
+                                    <div class="product-action">
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
+                                            href="/book/<%= book.slug %>"><i class="ti-eye"></i><span>Quick Shop</span></a>
+                                        <a title="Wishlist" href="cart.html"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
+                                    </div>
+                                    <div class="product-action-2">
+                                        <a href="#" class="buy add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h3><a href="/book/<%= book.slug %>">
+                                        <%= book.title %>
+                                    </a></h3>
+                                <div class="product-price">
+                                    <% if (book.discountPrice) { %>
+                                        <span class="old">Rs.<%= book.price %></span>
+                                        <span>Rs.<%= book.discountPrice %></span>
+                                    <% } else { %>
+                                        <span>Rs.<%= book.price %></span>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Product -->
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- End Most Popular Area -->
+
 <!-- Start Shop Home List  -->
 <section class="shop-home-list section">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-4 col-md-6 col-12">
-				<div class="row">
-					<div class="col-12">
-						<div class="shop-section-title">
-							<h1>Used Books</h1>
-						</div>
-					</div>
-				</div>
-				<!-- Start Single List  -->
-				 <% if (usedBooks && usedBooks.length>0){ %>
-				 <% usedBooks.forEach(book=> { %>
-				<div class="single-list">
-					<div class="row">
-						<div class="col-lg-6 col-md-6 col-12">
-							<div class="list-image overlay">
-								<img src="<%= book.imageURL %>" alt="<%= book.title %>">
-								<a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-6 col-12 no-padding">
-							<div class="content">
-								<h4 class="title"><a href="/book/<%= book.slug %>"><%= book.title %></a></h4>
-								<p class="price with-discount">Rs.<%= book.price %></p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% }); %>
-				<% } else { %>
-					<p>No Used Books at the moment.</p>
-					<% } %>
-			</div>
-			<div class="col-lg-4 col-md-6 col-12">
-				<div class="row">
-					<div class="col-12">
-						<div class="shop-section-title">
-							<h1>Best Seller</h1>
-						</div>
-					</div>
-				</div>
-				<!-- Start Single List  -->
-				<% if (bestSeller && bestSeller.length>0){ %>
-				<% bestSeller.forEach(book=> { %>
-				<div class="single-list">
-					<div class="row">
-						<div class="col-lg-6 col-md-6 col-12">
-							<div class="list-image overlay">
-								<img src="<%= book.imageURL %>" alt="<%= book.title %>">
-								<a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
-							</div>
-						</div>
-						<div class="col-lg-6 col-md-6 col-12 no-padding">
-							<div class="content">
-								<h5 class="title"><a href="/book/<%= book.slug %>"><%= book.title %></a></h5>
-								<p class="price with-discount">Rs.<%= book.price %></p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<% }); %>
-				<% } else { %>
-					<p>No Used Books at the moment.</p>
-					<% } %>
-				<!-- End Single List  -->
-			</div>
-			<div class="col-lg-4 col-md-6 col-12">
-				<div class="row">
-					<div class="col-12">
-						<div class="shop-section-title">
-							<h1>New Arrival</h1>
-						</div>
-					</div>
-				</div>
-				<!-- Start Single List  -->
-				<% if (newArrivals && newArrivals.length> 0) { %>
-					<% newArrivals.forEach(book=> { %>
-						<!-- Start Single Product -->
-						<div class="single-list">
-							<div class="row">
-								<div class="col-lg-6 col-md-6 col-12">
-									<div class="list-image overlay">
-										<img src="<%= book.imageURL %>" alt="<%= book.title %>">
-										<a href="#" class="buy"><i class="fa fa-shopping-bag"></i></a>
-									</div>
-								</div>
-								<div class="col-lg-6 col-md-6 col-12 no-padding">
-									<div class="content">
-										<h5 class="title"><a href="/book/<%= book.slug %>">
-												<%= book.title %>
-											</a></h5>
-										<p class="price with-discount">Rs.<%= book.price %>
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- End Single Product -->
-						<% }); %>
-							<% } else { %>
-								<p>No new arrivals at the moment.</p>
-								<% } %>
-									<!-- End Single List  -->
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="shop-section-title">
+                            <h1>Used Books</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- Start Single List  -->
+                <% if (usedBooks && usedBooks.length > 0) { %>
+                    <% usedBooks.forEach(book => { %>
+                        <div class="single-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="list-image overlay">
+                                        <img src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                        <a href="" class="buy add-to-cart" data-id="<%= book._id %>"><i class="fa fa-shopping-bag"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                    <div class="content">
+                                        <h4 class="title"><a href="/book/<%= book.slug %>"><%= book.title %></a></h4>
+                                        <p class="price with-discount">Rs.<%= book.price %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No Used Books at the moment.</p>
+                <% } %>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="shop-section-title">
+                            <h1>Best Seller</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- Start Single List  -->
+                <% if (bestSeller && bestSeller.length > 0) { %>
+                    <% bestSeller.forEach(book => { %>
+                        <div class="single-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="list-image overlay">
+                                        <img src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                        <a href="#" class="buy add-to-cart" data-id="<%= book._id %>"><i class="fa fa-shopping-bag"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                    <div class="content">
+                                        <h5 class="title"><a href="/book/<%= book.slug %>"><%= book.title %></a></h5>
+                                        <p class="price with-discount">Rs.<%= book.price %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No Best Seller Books at the moment.</p>
+                <% } %>
+            </div>
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="shop-section-title">
+                            <h1>New Arrival</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- Start Single List  -->
+                <% if (newArrivals && newArrivals.length > 0) { %>
+                    <% newArrivals.forEach(book => { %>
+                        <div class="single-list">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="list-image overlay">
+                                        <img src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                        <a href="#" class="buy add-to-cart" data-id="<%= book._id %>"><i class="fa fa-shopping-bag"></i></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12 no-padding">
+                                    <div class="content">
+                                        <h5 class="title"><a href="/book/<%= book.slug %>">
+                                                <%= book.title %>
+                                            </a></h5>
+                                        <p class="price with-discount">Rs.<%= book.price %></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No new arrivals at the moment.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- End Shop Home List  -->
 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 

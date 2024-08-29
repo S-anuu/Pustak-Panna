@@ -53,6 +53,7 @@
 
     <!-- Jquery -->
     <script src="/js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/jquery-migrate-3.0.0.js"></script>
     <script src="/js/jquery-ui.min.js"></script>
     <!-- Popper JS -->
@@ -60,7 +61,7 @@
     <!-- Bootstrap JS -->
     <script src="/js/bootstrap.min.js"></script>
     <!-- Color JS -->
-    <script src="/js/colors.js"></script>
+    <!-- <script src="/js/colors.js"></script> -->
     <!-- Slicknav JS -->
     <script src="/js/slicknav.min.js"></script>
     <!-- Owl Carousel JS -->
@@ -87,5 +88,34 @@
     <script src="/js/easing.js"></script>
     <!-- Active JS -->
     <script src="/js/active.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('Document ready');
+
+            $('.add-to-cart').on('click', function(event) {
+                event.preventDefault();
+                console.log('Add to cart button clicked');
+                const bookId = $(this).data('id');
+                console.log('Book ID:', bookId);
+
+                $.ajax({
+                    url: '/cart',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ bookId: bookId }),
+                    success: function(response) {
+                        console.log('Add to cart successful', response);
+                        alert('Book added to cart!');
+                        const c = document.querySelector('.total-count');
+                        c.innerHTML = Number(c.innerHTML) + 1;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to add book to cart', status, error);
+                        alert('Failed to add book to cart');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

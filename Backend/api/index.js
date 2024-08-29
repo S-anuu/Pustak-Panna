@@ -6,16 +6,20 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const bcryptjs = require('bcryptjs');
+//const bcryptjs = require('bcryptjs');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const authRoutes = require('./routes/auth');
-const isAdmin = require('./middleware/auth');
+const authRoutes = require('../routes/auth');
+//const {isAdmin, authMiddleware} = require('../middleware/authMiddleware');
 const multer = require('multer');
-const flash = require('connect-flash');
+//const flash = require('connect-flash');
+const User = require('../models/User')
+const jwt = require('jsonwebtoken');
+const { authMiddleware } = require('../middleware/authMiddleware');
+const cartMiddleware = require('../middleware/cartMiddleware');
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // Session configuration
 app.use(session({
@@ -32,6 +36,7 @@ app.use(session({
 //app.use(flash());
 
 // Middleware
+app.use(cartMiddleware)
 app.use(expressLayout);
 app.set('layout', './layouts/main');
 app.use(bodyParser.json());
@@ -46,20 +51,44 @@ app.use(express.json());
 //     next();
 // });
 
+app.use(async (req, res, next) => {
+    const token = req.cookies.token;
+    //console.log('Token from cookies:', token); // Debugging line
+
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.SECRET_KEY);
+            req.user = await User.findById(decoded.id);
+            //console.log('User from token:', req.user); // Debugging line
+            res.locals.isAuthenticated = true;
+            res.locals.user = req.user;
+        } catch (err) {
+            //console.error('JWT Verification Error:', err); // Debugging line
+            res.locals.isAuthenticated = false;
+        }
+    } else {
+        res.locals.isAuthenticated = false;
+    }
+    next();
+});
+
 // Set view engine
 app.set('view engine', 'ejs');
 
 // Routes
-app.use('/', require('./routes/index'));
+app.use('/', require('../routes/index'));
+app.use('/cart', authMiddleware)
 app.use('/', authRoutes);
-app.use('/cart', require('./routes/cart'));
-app.use('/', require('./routes/admin'));
-app.use('/', require('./routes/book'));
+app.use('/', require('../routes/cart'));
+app.use('/', require('../routes/admin'));
+app.use('/', require('../routes/book'));
+
+
 
 // Multer setup for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Folder where images will be saved
+        cb(null, '../uploads'); 
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // File name with timestamp
@@ -77,7 +106,7 @@ const upload = multer({
     }
 });
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Connect to MongoDB
 mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
@@ -98,3 +127,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}/`);
 });
+
+module.exports = app

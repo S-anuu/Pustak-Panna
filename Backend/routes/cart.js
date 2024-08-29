@@ -1,19 +1,14 @@
-const express = require('express')
-const router = express.Router()
-const CartItem = require('../models/CartItem')
+const express = require('express');
+const router = express.Router();
+const { authMiddleware } = require('../middleware/authMiddleware'); // Destructure authMiddleware correctly
+const cartController = require('../controllers/cartController');
+//const authenticate = require('../middleware/authenticate');
+const cartMiddleware = require("../middleware/cartMiddleware");
 
-//Add item to cart
-router.post('/cart', async(req, res) => {
-    const { userId, bookId, quantity } = req.body
-    const cartItem = new CartItem({userId, bookId, quantity})
-    await cartItem.save()
-    res.json(cartItem)
-})
+// Add item to cart
+router.post('/cart', authMiddleware, cartController.postCart); // Ensure method names match
 
 // Get cart items for a user
-router.get('/cart/:userId', async (req, res) => {
-    const cartItems = await CartItem.find({userIdbooks: req.params.userId}).populate('bookId')
-    res.json(cartItems)
-})
+router.get('/cart', authMiddleware, cartMiddleware,cartController.getCart);
 
-module.exports = router
+module.exports = router;

@@ -6,7 +6,7 @@ const slugify = require('slugify');
 
 exports.getAllBooks = async (req, res) => {
     try {
-        const pageSize = 5; // Number of books per page
+        const pageSize = 6; // Number of books per page
         const currentPage = parseInt(req.query.page) || 1; // Current page number
         const skip = (currentPage - 1) * pageSize;
 
@@ -81,7 +81,7 @@ exports.checkBook = async (req, res, next) => {
 exports.getEditPage = async (req, res, next) => {
     const book = await Book.findOne({_id: req.params._id})
     res.render('editBooks', {title: 'Edit Books', book, pageStyles: '', headerStyle: 'admin-header'}, )
-    console.log(book)   
+    //console.log(book)   
 }
 
 exports.editBook = async (req, res, next) => {

@@ -1,19 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-// Define the CartItem schema
-const CartItemSchema = new Schema({
-    bookId: { type: Schema.Types.ObjectId, ref: 'Book', required: true }, // Reference to the book model
-    quantity: { type: Number, required: true, min: 1 } // Quantity of the book
-});
+const CartItemSchema = require('./CartItem');
 
 const CartSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    items: [CartItemSchema],
+    items: [{ type: Schema.Types.ObjectId, ref: 'CartItem' }],
     createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now } // Track last update
+    updatedAt: { type: Date, default: Date.now }
 });
 
-// Create and export the Cart model
-const Cart = mongoose.model('Cart', CartSchema);
-module.exports = Cart;
+module.exports = mongoose.model('Cart', CartSchema);

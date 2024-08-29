@@ -1,0 +1,108 @@
+<!-- Main Profile Content -->
+<div class="profile-container">
+
+    <!-- User Information Section -->
+    <div class="profile-info">
+        <h2>Welcome, <%= user.firstname %> <%= user.lastname %>!</h2>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Username:</strong> <%= user.username %></p>
+        <p><strong>Phone:</strong> <%= user.phone %></p>
+        <p><strong>Address:</strong> <%= user.address %></p>
+        <!-- Add more user details here -->
+    </div>
+
+    <!-- Profile Actions -->
+    <div class="profile-actions">
+        <a href="/edit-profile" class="btn">Edit Profile</a>
+        <a href="#" onclick="confirmChangePassword(event)" class="btn">Change Password</a>
+    </div>
+</div>
+
+<script>
+    async function confirmChangePassword(event) {
+        event.preventDefault();
+
+        // First prompt for the new password
+        const { value: newPassword } = await Swal.fire({
+            title: 'Change Password',
+            text: "Enter your new password",
+            input: 'password',
+            inputLabel: 'New Password',
+            inputPlaceholder: 'New password',
+            inputAttributes: {
+                minlength: 6, // Minimum length for password
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Next',
+            cancelButtonText: 'Cancel'
+        });
+
+        if (newPassword) {
+            // Then prompt for password confirmation
+            const { value: confirmPassword } = await Swal.fire({
+                title: 'Confirm Password',
+                text: "Re-enter your new password",
+                input: 'password',
+                inputLabel: 'Confirm Password',
+                inputPlaceholder: 'Confirm password',
+                inputAttributes: {
+                    minlength: 6,
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (confirmPassword) {
+                if (newPassword === confirmPassword) {
+                    try {
+                        const response = await fetch('/change-password', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ password: newPassword })
+                        });
+
+                        const data = await response.json();
+                        if (response.ok) {
+                            Swal.fire('Password changed!', '', 'success');
+                        } else {
+                            Swal.fire('Error', data.message, 'error');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Swal.fire('Error', 'There was an error changing the password', 'error');
+                    }
+                } else {
+                    Swal.fire('Error', 'Passwords do not match', 'error');
+                }
+            }
+        }
+    }
+
+    function confirmLogout(event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out!',
+            cancelButtonText: 'No, cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/logout'; // Redirect to logout route
+            }
+        });
+    }
+</script>
