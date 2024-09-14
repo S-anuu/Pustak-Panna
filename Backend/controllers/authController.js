@@ -11,7 +11,7 @@ exports.register = (req, res) => {
 
 exports.getCart = async (req, res) => {
     const userId = req.userId; // Use the userId from the middleware
-    console.log('userid',userId)
+    //console.log('userid',userId)
     try {
         // Fetch cart items for the user and populate the book details
         const cartItems = await CartItem.find({ userId }).populate('bookId');

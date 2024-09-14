@@ -11,4 +11,6 @@ router.post('/cart', authMiddleware, cartController.postCart); // Ensure method 
 // Get cart items for a user
 router.get('/cart', authMiddleware, cartMiddleware,cartController.getCart);
 
+router.delete('/cart/delete/:id', cartController.deleteCartItem);
+
 module.exports = router;
