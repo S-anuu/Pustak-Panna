@@ -9,6 +9,7 @@ const {isAdmin} = require('../middleware/authMiddleware');
 const multer = require('multer')
 const path = require('path');
 const bookController = require('../controllers/bookController');
+const couponController = require('../controllers/couponController')
 
 //multer setup
 const storage = multer.diskStorage({
@@ -127,6 +128,16 @@ router.get('/admin/add-book', bookController.getAddBookPage);
 
 // Edit book
 router.post('/admin/edit-book/:_id', upload.single('imageURL'), bookController.editBook);
+
+// Display coupons management page
+router.get('/admin/coupons', couponController.getCoupons);
+
+// Add new coupon
+router.post('/admin/coupons/add', couponController.addCoupon);
+
+// Delete coupon
+router.delete('/admin/coupons/delete/:id', couponController.deleteCoupon);
+
 
 
 module.exports = router;

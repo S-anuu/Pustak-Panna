@@ -23,7 +23,7 @@ exports.postCart = async (req, res) => {
         const { bookId } = req.body;
         const userId = req.user._id;
 
-        console.log('Adding book to cart:', { userId, bookId });
+       console.log('Adding book to cart:', { userId, bookId });
 
         // Find the book by ID
         const book = await Book.findById(bookId);
@@ -64,7 +64,7 @@ exports.postCart = async (req, res) => {
 
 exports.getCart = async (req, res) => {
     const userId = req.userId; // Ensure this is correctly set by your middleware
-    console.log('User ID:', userId); // Check if userId is correct
+    //console.log('User ID:', userId); // Check if userId is correct
 
     try {
         // Fetch cart items for the user and populate the book details
@@ -84,3 +84,31 @@ exports.getCart = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: err.message });
     }
 }
+
+exports.deleteCartItem = async (req, res) => {
+    try {
+        const userId = req.user._id; 
+        const itemId = req.params.id; 
+        console.log(userId)
+
+        // Find and delete the CartItem
+        const cartItem = await CartItem.findOneAndDelete({ _id: itemId, userId: userId });
+        
+        if (!cartItem) {
+            return res.status(404).json({ success: false, message: 'Cart item not found' });
+        }
+
+        // Find the user's cart and remove the reference to the deleted CartItem
+        const cart = await Cart.findOne({ userId: userId });
+        if (cart) {
+            cart.items = cart.items.filter(item => item.toString() !== itemId);
+            await cart.save(); // Save updated cart
+        }
+
+        return res.json({ success: true, message: 'Item deleted' });
+    } catch (error) {
+        console.error("Error in deleteCartItem:", error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+

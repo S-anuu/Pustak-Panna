@@ -4,8 +4,8 @@ const secretKey = process.env.SECRET_KEY || 'default_secret_key'; // Fallback fo
 const Cart = require('../models/Cart');
 
 async function authMiddleware(req, res, next) {
-    console.log('Request Headers:', req.headers);
-    console.log('Request Cookies:', req.cookies);
+    //console.log('Request Headers:', req.headers);
+    //console.log('Request Cookies:', req.cookies);
     // Extract token from cookies or authorization header
     const token = req.cookies.token || req.headers['authorization']?.split(' ')[1];
     console.log('token:', token)

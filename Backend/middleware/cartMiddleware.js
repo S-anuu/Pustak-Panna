@@ -5,7 +5,7 @@ const cartMiddleware = async (req, res, next) => {
         try {
             // Fetch the user's cart
             const cart = await Cart.findOne({ userId: req.user._id }).populate('items');
-            console.log('cartMiddleware:', cart)
+            
             // Calculate the number of items in the cart
             const cartLength = cart ? cart.items.length : 0;
             res.locals.cartLength = cartLength;
