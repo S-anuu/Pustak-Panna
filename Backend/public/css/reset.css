@@ -166,7 +166,7 @@ input,
 select,
 optgroup,
 textarea {
-	color: #fff;
+	color: #000;
     font-family: 'Poppins', sans-serif;
 	font-weight:400;
 	font-size: 14px;
@@ -178,7 +178,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 0;
 }
 p {
-	color:#fff;
+	
 	margin: 0;
 	line-height:24px;
 }
@@ -604,9 +604,10 @@ input[type="submit"] {
 	border: 1px solid;
 	border-color: #ccc #ccc #bbb;
 	border-radius: 3px;
-	background: #e6e6e6;
-	color: rgba(0, 0, 0, 0.8);
+	background: rgb(239, 108, 20);
+	color: #fff;
 	line-height: 1;
+	padding: 5px;
 }
 
 input[type="text"],
@@ -1865,4 +1866,8 @@ object {
   -webkit-transform-origin:bottom left;
   transform-origin:bottom left
  }
+}
+
+.product-info{
+	color:white;
 }

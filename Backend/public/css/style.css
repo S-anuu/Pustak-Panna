@@ -2010,6 +2010,7 @@ Version:1.0
 	font-size: 14px;
 	font-weight: 500;
 	margin: 0;
+	color: #fff;
 }
 .single-product .product-content h3 a:hover{
 	color:#F7941D;
@@ -2020,6 +2021,7 @@ Version:1.0
 .single-product .product-content .product-price span {
 	font-size: 15px;
 	font-weight: 500;
+	color: #fff;
 }
 .single-product .product-content .product-price span.old {
   text-decoration: line-through;
@@ -2831,7 +2833,7 @@ Version:1.0
 	margin-top: 30px;
 	border: 1px solid #eee;
 	padding: 10px;
-	background-color: #0088CC;
+	background-color: #fff;
 }
 .shop-home-list .single-list .list-image{
 	position:relative;
@@ -3176,7 +3178,7 @@ Version:1.0
 ========================================*/
 .shop.checkout {
 	padding: 0;
-	background: #fff;
+	
 	padding-top: 20px;
 	padding-bottom: 50px;
 }
@@ -3185,13 +3187,13 @@ Version:1.0
 }
 .shop.checkout .checkout-form h2 {
 	font-size: 25px;
-	color: #333;
+	color: rgb(239, 108, 20);
 	font-weight: 700;
 	line-height: 27px;
 }
 .shop.checkout .checkout-form p {
 	font-size: 16px;
-	color: #333;
+	color: #fff;
 	font-weight: 400;
 	margin-top: 12px;
 	margin-bottom: 30px;
@@ -3201,7 +3203,7 @@ Version:1.0
 	margin-bottom: 25px;
 }
 .shop.checkout .form .form-group label{
-	color:#333;
+	color:#fff;
 	position:relative;
 }
 .shop.checkout .form .form-group label span {
@@ -4665,7 +4667,7 @@ Version:1.0
 	padding: 50px;
 	box-shadow: 0px 0px 15px #0000001a;
 	height: 100%;
-	background-color: #0088CC;
+	background-color: #FFF;
 }
 .contact-us .single-info {
 	text-align: left;

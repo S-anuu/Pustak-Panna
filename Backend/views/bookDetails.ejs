@@ -14,9 +14,9 @@
                 <div class="col-lg-8 col-md-12">
                     <!-- Product Details -->
                     <div class="product-info">
-                        <h1 class="product-title"><%= book.title %></h1>
-                        <p class="author"><strong>Author:</strong> <%= book.author %></p>
-                        <p class="genre"><strong>Genre:</strong> <%= book.category %></p>
+                        <h1 class="product-title" style="color:white;"><%= book.title %></h1>
+                        <p class="author"><strong  style="color:rgb(239, 108, 20)">Author :</strong> <%= book.author %></p>
+                        <p class="genre"><strong  style="color:rgb(239, 108, 20)">Genre :</strong> <%= book.category %></p>
                         <p class="price">
                             <% if (book.discountPrice) { %>
                                 <span class="old">Rs.<%= book.price %></span>
@@ -35,12 +35,12 @@
                         
                         <!-- Rating Section -->
                         <div class="rating-section">
-                            <h4>Rating</h4>
+                            <h4  style="color:rgb(239, 108, 20)">Rating</h4>
                             <div class="rating">
                                 <% for (let i = 1; i <= 5; i++) { %>
                                     <i class="fa <% if (book.rating >= i) { %>fa-star<% } else { %>fa-star-o<% } %>"></i>
                                 <% } %>
-                                <span><%= book.rating || 'No rating yet' %></span>
+                                <span  style="color:#fff"><%= book.rating || 'No rating yet' %></span>
                             </div>
                         </div>
                     </div>
@@ -51,7 +51,7 @@
             <section class="reviews section">
                 <div class="row">
                     <div class="col-12">
-                        <h3>Reviews</h3>
+                        <h3 style="color:rgb(239, 108, 20)">Reviews</h3>
                         <% if (reviews.length > 0) { %>
                             <% reviews.forEach(review => { %>
                                 <div class="review">
@@ -70,7 +70,7 @@
                                 </div>
                             <% }); %>
                         <% } else { %>
-                            <p>No reviews yet. Be the first to review!</p>
+                            <p style="color:#fff">No reviews yet. Be the first to review!</p>
                         <% } %>
                     </div>
                 </div>
