@@ -168,3 +168,78 @@ exports.getBookDetails = async(req, res, next) => {
         res.status(500).send('Server Error');
     }
 }
+
+// bookController.js
+exports.getNewReleases = async (req, res) => {
+    try {
+        // Fetch the books sorted by creation date in descending order (latest first)
+        const books = await Book.find().sort({ createdAt: -1 }).limit(10); // Adjust the limit if necessary
+
+        // Render the 'new-releases.ejs' page with the retrieved books
+        res.render('newReleases', {
+            title: 'Pustak-Panna',
+            books,
+            pageStyles: '',
+            headerStyle: 'header'
+        });
+    } catch (error) {
+        console.error('Error fetching new releases:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.getBestSellers = async (req, res) => {
+    try {
+        // Fetch the books sorted by sales count in descending order (best sellers first)
+        const books = await Book.find().sort({ salesCount: -1 }).limit(10); // Adjust limit as needed
+
+        // Render the 'bestSellers.ejs' page with the retrieved books
+        res.render('bestSellers', 
+            { title: 'Pustak-Panna',
+              books,
+              pageStyles: '',
+              headerStyle: 'header'
+            });
+    } catch (error) {
+        console.error('Error fetching best sellers:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.searchBooks = async (req, res) => {
+    try {
+        const { title, author, minPrice, maxPrice, sort } = req.query;
+        
+        const filter = {};
+        if (title) filter.title = new RegExp(title, 'i'); // Case-insensitive search
+        if (author) filter.author = new RegExp(author, 'i');
+        if (minPrice) filter.price = { $gte: minPrice };
+        if (maxPrice) filter.price = { ...filter.price, $lte: maxPrice };
+
+        let sortOption = {};
+        switch (sort) {
+            case 'priceAsc':
+                sortOption.price = 1;
+                break;
+            case 'priceDesc':
+                sortOption.price = -1;
+                break;
+            case 'rating':
+                sortOption.rating = -1;
+                break;
+            default:
+                sortOption = {};
+        }
+
+        const books = await Book.find(filter).sort(sortOption);
+        
+        res.render('search', {
+            title: 'Search Results',
+            books,
+            searchParams: req.query
+        });
+    } catch (error) {
+        console.error('Error searching for books:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};

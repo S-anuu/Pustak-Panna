@@ -1,17 +1,17 @@
-<section class="shop best-sellers section">
+<section class="shop genre section">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <h2 class="section-title">Best Sellers</h2>
+                <h2 class="section-title">Genre: <%= genre %></h2>
                 <div class="book-list">
                     <div class="row">
-                        
                         <% if (books && books.length > 0) { %>
                             <% books.forEach(function(book) { %>
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                                    <a href="/book/<%= book.slug %>">
                                     <div class="single-book">
+                                        <a href="/book/<%= book.slug %>">
                                         <div class="book-img">
+
                                             <img src="<%= book.imageURL %>" alt="<%= book.title %>">
                                         </div>
                                         <div class="book-info">
@@ -23,12 +23,12 @@
                                                 <button><a href="#" class="add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a></button>
                                             </form>
                                         </div>
+                                        </a>
                                     </div>
-                                </a>
                                 </div>
                             <% }); %>
                         <% } else { %>
-                            <p>No best sellers available at the moment. Please check back later.</p>
+                            <p>No books available in this genre. Please check back later.</p>
                         <% } %>
                     </div>
                 </div>
@@ -36,21 +36,21 @@
         </div>
     </div>
 
-    <!-- Inline CSS for the Best Sellers Page -->
+    <!-- Inline CSS for Genre Page -->
     <style>
-        .best-sellers .section-title {
+        .genre .section-title {
             text-align: center;
             font-size: 2em;
             margin-bottom: 30px;
         }
 
-        .best-sellers .book-list {
+        .genre .book-list {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
         }
 
-        .best-sellers .single-book {
+        .genre .single-book {
             background: #f5f5f5;
             border: 1px solid #ddd;
             margin-bottom: 20px;
@@ -59,36 +59,36 @@
             transition: box-shadow 0.3s ease;
         }
 
-        .best-sellers .single-book:hover {
+        .genre .single-book:hover {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .best-sellers .book-img img {
+        .genre .book-img img {
             width: 100%;
             height: auto;
             max-height: 300px;
             object-fit: cover;
         }
 
-        .best-sellers .book-title {
+        .genre .book-title {
             font-size: 1.2em;
             margin: 10px 0 5px;
             color: #333;
         }
 
-        .best-sellers .book-author {
+        .genre .book-author {
             font-size: 1em;
             margin-bottom: 5px;
             color: #777;
         }
 
-        .best-sellers .book-price {
+        .genre .book-price {
             font-size: 1.1em;
             color: #ff4c3b;
             margin-bottom: 10px;
         }
 
-        .best-sellers .add-to-cart{
+        .genre .add-to-cart{
             background: #ff4c3b;
             color: #fff;
             padding: 10px 20px;
@@ -97,7 +97,7 @@
             transition: background 0.3s ease;
         }
 
-        .best-sellers .add-to-cart-btn:hover {
+        .genre .add-to-cart-btn:hover {
             background: #e43e2d;
         }
     </style>

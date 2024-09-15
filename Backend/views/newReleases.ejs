@@ -1,121 +1,105 @@
-<main>
-    <section class="new-releases section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h1>New Releases</h1>
+<section class="shop new-releases section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="section-title">New Releases</h2>
+                <div class="book-list">
+                    <div class="row">
+                        <% if (books && books.length > 0) { %>
+                            <% books.forEach(function(book) { %>
+                                
+                                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <div class="single-book">
+                                        <a href="/book/<%= book.slug %>">
+                                        <div class="book-img">
+                                            <img src="<%= book.imageURL %>" alt="<%= book.title %>">
+                                        </div>
+                                        <div class="book-info">
+                                            <h3 class="book-title"><%= book.title %></h3>
+                                            <p class="book-author">by <%= book.author %></p>
+                                            <p class="book-price">Rs. <%= book.price %></p>
+                                            <form action="/cart/add" method="POST">
+                                                <input type="hidden" name="bookId" value="<%= book._id %>">
+                                                <button><a href="#" class="add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a></button>
+                                            </form>
+                                        </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                            <% }); %>
+                        <% } else { %>
+                            <p>No new releases at the moment. Please check back later.</p>
+                        <% } %>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <% if (newBooks.length > 0) { %>
-                    <% newBooks.forEach(book => { %>
-                        <div class="col-lg-4 col-md-6 col-12">
-                            <div class="single-product">
-                                <div class="product-img">
-                                    <a href="/product-details/<%= book._id %>">
-                                        <img class="default-img" src="<%= book.imageURL %>" alt="<%= book.title %>">
-                                    </a>
-                                </div>
-                                <div class="product-content">
-                                    <h3><a href="/product-details/<%= book._id %>"><%= book.title %></a></h3>
-                                    <p class="author"><strong>Author:</strong> <%= book.author %></p>
-                                    <p class="price">
-                                        <% if (book.discountPrice) { %>
-                                            <span class="old">Rs.<%= book.price %></span>
-                                            <span>Rs.<%= book.discountPrice %></span>
-                                        <% } else { %>
-                                            <span>Rs.<%= book.price %></span>
-                                        <% } %>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <div class="col-12">
-                        <p>No new releases at the moment.</p>
-                    </div>
-                <% } %>
-            </div>
-
-            <!-- Pagination Controls -->
-            <div class="pagination">
-                <% if (totalPages > 1) { %>
-                    <% for (let i = 1; i <= totalPages; i++) { %>
-                        <a href="/new-releases?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
-                    <% } %>
-                <% } %>
-            </div>
         </div>
-    </section>
-</main>
+    </div>
 
-<style>
-    .new-releases {
-        padding: 40px 0;
-    }
-    .section-title {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    .section-title h1 {
-        font-size: 2em;
-        margin: 0;
-    }
-    .single-product {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        overflow: hidden;
-        margin-bottom: 20px;
-        text-align: center;
-        background-color: #fff;
-    }
-    .product-img {
-        position: relative;
-    }
-    .product-img a img {
-        width: 100%;
-        height: auto;
-        display: block;
-    }
-    .product-content {
-        padding: 15px;
-    }
-    .product-content h3 {
-        font-size: 1.2em;
-        margin: 10px 0;
-    }
-    .product-content .author {
-        font-size: 0.9em;
-        color: #666;
-        margin: 10px 0;
-    }
-    .product-content .price {
-        font-size: 1.1em;
-        font-weight: bold;
-    }
-    .product-content .price .old {
-        text-decoration: line-through;
-        color: #888;
-        margin-right: 5px;
-    }
-    .pagination {
-        margin: 20px 0;
-        text-align: center;
-    }
-    .pagination a {
-        margin: 0 5px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        text-decoration: none;
-        color: #333;
-        border-radius: 3px;
-    }
-    .pagination a.active {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-</style>
+    <!-- Inline CSS for the New Releases Page -->
+    <style>
+        .new-releases .section-title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .new-releases .book-list {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .new-releases .single-book {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 15px;
+            text-align: center;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .new-releases .single-book:hover {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .new-releases .book-img img {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .new-releases .book-title {
+            font-size: 1.2em;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        .new-releases .book-author {
+            font-size: 1em;
+            margin-bottom: 5px;
+            color: #777;
+        }
+
+        .new-releases .book-price {
+            font-size: 1.1em;
+            color: #ff4c3b;
+            margin-bottom: 10px;
+        }
+
+        .new-releases .add-to-cart {
+            background: #ff4c3b;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .new-releases .add-to-cart-btn:hover {
+            background: #e43e2d;
+        }
+    </style>
+</section>

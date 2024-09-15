@@ -28,7 +28,6 @@
                             </td>
                             <td class="price" data-title="Price"><span>Rs.<%= item.bookId.price %></span></td>
                             <td class="qty" data-title="Qty">
-                                <!-- Input Order -->
                                 <div class="input-group">
                                     <div class="button minus">
                                         <button type="button" class="btn btn-primary btn-number" data-type="minus" data-field="quant[<%= item._id %>]">
@@ -42,17 +41,20 @@
                                         </button>
                                     </div>
                                 </div>
-                                <!--/ End Input Order -->
                             </td>
                             <td class="total-amount" data-title="Total"><span>Rs.<%= item.bookId.price * item.quantity %></span></td>
-                            <td class="action" data-title="Remove"><a href="#"><i class="ti-trash remove-icon"></i></a></td>
+                            <td class="action" data-title="Remove">
+                                <a href="#" class="remove-item" data-id="<%= item._id %>" title="Remove this item">
+                                    <i class="ti-trash remove-icon"></i>
+                                </a>
+                            </td>
                         </tr>
                         <% }); %>
                     </tbody>
                 </table>
-                <!--/ End Shopping Summary -->
             </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                 <!-- Total Amount -->
@@ -61,13 +63,16 @@
                         <div class="col-lg-8 col-md-5 col-12">
                             <div class="left">
                                 <div class="coupon">
-                                    <form action="#" target="_blank">
-                                        <input name="Coupon" placeholder="Enter Your Coupon">
-                                        <button class="btn">Apply</button>
+                                    <!-- Coupon form -->
+                                    <form id="coupon-form">
+                                        <input name="Coupon" id="coupon-code" placeholder="Enter Your Coupon">
+                                        <button type="submit" class="btn" id="apply-coupon-btn">Apply</button>
                                     </form>
-                                </div>
-                                <div class="checkbox">
-                                    <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+Rs.200)</label>
+                                    <!-- Applied coupon display -->
+                                    <div id="applied-coupon" style="display: none;">
+                                        <p>Applied Coupon: <span id="applied-coupon-code"></span></p>
+                                        <button type="button" id="remove-coupon-btn" class="btn btn-danger">Remove Coupon</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -75,13 +80,13 @@
                             <div class="right">
                                 <ul>
                                     <li>Cart Subtotal<span>Rs.<%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) %></span></li>
-                                    <li>Shipping<span>Rs.200</span></li>
-                                    <li>You Save<span>Rs.100</span></li>
-                                    <li class="last">You Pay<span>Rs.<%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) + 200 %></span></li>
+                                    <li>Shipping<span class="shipping-cost">Rs.200</span></li>
+                                    <li>You Save<span class="you-save">Rs. 0</span></li>
+                                    <li class="last">You Pay<span class="total-pay">Rs.<%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) + 200 %></span></li>
                                 </ul>
                                 <div class="button5">
-                                    <a href="checkout.html" class="btn">Checkout</a>
-                                    <a href="index.html" class="btn">Continue shopping</a>
+                                    <a href="#" id="checkout-btn" class="btn">Checkout</a>
+                                    <a href="/index" class="btn">Continue shopping</a>
                                 </div>
                             </div>
                         </div>
@@ -93,3 +98,152 @@
     </div>
 </div>
 <!--/ End Shopping Cart -->
+
+<script>
+    // Remove items from the cart
+    document.querySelectorAll('.remove-item').forEach(function (btn) {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+            const itemId = this.getAttribute('data-id');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/cart/delete/${itemId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your item has been removed from the cart.',
+                                'success'
+                            ).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire('Error!', 'Something went wrong.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error during deletion:', error);
+                        Swal.fire('Error!', 'There was a problem deleting the item.', 'error');
+                    });
+                }
+            });
+        });
+    });
+
+    const applyCouponButton = document.querySelector('#apply-coupon-btn');
+const couponInput = document.querySelector('#coupon-code');
+const savingsElement = document.querySelector('.you-save');
+const totalPayElement = document.querySelector('.total-pay');
+const cartSubtotal = <%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) %>;
+
+// Default shipping cost
+let shippingCost = 200; // Default shipping cost
+let savings = 0;
+let appliedCoupon = null;
+
+// Apply coupon when button is clicked
+applyCouponButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    const couponCode = couponInput.value.trim();
+    if (!couponCode) {
+        alert('Please enter a coupon code.');
+        return;
+    }
+
+    // Send coupon code to the server to validate
+    fetch('/cart/apply-coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ couponCode })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const discount = data.discount;
+
+            // Update the savings amount (You Save section)
+            savings = discount;
+            savingsElement.innerText = `Rs.${savings}`;
+
+            // Recalculate and update the total amount
+            const totalPay = cartSubtotal + shippingCost - savings;
+            totalPayElement.innerText = `Rs.${totalPay}`;
+
+            // Set the applied coupon
+            appliedCoupon = couponCode;
+
+            // Show applied coupon and remove button
+            document.querySelector('#applied-coupon').style.display = 'block';
+            document.querySelector('#applied-coupon-code').innerText = appliedCoupon;
+
+            // Show a success message for coupon applied
+            alert('Coupon applied successfully!');
+        } else {
+            // If the coupon is invalid, show an error message
+            alert(data.message || 'Invalid or expired coupon code');
+        }
+    })
+    .catch(error => {
+        console.error('Error applying coupon:', error);
+        alert('There was a problem applying the coupon.');
+    });
+});
+
+// Remove coupon when button is clicked
+document.querySelector('#remove-coupon-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Reset savings and total payment
+    savings = 0;
+    savingsElement.innerText = `Rs.${savings}`;
+    const totalPay = cartSubtotal + shippingCost;
+    totalPayElement.innerText = `Rs.${totalPay}`;
+
+    // Hide applied coupon and remove button
+    document.querySelector('#applied-coupon').style.display = 'none';
+    document.querySelector('#applied-coupon-code').innerText = '';
+
+    // Reset applied coupon variable
+    appliedCoupon = null;
+
+    alert('Coupon removed successfully!');
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const checkoutButton = document.querySelector('#checkout-btn');
+    const appliedCoupon = document.querySelector('#applied-coupon-code').innerText.trim();
+
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Construct the URL with the coupon code as a query parameter
+            let checkoutUrl = '/checkout';
+            if (appliedCoupon) {
+                checkoutUrl += `?coupon=${encodeURIComponent(appliedCoupon)}`;
+            }
+
+            // Redirect to the checkout page
+            window.location.href = checkoutUrl;
+        });
+    }
+});
+
+</script>

@@ -1,0 +1,26 @@
+<main>
+    <section class="order-details">
+        <div class="container">
+            <h1>Order Details</h1>
+            <div class="order-summary">
+                <h2>Order ID: <%= order._id %></h2>
+                <p>Date: <%= new Date(order.orderDate).toLocaleDateString() %></p>
+                <p>Total: Rs. <%= order.total %></p>
+                <p>Status: <%= order.status %></p>
+            </div>
+
+            <h2>Items:</h2>
+            <% if (order.items.length > 0) { %>
+                <ul>
+                    <% order.items.forEach(item => { %>
+                        <li>
+                            <strong><%= item.book.title %></strong> - Rs. <%= item.book.price %> x <%= item.quantity %>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No items found.</p>
+            <% } %>
+        </div>
+    </section>
+</main>

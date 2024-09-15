@@ -1,4 +1,5 @@
 const Book = require('../models/Book'); 
+const Coupon = require('../models/Coupon')
 
 exports.index = async (req, res) => {
     try {
@@ -34,6 +35,8 @@ exports.index = async (req, res) => {
         })
         .limit(3)
 
+        const coupons = await Coupon.find({});
+        
         // Render the index page with books and newArrivals data
         res.render('index', { 
             title: 'Pustak-Panna', 
@@ -45,6 +48,7 @@ exports.index = async (req, res) => {
             usedBooks,
             bestSeller,
             trending,
+            coupons
         });
 
     } catch (error) {
@@ -53,27 +57,27 @@ exports.index = async (req, res) => {
     }
 };
 
-exports.newReleases = async (req, res) => {
-    const pageSize = 10; // Number of books per page
-    const currentPage = parseInt(req.query.page) || 1; // Current page number
-    const skip = (currentPage - 1) * pageSize;
+// exports.newReleases = async (req, res) => {
+//     const pageSize = 10; // Number of books per page
+//     const currentPage = parseInt(req.query.page) || 1; // Current page number
+//     const skip = (currentPage - 1) * pageSize;
 
-        // Fetch books, sorting by creation date or _id, and limiting the results
-    const newBooks = await Book.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
-    const totalBooks = await Book.countDocuments();
-    const totalPages = Math.ceil(totalBooks / pageSize);
+//         // Fetch books, sorting by creation date or _id, and limiting the results
+//     const newBooks = await Book.find().sort({ createdAt: -1 }).skip(skip).limit(pageSize);
+//     const totalBooks = await Book.countDocuments();
+//     const totalPages = Math.ceil(totalBooks / pageSize);
 
 
-    res.render('newReleases', {
-        title: 'New Releases',
-        pageStyles: '',
-        headerStyle: 'header',
-        newBooks,
-        totalBooks,
-        totalPages
+//     res.render('newReleases', {
+//         title: 'New Releases',
+//         pageStyles: '',
+//         headerStyle: 'header',
+//         newBooks,
+//         totalBooks,
+//         totalPages
         
-    })
-}
+//     })
+// }
 
 exports.bestSellers = async (req, res) => {
     const pageSize = 10; // Number of books per page
@@ -96,3 +100,28 @@ exports.bestSellers = async (req, res) => {
        
     })
 }
+
+exports.getGenre = async (req, res) => {
+    const { genre } = req.params;
+    console.log(genre)
+    const category = genre
+    try {
+        // Fetch books by genre
+        const books = await Book.find({ category }).sort({ createdAt: -1 }); // Adjust sorting as needed
+        
+        // Render the 'genre.ejs' page with the retrieved books
+        res.render('genre', {
+            books,
+            genre,
+            pageStyles: '',
+            headerStyle: 'header',
+            title: 'Pustak-panna',
+
+        });
+    } catch (error) {
+        console.error('Error fetching genre books:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+

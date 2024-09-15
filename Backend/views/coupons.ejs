@@ -1,0 +1,117 @@
+<div class="container mt-5">
+    <h1 class="mb-4">Manage Coupons</h1>
+
+    <!-- Add Coupon Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Add a New Coupon</h5>
+            <form id="add-coupon-form">
+                <div class="form-group">
+                    <label for="code">Coupon Code</label>
+                    <input type="text" id="code" class="form-control" placeholder="Enter coupon code" required>
+                </div>
+                <div class="form-group">
+                    <label for="discount">Discount Amount (Rs.)</label>
+                    <input type="number" id="discount" class="form-control" placeholder="Enter discount amount" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiresAt">Expiration Date</label>
+                    <input type="date" id="expiresAt" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Coupon</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Coupons List -->
+    <h3 class="mb-3">Existing Coupons</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Coupon Code</th>
+                <th>Discount Amount (Rs.)</th>
+                <th>Expiration Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="coupons-list">
+            <% coupons.forEach(coupon => { %>
+                <tr>
+                    <td><%= coupon.code %></td>
+                    <td>Rs.<%= coupon.discount %></td>
+                    <td><%= coupon.expiresAt ? new Date(coupon.expiresAt).toISOString().split('T')[0] : 'N/A' %></td>
+                    <td>
+                        <button class="btn btn-danger delete-coupon-btn" data-id="<%= coupon._id %>">Delete</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Handle Add Coupon form submission
+    document.getElementById('add-coupon-form').addEventListener('submit', async function(e) {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        const code = document.getElementById('code').value; // Get the coupon code value
+        const discount = document.getElementById('discount').value; // Get the discount amount
+        const expiresAt = document.getElementById('expiresAt').value; // Get the expiration date
+
+        // Ensure all fields are not null
+        if (!code || !discount || !expiresAt) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/admin/coupons/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // Correctly define the body as a JSON string
+                body: JSON.stringify({ code, discount, expiresAt }), // This line defines 'body'
+            });
+
+            const result = await response.json(); // Parse the response as JSON
+
+            if (result.success) {
+                alert('Coupon added successfully!');
+                window.location.reload(); // Reload the page to update the coupon list
+            } else {
+                alert('Error adding coupon: ' + result.message);
+            }
+        } catch (err) {
+            console.error('Error adding coupon:', err);
+            alert('An error occurred while adding the coupon.');
+        }
+    });
+
+    // Handle Delete Coupon button click
+    document.querySelectorAll('.delete-coupon-btn').forEach(button => {
+        button.addEventListener('click', async function() {
+            const couponId = this.getAttribute('data-id');
+            const confirmDelete = confirm('Are you sure you want to delete this coupon?');
+
+            if (confirmDelete) {
+                try {
+                    const response = await fetch(`/admin/coupons/delete/${couponId}`, {
+                        method: 'DELETE',
+                    });
+                    const result = await response.json();
+
+                    if (result.success) {
+                        alert('Coupon deleted successfully!');
+                        window.location.reload(); // Reload to update the coupon list
+                    } else {
+                        alert('Error deleting coupon: ' + result.message);
+                    }
+                } catch (err) {
+                    console.error('Error deleting coupon:', err);
+                    alert('An error occurred while deleting the coupon.');
+                }
+            }
+        });
+    });
+</script>
