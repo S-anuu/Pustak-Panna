@@ -181,8 +181,8 @@ Version:1.0
 	position: relative;
 	font-weight: 500;
 	font-size:14px;
-	color: #000;
-	background: #fff;
+	color: #fff;
+	background: #333;
 	display: inline-block;
 	-webkit-transition: all 0.4s ease;
 	-moz-transition: all 0.4s ease;
@@ -195,7 +195,7 @@ Version:1.0
 }
 .btn:hover{
 	color:#fff;
-	background:#04AAF4;
+	background:#F7941D;
 }
 #scrollUp {
 	right: 10px;
@@ -603,7 +603,7 @@ Version:1.0
 	color:#fff;
 }
 .header.shop{
-	background:#B5C0D0;
+	background:#fff;
 }
 .header.shop .nav-inner {
 	margin: 0;
@@ -715,7 +715,7 @@ Version:1.0
 	text-align: center;
 	font-size: 18px;
 	color: #fff;
-	background:#f7941d;
+	background: #333333;
 	position: absolute;
 	right: -2px;
 	top: -1px;
@@ -727,7 +727,7 @@ Version:1.0
 }
 .header.shop .search-bar .btnn:hover{
 	color:#fff;
-	background:#04AAF4;
+	background:#F7941D;
 }
 /* Search Form */
 .header.shop .search-top {
@@ -742,14 +742,14 @@ Version:1.0
 }
 .header.shop .middle-inner {
 	padding: 20px 0;
-	background: #000;
+	background: #fff;
 	border-top: 1px solid #eee;
 }
 .header.shop.v3 .middle-inner {
 	border:none;
 }
 .header.shop .header-inner {
-	background: #fff;
+	background: #333;
 }
 .header.shop.v3 .header-inner {
 	background: transparent;
@@ -906,7 +906,7 @@ Version:1.0
 	margin-bottom:10px;
 }
 .header.shop .main-category li .mega-menu .single-menu .inner-link a:hover{
-	color:#04AAF4;
+	color:#F7941D;
 	background:transparent;
 }
 .header.shop .main-category li .mega-menu .single-menu .inner-link a:last-child{
@@ -948,7 +948,7 @@ Version:1.0
 	color:#333;
 }
 .header.shop .nav li a {
-	color: #000;
+	color: #fff;
 	text-transform: capitalize;
 	font-size: 15px;
 	padding: 20px 15px;
@@ -960,7 +960,7 @@ Version:1.0
 	transition: all 0.4s ease;
 }
 .header.shop .nav li:hover a{
-	color:#000;
+	color:#fff;
 	background:#F7941D;
 }
 .header.shop.v2 .nav li:hover a{
@@ -976,7 +976,7 @@ Version:1.0
 	background:transparent !important;
 }
 .header.shop.v2 .nav li.active a{
-	color:#04AAF4 !important;
+	color:#F7941D !important;
 }
 .header.shop .nav .dropdown li{
 	margin:0;
@@ -995,7 +995,7 @@ Version:1.0
 	color:#fff !important;
 }
 .header.shop.v2 .nav li .dropdown li:hover a{
-	color:#04AAF4;
+	color:#F7941D;
 }
 .header.shop .nav li .dropdown li a {
 	color: #333;
@@ -1036,7 +1036,7 @@ Version:1.0
 	color:#F7941D;
 }
 .header.shop .right-bar .sinlge-bar .single-icon{
-	color:#fff;
+	color:#333;
 	font-size:12px;
 	position:relative;
 }
@@ -1125,7 +1125,7 @@ Version:1.0
 	width: 45px;
 	background: transparent;
 	border: none;
-	color: #F7941D;
+	color: #3353ea;
 	border-radius: 0 3px 3px 0;
 	border-radius: 0;
 	border-left: 1px solid #eee;
@@ -1144,7 +1144,6 @@ Version:1.0
 .header .header-inner{
 	width:100%;
 	z-index:999;
-	
 }
 .header.sticky .all-category{}
 .header.sticky .all-category h3{
@@ -1236,7 +1235,7 @@ Version:1.0
 	line-height: 50px;
 	font-size: 47px;
 	font-weight: 700;
-	color: #04AAF4;
+	color: #F7941D;
 	margin-bottom: 20px;
 }
 .hero-slider .hero-text h1 span {
@@ -1264,7 +1263,7 @@ Version:1.0
 	z-index: 0;
 }
 .hero-slider .hero-text .btn:hover{
-	background:#04AAF4;
+	background:#F7941D;
 	color:#fff;
 }
 /* Start Hero Area 2 CSS */
@@ -1272,7 +1271,7 @@ Version:1.0
 	position:relative;
 }
 .hero-area2 .single-slider.overlay:before{
-	background:#04AAF4;
+	background:#F7941D;
 	opacity:0;
 	visibility:hidden;
 	transform:scale(0.9);
@@ -1365,7 +1364,7 @@ Version:1.0
 	border-radius: 0;
 }
 .hero-area2 .owl-carousel .owl-nav div:hover{
-	background:#04AAF4;
+	background:#F7941D;
 	color:#fff;
 }
 .hero-area2 .owl-carousel .owl-controls .owl-nav .owl-prev{
@@ -1482,7 +1481,7 @@ Version:1.0
 	line-height: 35px;
 }
 .hero-area4 .big-content .title span{
-	color:#04AAF4;
+	color:#F7941D;
 }
 .hero-area4 .big-content .des{}
 .hero-area4 .big-content .button{
@@ -2010,7 +2009,6 @@ Version:1.0
 	font-size: 14px;
 	font-weight: 500;
 	margin: 0;
-	color: #fff;
 }
 .single-product .product-content h3 a:hover{
 	color:#F7941D;
@@ -2021,7 +2019,6 @@ Version:1.0
 .single-product .product-content .product-price span {
 	font-size: 15px;
 	font-weight: 500;
-	color: #fff;
 }
 .single-product .product-content .product-price span.old {
   text-decoration: line-through;
@@ -2813,7 +2810,7 @@ Version:1.0
 	margin-bottom: 0;
 	text-transform: capitalize;
 	position: relative;
-	color: rgb(239, 108, 20);
+	color: #2c2d3f;
 	font-weight: 700;
 	margin-bottom: 10px;
 	padding-bottom: 10px;
@@ -2833,7 +2830,6 @@ Version:1.0
 	margin-top: 30px;
 	border: 1px solid #eee;
 	padding: 10px;
-	background-color: #fff;
 }
 .shop-home-list .single-list .list-image{
 	position:relative;
@@ -2927,14 +2923,14 @@ Version:1.0
 	background: #fff;
 }
 .shopping-cart {
-	
+	background: #f6f6f6;
 	padding: 50px 0;
 }
 .shopping-summery thead .main-hading{
 	padding:0px 50px;
 }
 .shopping-summery thead {
-	background: rgb(239, 108, 20);
+	background: #F7941D;
 	color: #fff;
 }
 .shopping-summery thead tr th {
@@ -3058,7 +3054,7 @@ Version:1.0
 	width: 220px;
 	display: inline-block;
 	height: 48px;
-	color: #fff;
+	color: #333;
 	padding: 0px 20px;
 	border: none;
 	box-shadow: 0px 0px 5px #0000000a;
@@ -3090,7 +3086,7 @@ Version:1.0
 .shopping-cart .total-amount .left .checkbox label {
 	font-size: 15px;
 	font-weight: 400;
-	color: #fff;
+	color: #333;
 	position: relative;
 	padding-left: 30px;
 }
@@ -3144,13 +3140,13 @@ Version:1.0
 .shopping-cart .total-amount .right ul li {
 	font-size: 15px;
 	font-weight: 400;
-	color: #fff;
+	color: #333;
 	margin-bottom: 12px;
 }
 .shopping-cart .total-amount .right ul li.last {
 	padding-top: 12px;
 	border-top: 1px solid #c8c8c8;
-	color: rgb(239, 108, 20);
+	color: #333;
 	font-size: 15px;
 	font-weight: 400;
 }
@@ -3166,8 +3162,7 @@ Version:1.0
 	height: 46px;
 	line-height: 18px;
 	font-size: 13px;
-	color: #000;
-	background-color: rgb(239, 108, 20);
+	color: #fff;
 }
 /*======================================
    End Shopping Cart CSS
@@ -3178,7 +3173,7 @@ Version:1.0
 ========================================*/
 .shop.checkout {
 	padding: 0;
-	
+	background: #fff;
 	padding-top: 20px;
 	padding-bottom: 50px;
 }
@@ -3187,13 +3182,13 @@ Version:1.0
 }
 .shop.checkout .checkout-form h2 {
 	font-size: 25px;
-	color: rgb(239, 108, 20);
+	color: #333;
 	font-weight: 700;
 	line-height: 27px;
 }
 .shop.checkout .checkout-form p {
 	font-size: 16px;
-	color: #fff;
+	color: #333;
 	font-weight: 400;
 	margin-top: 12px;
 	margin-bottom: 30px;
@@ -3203,7 +3198,7 @@ Version:1.0
 	margin-bottom: 25px;
 }
 .shop.checkout .form .form-group label{
-	color:#fff;
+	color:#333;
 	position:relative;
 }
 .shop.checkout .form .form-group label span {
@@ -3746,12 +3741,12 @@ Version:1.0
 	background: #fff;
 }
 .shop-services.home{
-	padding:35px;
-	background:#fff;
+	padding:60px 0;
+	background:#F6F7FB;
 }
 .shop-services .single-service {
 	position: relative;
-	padding-left: 60px;
+	padding-left: 65px;
 }
 .shop-services .single-service i {
 	height: 50px;
@@ -3775,7 +3770,7 @@ Version:1.0
 	color: #333;
 }
 .shop-services .single-service p {
-	color: #000;
+	color: #898989;
 	line-height: 28px;
 	font-size:14px;
 }
@@ -4667,7 +4662,6 @@ Version:1.0
 	padding: 50px;
 	box-shadow: 0px 0px 15px #0000001a;
 	height: 100%;
-	background-color: #FFF;
 }
 .contact-us .single-info {
 	text-align: left;
@@ -4708,7 +4702,6 @@ Version:1.0
 .contact-us .form-main {
 	box-shadow: 0px 0px 15px #0000001a;
 	padding: 50px;
-	background-color: #0088CC;
 }
 .contact-us .form .form-group input {
 	height: 48px;
@@ -4891,7 +4884,7 @@ Version:1.0
 	20. Start Footer CSS
 ===============================*/
 .footer{
-	background: #000;
+	background:#222;
 }
 .footer .about {
 	padding-right: 50px;

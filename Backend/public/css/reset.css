@@ -166,19 +166,18 @@ input,
 select,
 optgroup,
 textarea {
-	color: #000;
+	color: #424646;
     font-family: 'Poppins', sans-serif;
 	font-weight:400;
 	font-size: 14px;
 	line-height: 24px;
-	background-color: #fff;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 	margin: 0;
 }
 p {
-	
+	color:#757575;
 	margin: 0;
 	line-height:24px;
 }
@@ -241,7 +240,7 @@ big {
 	margin-bottom: 0;
 	text-transform: capitalize;
 	position: relative;
-	color: rgb(239, 108, 20);
+	color: #2c2d3f;
 	font-weight: 700;
 	margin-bottom: 10px;
 	padding-bottom: 15px;
@@ -552,12 +551,12 @@ html {
 }
 
 body {
-	background: #070F2B;
+	background: #fff;
 	/* Fallback for when there is no custom background color defined. */
 }
 
 hr {
-	background-color: #DFCCFB;
+	background-color: #ccc;
 	border: 0;
 	height: 1px;
 	margin-bottom: 1.5em;
@@ -604,10 +603,9 @@ input[type="submit"] {
 	border: 1px solid;
 	border-color: #ccc #ccc #bbb;
 	border-radius: 3px;
-	background: rgb(239, 108, 20);
-	color: #fff;
+	background: #e6e6e6;
+	color: rgba(0, 0, 0, 0.8);
 	line-height: 1;
-	padding: 5px;
 }
 
 input[type="text"],
@@ -1866,8 +1864,4 @@ object {
   -webkit-transform-origin:bottom left;
   transform-origin:bottom left
  }
-}
-
-.product-info{
-	color:white;
 }
