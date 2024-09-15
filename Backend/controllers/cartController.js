@@ -115,15 +115,17 @@ exports.deleteCartItem = async (req, res) => {
 exports.getCheckout = async (req, res) => {
     try {
         // Assuming cart items are stored in the session
-        const cartItems = req.session.cartItems || [];
+        // const cartItems = req.session.cartItems || [];
         
         // Alternatively, if you are using a database, fetch cart items from the database
         // const cartItems = await Cart.find({ userId: req.user._id }).populate('book');
 
+        const cartItems = await CartItem.find({userId: req.user._id}).populate('bookId');
+
         const shippingCost = 200; // This can also be dynamic based on user location or cart value
 
         // Calculate subtotal
-        const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        const subtotal = cartItems.reduce((total, item) => (total + (item.bookId.price * item.quantity)), 0);
 
         // Calculate total price
         const total = subtotal + shippingCost;
