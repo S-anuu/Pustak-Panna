@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="owl-carousel popular-slider">
-                    <% trending.forEach(book=> { %>
+                    <% trending.forEach(book => { %>
                         <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
@@ -32,8 +32,7 @@
                                 </a>
                                 <div class="button-head">
                                     <div class="product-action">
-                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View"
-                                            href="/book/<%= book.slug %>"><i class="ti-eye"></i><span>Quick Shop</span></a>
+                                        <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="/book/<%= book.slug %>"><i class="ti-eye"></i><span>Quick Shop</span></a>
                                         <a title="Wishlist" href="cart.html"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
                                     </div>
                                     <div class="product-action-2">
@@ -42,9 +41,7 @@
                                 </div>
                             </div>
                             <div class="product-content">
-                                <h3><a href="/book/<%= book.slug %>">
-                                        <%= book.title %>
-                                    </a></h3>
+                                <h3><a href="/book/<%= book.slug %>"><%= book.title %></a></h3>
                                 <div class="product-price">
                                     <% if (book.discountPrice) { %>
                                         <span class="old">Rs.<%= book.price %></span>
@@ -63,6 +60,36 @@
     </div>
 </div>
 <!-- End Most Popular Area -->
+
+<!-- Start Voucher Section -->
+<section class="voucher-section section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-title">
+                    <h2>Available Coupons</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <% if (coupons && coupons.length > 0) { %>
+                <% coupons.forEach(coupon => { %>
+                    <div class="col-lg-4 col-md-6 col-12">
+                        <div class="single-voucher">
+                            <h4 class="voucher-code">Code: <%= coupon.code %></h4>
+                            <p class="voucher-description"><%= coupon.description %></p>
+                            <p class="voucher-discount">Discount: <%= coupon.discount %>%</p>
+                            <p class="voucher-validity">Valid Until: <%= coupon.expiresAt.toDateString() %></p>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No coupons available at the moment.</p>
+            <% } %>
+        </div>
+    </div>
+</section>
+<!-- End Voucher Section -->
 
 <!-- Start Shop Home List  -->
 <section class="shop-home-list section">
@@ -84,7 +111,7 @@
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="list-image overlay">
                                         <img src="<%= book.imageURL %>" alt="<%= book.title %>">
-                                        <a href="" class="buy add-to-cart" data-id="<%= book._id %>"><i class="fa fa-shopping-bag"></i></a>
+                                        <a href="#" class="buy add-to-cart" data-id="<%= book._id %>"><i class="fa fa-shopping-bag"></i></a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
@@ -153,9 +180,7 @@
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12 no-padding">
                                     <div class="content">
-                                        <h5 class="title"><a href="/book/<%= book.slug %>">
-                                                <%= book.title %>
-                                            </a></h5>
+                                        <h5 class="title"><a href="/book/<%= book.slug %>"><%= book.title %></a></h5>
                                         <p class="price with-discount">Rs.<%= book.price %></p>
                                     </div>
                                 </div>
@@ -171,5 +196,76 @@
 </section>
 <!-- End Shop Home List  -->
 
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<style>
+    /* Start Voucher Section Styling */
+.voucher-section {
+    background-color: #f9f9f9;
+    padding: 40px 0;
+}
+
+.voucher-section .section-title h2 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.single-voucher {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.single-voucher:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.voucher-code {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.voucher-description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.voucher-discount {
+    font-size: 18px;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 10px;
+}
+
+.voucher-validity {
+    font-size: 14px;
+    color: #999;
+}
+
+@media (max-width: 768px) {
+    .single-voucher {
+        padding: 15px;
+    }
+    .voucher-code {
+        font-size: 18px;
+    }
+    .voucher-description,
+    .voucher-discount,
+    .voucher-validity {
+        font-size: 14px;
+    }
+}
+
+</style>
