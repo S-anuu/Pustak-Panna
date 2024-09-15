@@ -61,4 +61,8 @@ router.get("/success",()=>{
 router.get("/failure",()=>{
 //handle failure callback
 })
+
+// Route to cancel an order
+router.post("/orders/cancel/:orderId", orderController.postCancelOrder);
+
 module.exports = router;

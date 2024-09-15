@@ -12,7 +12,7 @@ const path = require('path');
 const authRoutes = require('../routes/auth');
 //const {isAdmin, authMiddleware} = require('../middleware/authMiddleware');
 const multer = require('multer');
-//const flash = require('connect-flash');
+const flash = require('connect-flash');
 const User = require('../models/User')
 const jwt = require('jsonwebtoken');
 const { authMiddleware } = require('../middleware/authMiddleware');
@@ -32,8 +32,8 @@ app.use(session({
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 } // 1 day
 }));
 
-// Set up flash middleware after session middleware
-//app.use(flash());
+//Set up flash middleware after session middleware
+app.use(flash());
 
 // Middleware
 app.use(cartMiddleware)

@@ -1,6 +1,7 @@
 const Order = require('../models/Order'); // Update with your actual path
 const CartItem = require('../models/CartItem'); // Update with your actual path
 const Coupon = require('../models/Coupon');
+const flash = require('connect-flash')
 
 // In your controller file
 exports.placeOrder = async (req, res) => {
@@ -32,6 +33,7 @@ exports.placeOrder = async (req, res) => {
             status: 'Pending',
             items: cartItems.map(item => ({
                 bookId: item.bookId._id,
+                title: item.bookId.title,
                 quantity: item.quantity,
                 price: item.bookId.price
             })),
@@ -78,20 +80,55 @@ exports.getIndividualOrder = async (req, res) => {
     }
 }
 
-exports.getOrderDetails = async (req, res) => {
+exports.getOrderDetails = async (req, res, next) => {
     try {
-        const order = await Order.findById(req.params.orderId).populate('items.book');
+        const orderId = req.params.id;
+        console.log(orderId);
+
+        // Fetch order and include both user and book details
+        const order = await Order.findById(orderId)
+          .populate('userId') // Populating user information
+          .populate({
+            path: 'items.bookId', // populate the bookId field inside items
+            select: 'title' // select only the title field from Book model
+          });
+
         if (!order) {
             return res.status(404).send('Order not found');
         }
+
+        // Render the order-details page with the fetched order and user details
         res.render('orderDetails', {
-            title: 'Order Details',
-            order,
+            order: order,
+            user: req.user, // Assuming you're passing user info from a session or authentication middleware
+            title: 'PustakPanna',
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header', 
+            
         });
     } catch (error) {
-        console.error('Error fetching order details:', error);
-        res.status(500).send('Internal Server Error');
+        console.error(error);
+        res.status(500).send('Error fetching order details');
     }
 };
+
+exports.postCancelOrder = async (req, res) => {
+    const orderId = req.params.orderId;
+
+    try {
+        // Find the order and update its status to "Cancelled"
+        let order = await Order.findById(orderId);
+        if (order.status === 'Pending' || order.status === 'Processing') {
+            order.status = 'Cancelled';
+            await order.save();
+            req.flash('success', 'Order has been cancelled successfully.');
+        } else {
+            req.flash('error', 'Order cannot be cancelled.');
+        }
+        res.redirect('/orders');
+    } catch (error) {
+        console.error('Error cancelling the order:', error);
+        req.flash('error', 'An error occurred while cancelling the order.');
+        res.redirect('/orders');
+    }
+}

@@ -11,6 +11,7 @@
                             <th>Total</th>
                             <th>Status</th>
                             <th>Details</th>
+                            <th>Action</th> <!-- New column for the Cancel button -->
                         </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,15 @@
                                 <td>Rs. <%= order.total %></td>
                                 <td><%= order.status %></td>
                                 <td><a href="/orders/<%= order._id %>">View Details</a></td>
+                                <td>
+                                    <% if (order.status === 'Pending' || order.status === 'Processing') { %>
+                                        <form action="/orders/cancel/<%= order._id %>" method="POST">
+                                            <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</button>
+                                        </form>
+                                    <% } else { %>
+                                        <button disabled class="btn-disabled">Cannot Cancel</button>
+                                    <% } %>
+                                </td>
                             </tr>
                         <% }) %>
                     </tbody>
@@ -31,3 +41,31 @@
         </div>
     </section>
 </main>
+<style>
+    .btn-cancel {
+    background-color: #f44336; /* Red */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #e53935;
+}
+
+.btn-disabled {
+    background-color: #b0b0b0; /* Gray */
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: not-allowed;
+}
+
+</style>

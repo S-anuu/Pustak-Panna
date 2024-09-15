@@ -182,7 +182,7 @@
             }
 
             // If Cash on Delivery is selected
-            if (selectedPaymentMethod.value === 'cashOnDelivery') {
+            //if (selectedPaymentMethod.value === 'cashOnDelivery') {
                 // Show SweetAlert for successful order placement
                 Swal.fire({
                     title: 'Order Placed!',
@@ -192,16 +192,17 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         // Redirect to the index page
-                        window.location.href = '/orders';
+                        // window.location.href = '/orders';
+                        form.submit();
                     }
-                });} else if (selectedPaymentMethod.value === 'esewa'){
-                    window.location.href = '/pay-with-esewa';
+                // });} else if (selectedPaymentMethod.value === 'esewa'){
+                //     window.location.href = '/pay-with-esewa';
                     
-                }else {
-                // Debugging: Normal form submission for other payment methods
-                console.log("Submitting form for other payment methods...");
-                form.submit();
-            }
+                // }else {
+                // // Debugging: Normal form submission for other payment methods
+                // console.log("Submitting form for other payment methods...");
+                // 
+            
         });
     });
 </script>
