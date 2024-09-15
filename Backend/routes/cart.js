@@ -16,4 +16,5 @@ router.delete('/cart/delete/:id', cartController.deleteCartItem);
 
 router.post('/cart/apply-coupon', couponController.applyCoupon);
 
+
 module.exports = router;

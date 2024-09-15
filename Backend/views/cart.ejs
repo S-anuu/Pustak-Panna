@@ -85,8 +85,8 @@
                                     <li class="last">You Pay<span class="total-pay">Rs.<%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) + 200 %></span></li>
                                 </ul>
                                 <div class="button5">
-                                    <a href="checkout.html" class="btn">Checkout</a>
-                                    <a href="index.html" class="btn">Continue shopping</a>
+                                    <a href="/checkout" class="btn">Checkout</a>
+                                    <a href="/index" class="btn">Continue shopping</a>
                                 </div>
                             </div>
                         </div>
@@ -146,77 +146,83 @@
     });
 
     const applyCouponButton = document.querySelector('#apply-coupon-btn');
-    const couponInput = document.querySelector('#coupon-code');
-    const savingsElement = document.querySelector('.you-save');
-    const totalPayElement = document.querySelector('.total-pay');
-    const cartSubtotal = <%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) %>;
+const couponInput = document.querySelector('#coupon-code');
+const savingsElement = document.querySelector('.you-save');
+const totalPayElement = document.querySelector('.total-pay');
+const cartSubtotal = <%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) %>;
 
-    // Default shipping cost
-    let shippingCost = 200; // Default shipping cost
-    let savings = 0;
-    let appliedCoupon = null;
+// Default shipping cost
+let shippingCost = 200; // Default shipping cost
+let savings = 0;
+let appliedCoupon = null;
 
-    // Apply coupon when button is clicked
-    applyCouponButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        const couponCode = couponInput.value.trim();
-        console.log(couponCode)
-        if (!couponCode) {
-            alert('Please enter a coupon code.');
-            return;
-        }
+// Apply coupon when button is clicked
+applyCouponButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    const couponCode = couponInput.value.trim();
+    if (!couponCode) {
+        alert('Please enter a coupon code.');
+        return;
+    }
 
-        // Send coupon code to the server to validate
-        fetch('/cart/apply-coupon', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ couponCode })
-        })
-        
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const discount = data.discount;
+    // Send coupon code to the server to validate
+    fetch('/cart/apply-coupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ couponCode })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const discount = data.discount;
 
-                // Check if a coupon has already been applied
-                if (appliedCoupon) {
-                    alert('A coupon has already been applied.');
-                    return;
-                }
+            // Update the savings amount (You Save section)
+            savings = discount;
+            savingsElement.innerText = `Rs.${savings}`;
 
-                // Update the savings amount (You Save section)
-                savings = discount;
-                console.log(savings)
-                savingsElement.innerText = `Rs.${savings}`;
-
-                // Recalculate and update the total amount
-                const totalPay = cartSubtotal + shippingCost - savings;
-                totalPayElement.innerText = `Rs.${totalPay}`;
-
-                // Set the applied coupon
-                appliedCoupon = couponCode;
-
-                // Show a success message for coupon applied
-                alert('Coupon applied successfully!');
-            } else {
-                // If the coupon is invalid, show an error message
-                alert(data.message || 'Invalid or expired coupon code');
-            }
-        })
-        .catch(error => {
-            console.error('Error applying coupon:', error);
-            alert('There was a problem applying the coupon.');
-        });
-    });
-
-    // Function to update the total payment based on the selected shipping option
-    document.querySelectorAll('input[name="shipping"]').forEach(option => {
-        option.addEventListener('change', function() {
-            shippingCost = parseFloat(this.dataset.price);
-            const totalPay = cartSubtotal + shippingCost - savings; // Calculate total with savings applied
+            // Recalculate and update the total amount
+            const totalPay = cartSubtotal + shippingCost - savings;
             totalPayElement.innerText = `Rs.${totalPay}`;
-        });
+
+            // Set the applied coupon
+            appliedCoupon = couponCode;
+
+            // Show applied coupon and remove button
+            document.querySelector('#applied-coupon').style.display = 'block';
+            document.querySelector('#applied-coupon-code').innerText = appliedCoupon;
+
+            // Show a success message for coupon applied
+            alert('Coupon applied successfully!');
+        } else {
+            // If the coupon is invalid, show an error message
+            alert(data.message || 'Invalid or expired coupon code');
+        }
+    })
+    .catch(error => {
+        console.error('Error applying coupon:', error);
+        alert('There was a problem applying the coupon.');
     });
+});
+
+// Remove coupon when button is clicked
+document.querySelector('#remove-coupon-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Reset savings and total payment
+    savings = 0;
+    savingsElement.innerText = `Rs.${savings}`;
+    const totalPay = cartSubtotal + shippingCost;
+    totalPayElement.innerText = `Rs.${totalPay}`;
+
+    // Hide applied coupon and remove button
+    document.querySelector('#applied-coupon').style.display = 'none';
+    document.querySelector('#applied-coupon-code').innerText = '';
+
+    // Reset applied coupon variable
+    appliedCoupon = null;
+
+    alert('Coupon removed successfully!');
+});
 </script>

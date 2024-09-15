@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const indexController = require('../controllers/indexController')
 const cartMiddleware = require("../middleware/cartMiddleware");
+const cartController = require('../controllers/cartController')
 
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
@@ -10,9 +11,7 @@ router.get('/new-releases', indexController.newReleases);
 
 router.get('/best-sellers', indexController.bestSellers);
 
-router.get('/checkout', (req, res) => {
-    res.render('checkout', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
-});
+router.get('/checkout', cartController.getCheckout);
 
 router.get('/contact', (req, res) => {
     res.render('contact', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
