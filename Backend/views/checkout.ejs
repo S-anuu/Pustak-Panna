@@ -75,7 +75,7 @@
                             <ul>
                                 <li>Sub Total<span>Rs.<%= subtotal %></span></li>
                                 <li>(+) Shipping<span>Rs.<%= shippingCost %></span></li>
-
+                                
                                 <% if (hasDiscount) { %>
                                     <li>(-) Discount<span>Rs.<%= subtotal * (discount / 100) %></span></li>
                                 <% } %>
@@ -133,6 +133,9 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Debugging: Check if the script is running
         console.log("Script loaded and running.");
+
+        const applyCouponButton = document.querySelector('#apply-coupon-btn'); //2
+        const couponInput = document.querySelector('#coupon-code');
 
         const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
         const proceedButton = document.querySelector('.get-button .btn');

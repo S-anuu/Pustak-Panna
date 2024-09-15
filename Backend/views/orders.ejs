@@ -11,7 +11,7 @@
                             <th>Total</th>
                             <th>Status</th>
                             <th>Details</th>
-                            <th>Action</th> <!-- New column for the Cancel button -->
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,7 +21,7 @@
                                 <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
                                 <td>Rs. <%= order.total %></td>
                                 <td><%= order.status %></td>
-                                <td><a href="/orders/<%= order._id %>">View Details</a></td>
+                                <td><a href="/orders/<%= order._id %>" class="btn-details">View Details</a></td>
                                 <td>
                                     <% if (order.status === 'Pending' || order.status === 'Processing') { %>
                                         <form action="/orders/cancel/<%= order._id %>" method="POST">
@@ -36,36 +36,110 @@
                     </tbody>
                 </table>
             <% } else { %>
-                <p>You have no orders yet.</p>
+                <p class="no-orders">You have no orders yet.</p>
             <% } %>
         </div>
     </section>
 </main>
+
 <style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f7f7f7;
+        margin: 0;
+        padding: 0;
+    }
+/* 
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    } */
+
+    h1 {
+        font-size: 32px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th, td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        color: #333;
+        font-size: 16px;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
     .btn-cancel {
-    background-color: #f44336; /* Red */
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
+        background-color: #f44336; /* Red */
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
 
-.btn-cancel:hover {
-    background-color: #e53935;
-}
+    .btn-cancel:hover {
+        background-color: #e53935;
+    }
 
-.btn-disabled {
-    background-color: #b0b0b0; /* Gray */
-    color: white;
-    padding: 8px 16px;
-    text-align: center;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: not-allowed;
-}
+    .btn-disabled {
+        background-color: #b0b0b0; /* Gray */
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: not-allowed;
+    }
 
+    .btn-details {
+        background-color: #2196F3; /* Blue */
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-details:hover {
+        background-color: #1976D2;
+    }
+
+    .no-orders {
+        text-align: center;
+        font-size: 18px;
+        color: #777;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        table, th, td {
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 10px;
+        }
+    }
 </style>

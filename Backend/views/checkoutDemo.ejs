@@ -1,0 +1,140 @@
+<!-- Start Checkout -->
+<section class="shop checkout section">
+    <div class="container">
+        <div class="row"> 
+            <div class="col-lg-8 col-12">
+                <div class="checkout-form">
+                    <h2>Checkout</h2>
+                    <p>Fill in the details below to complete your purchase.</p>
+                    <!-- Form -->
+                    <form class="form" method="post" action="/placeOrder">
+                        <!-- Shipping Details -->
+                        <div class="row">
+                            <!-- Add your existing form fields here -->
+                        </div>
+                        
+                        <!-- Hidden input for applied coupon -->
+                        <input type="hidden" id="applied-coupon-input" name="appliedCoupon" value="<%= appliedCoupon || '' %>">
+                        
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-12">
+                <!-- Coupon Code Section -->
+                <div class="form-group">
+                    <label>Coupon Code</label>
+                    <input type="text" id="coupon-code" placeholder="Enter coupon code" style="width: 210px;">
+                    <button type="button" id="apply-coupon-btn" class="btn" style="width: 210px;">Apply Coupon</button>
+                </div>
+
+                <div class="order-details">
+                    <div class="single-widget">
+                        <h2>CART TOTALS</h2>
+                        <div class="content">
+                            <ul>
+                                <li>Sub Total<span>Rs.<%= subtotal %></span></li>
+                                <li>(+) Shipping<span>Rs.<%= shippingCost %></span></li>
+
+                                <!-- Dynamic Discount Section -->
+                                <% if (hasDiscount) { %>
+                                    <li>(-) Discount<span id="discount-value">Rs.<%= discountValue %></span></li>
+                                <% } else { %>
+                                    <li id="discount-section" style="display:none;">(-) Discount<span id="discount-value"></span></li>
+                                <% } %>
+
+                                <li class="last">Total<span id="total-amount">Rs.<%= total %></span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Payments and Submit button -->
+                    <div class="single-widget">
+                        <h2>Payments</h2>
+                        <div class="content">
+                            <input type="radio" name="paymentMethod" value="esewa" id="esewa"> 
+                            <label for="esewa">eSewa</label><br>
+                            <input type="radio" name="paymentMethod" value="khalti" id="khalti">
+                            <label for="khalti">Khalti</label><br>
+                            <input type="radio" name="paymentMethod" value="creditCard" id="creditCard">
+                            <label for="creditCard">Credit/Debit Card</label><br>
+                            <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cod">
+                            <label for="cod">Cash On Delivery</label><br>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="single-widget get-button">
+                        <div class="content">
+                            <div class="button">
+                                <button type="submit" class="btn">Proceed to Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const applyCouponButton = document.querySelector('#apply-coupon-btn');
+    const couponInput = document.querySelector('#coupon-code');
+    const discountSection = document.querySelector('#discount-section');
+    const discountValue = document.querySelector('#discount-value');
+    const totalAmount = document.querySelector('#total-amount');
+    const appliedCouponInput = document.querySelector('#applied-coupon-input');
+
+    applyCouponButton.addEventListener('click', function() {
+        const couponCode = couponInput.value.trim();
+        if (couponCode) {
+            fetch('/applyCoupon', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ couponCode })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    appliedCouponInput.value = couponCode; // Store the coupon code
+                    discountSection.style.display = 'block';
+                    discountValue.textContent = `Rs. ${data.discount}`; // Update discount display
+                    totalAmount.textContent = `Rs. ${data.newTotal}`; // Update total display
+
+                    Swal.fire({
+                        title: 'Coupon Applied!',
+                        text: `Discount applied: Rs. ${data.discount}`,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Invalid Coupon!',
+                        text: 'The coupon code you entered is not valid.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error applying coupon:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'There was an error applying the coupon. Please try again later.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        } else {
+            Swal.fire({
+                title: 'No Coupon Code!',
+                text: 'Please enter a coupon code to apply.',
+                icon: 'warning',
+                confirmButtonText: 'OK'
+            });
+        }
+    });
+});
+
+</script>
