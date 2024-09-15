@@ -89,7 +89,7 @@ exports.deleteCartItem = async (req, res) => {
     try {
         const userId = req.user._id; 
         const itemId = req.params.id; 
-        console.log(userId)
+        //console.log(userId)
 
         // Find and delete the CartItem
         const cartItem = await CartItem.findOneAndDelete({ _id: itemId, userId: userId });
@@ -111,4 +111,35 @@ exports.deleteCartItem = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };
+
+exports.getCheckout = async (req, res) => {
+    try {
+        // Assuming cart items are stored in the session
+        const cartItems = req.session.cartItems || [];
+        
+        // Alternatively, if you are using a database, fetch cart items from the database
+        // const cartItems = await Cart.find({ userId: req.user._id }).populate('book');
+
+        const shippingCost = 200; // This can also be dynamic based on user location or cart value
+
+        // Calculate subtotal
+        const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+        // Calculate total price
+        const total = subtotal + shippingCost;
+
+        res.render('checkout', { 
+            title: 'Pustak-Panna', 
+            pageStyles: '', 
+            headerStyle: 'header', 
+            cartItems, 
+            shippingCost: shippingCost, 
+            subtotal: subtotal, 
+            total 
+        });
+    } catch (error) {
+        console.error('Error fetching checkout data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 

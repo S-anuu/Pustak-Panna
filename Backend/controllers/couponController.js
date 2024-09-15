@@ -67,7 +67,7 @@ exports.applyCoupon = async (req, res) => {
         // Find the coupon in the database
         const coupon = await Coupon.findOne({
             code: couponCode,
-            isActive: true,
+            //isActive: true,
             expiresAt: { $gte: new Date() }
         });
 
