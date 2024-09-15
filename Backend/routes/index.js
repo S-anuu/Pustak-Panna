@@ -41,9 +41,9 @@ router.get('/best-sellers', bookController.getBestSellers)
 
 router.get('/genre/:genre', indexController.getGenre);
 
-router.get('/myOrders', orderController.getOrders);
+router.get('/orders', orderController.getOrders);
 
-router.get('/myOrderDetails', orderController.getOrderDetails)
+router.get('/orderDetails', orderController.getOrderDetails)
 
 router.get('/search', indexController.searchBooks)
 

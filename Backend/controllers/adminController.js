@@ -1,4 +1,6 @@
 const Admin = require('../models/Admin'); 
+const Order = require('../models/Order')
+const User = require('../models/User')
 
 exports.adminLogin = async (req, res) => {
     const { username, password } = req.body;
@@ -63,4 +65,47 @@ exports.getDashboard = (req, res) => {
         pageStyles: 'admin-dashboard.css',
         headerStyle: 'admin-header'
     });
+}
+
+exports.getOrdersAdmin = async (req, res) => {
+    try {
+        const orders = await Order.find().populate('user');
+        res.render('orders', { 
+            orders,
+            title: 'PustakPanna',
+            pageStyles: '',
+            headerStyle: 'admin-header' });
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+// exports.getOrderById = async (req, res) => {
+//     try {
+//         const order = await Order.findById(req.params.id).populate('user');
+//         if (order) {
+//             res.json(order);
+//         } else {
+//             res.status(404).send('Order not found');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching order:', error);
+//         res.status(500).send('Internal Server Error');
+//     }
+// }
+
+exports.updateOrderStatus = async (req, res) => {
+    try {
+        const { status } = req.body;
+        const order = await Order.findByIdAndUpdate(req.params.id, { status }, { new: true });
+        if (order) {
+            res.status(200).send('Order status updated successfully');
+        } else {
+            res.status(404).send('Order not found');
+        }
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        res.status(500).send('Internal Server Error');
+    }
 }

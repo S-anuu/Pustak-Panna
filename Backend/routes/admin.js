@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin'); 
 const Book = require('../models/Book'); 
+const User = require('../models/User')
+const Order = require('../models/Order')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY;
@@ -10,7 +12,7 @@ const multer = require('multer')
 const path = require('path');
 const bookController = require('../controllers/bookController');
 const couponController = require('../controllers/couponController')
-const orderController = require('../controllers/orderController')
+const adminController = require('../controllers/adminController')
 
 router.get('/api/dashboard-stats', async (req, res) => {
     try {
@@ -158,14 +160,6 @@ router.post('/admin/coupons/add', couponController.addCoupon);
 
 // Delete coupon
 router.delete('/admin/coupons/delete/:id', couponController.deleteCoupon);
-
-router.get('/admin/orders', orderController.getOrdersAdmin);
-
-// Admin: Get order details by ID (for modal view)
-router.get('/admin/orders/:id', orderController.getOrderById);
-
-// Admin: Update order status
-router.put('/admin/orders/:id', orderController.updateOrderStatus);
 
 module.exports = router;
 
