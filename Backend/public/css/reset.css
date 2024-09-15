@@ -166,18 +166,19 @@ input,
 select,
 optgroup,
 textarea {
-	color: #424646;
+	color: #fff;
     font-family: 'Poppins', sans-serif;
 	font-weight:400;
 	font-size: 14px;
 	line-height: 24px;
+	background-color: #fff;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-weight: 700;
 	margin: 0;
 }
 p {
-	color:#757575;
+	color:#fff;
 	margin: 0;
 	line-height:24px;
 }
@@ -240,7 +241,7 @@ big {
 	margin-bottom: 0;
 	text-transform: capitalize;
 	position: relative;
-	color: #2c2d3f;
+	color: rgb(239, 108, 20);
 	font-weight: 700;
 	margin-bottom: 10px;
 	padding-bottom: 15px;
@@ -551,12 +552,12 @@ html {
 }
 
 body {
-	background: #fff;
+	background: #070F2B;
 	/* Fallback for when there is no custom background color defined. */
 }
 
 hr {
-	background-color: #ccc;
+	background-color: #DFCCFB;
 	border: 0;
 	height: 1px;
 	margin-bottom: 1.5em;
