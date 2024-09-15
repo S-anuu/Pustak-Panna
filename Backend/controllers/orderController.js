@@ -51,6 +51,7 @@ exports.placeOrder = async (req, res) => {
 
 
 exports.getOrders = async (req, res) => {
+    console.log(req.user)
     try {
         const orders = await Order.find({ userId: req.user._id }).populate('items.bookId');
         res.render('orders', {
