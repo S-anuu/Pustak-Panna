@@ -10,6 +10,27 @@ const multer = require('multer')
 const path = require('path');
 const bookController = require('../controllers/bookController');
 const couponController = require('../controllers/couponController')
+const orderController = require('../controllers/orderController')
+
+router.get('/api/dashboard-stats', async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments();
+        const totalBooks = await Book.countDocuments();
+        const totalOrders = await Order.countDocuments();
+
+        const recentActivity = await Order.find().sort({ createdAt: -1 }).limit(5).select('createdAt description');
+        
+        res.json({
+            totalUsers,
+            totalBooks,
+            totalOrders,
+            recentActivity
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching dashboard data');
+    }
+});
 
 //multer setup
 const storage = multer.diskStorage({
@@ -113,13 +134,13 @@ router.get('/admin/users', (req, res) => {
 // Check if a book with the same title and author exists
 router.post('/admin/check-book', bookController.checkBook);
 
-router.get('/admin/orders', (req, res) => {
-    res.render('orders', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
-});
+// router.get('/admin/orders', (req, res) => {
+//     res.render('orders', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+// });
 
-router.get('/admin/reports', (req, res) => {
-    res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
-});
+// router.get('/admin/reports', (req, res) => {
+//     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+// });
 
 // Add book
 router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
@@ -138,7 +159,13 @@ router.post('/admin/coupons/add', couponController.addCoupon);
 // Delete coupon
 router.delete('/admin/coupons/delete/:id', couponController.deleteCoupon);
 
+router.get('/admin/orders', orderController.getOrdersAdmin);
 
+// Admin: Get order details by ID (for modal view)
+router.get('/admin/orders/:id', orderController.getOrderById);
+
+// Admin: Update order status
+router.put('/admin/orders/:id', orderController.updateOrderStatus);
 
 module.exports = router;
 

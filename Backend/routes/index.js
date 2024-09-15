@@ -41,11 +41,11 @@ router.get('/best-sellers', bookController.getBestSellers)
 
 router.get('/genre/:genre', indexController.getGenre);
 
-router.get('/orders', orderController.getOrders);
+router.get('/myOrders', orderController.getOrders);
 
-router.get('/orderDetails', orderController.getOrderDetails)
+router.get('/myOrderDetails', orderController.getOrderDetails)
 
-router.get('/search', bookController.searchBooks)
+router.get('/search', indexController.searchBooks)
 
 // router.get('/404', (req, res) => {
 //     res.render('404', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });

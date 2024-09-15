@@ -1,33 +1,192 @@
-<main>
-    <section class="orders">
-        <div class="container">
-            <h1>Your Orders</h1>
-            <% if (orders.length > 0) { %>
-                <table>
-                    <thead>
+<section class="orders-page">
+    <div class="container">
+        <h1>All Orders</h1>
+
+        <!-- Orders Table -->
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>User Name</th>
+                    <th>User Email</th>
+                    <th>Order ID</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (orders.length === 0) { %>
+                    <tr>
+                        <td colspan="7">No orders found.</td>
+                    </tr>
+                <% } else { %>
+                    <% orders.forEach((order, index) => { %>
                         <tr>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Details</th>
+                            <td><%= index + 1 %></td>
+                            <td><%= order.user.name %></td>
+                            <td><%= order.user.email %></td>
+                            <td><%= order._id %></td>
+                            <td>$<%= order.totalAmount %></td>
+                            <td><%= order.status %></td>
+                            <td>
+                                <button class="view-order-btn" data-id="<%= order._id %>">View</button>
+                                <button class="change-status-btn" data-id="<%= order._id %>">Change Status</button>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% orders.forEach(order => { %>
-                            <tr>
-                                <td><%= order._id %></td>
-                                <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
-                                <td>Rs. <%= order.total %></td>
-                                <td><%= order.status %></td>
-                                <td><a href="/orders/<%= order._id %>">View Details</a></td>
-                            </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
-            <% } else { %>
-                <p>You have no orders yet.</p>
-            <% } %>
-        </div>
-    </section>
-</main>
+                    <% }) %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Modal for Viewing Order Details -->
+<div id="order-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Order Details</h2>
+        <p><strong>Order ID:</strong> <span id="modal-order-id"></span></p>
+        <p><strong>User:</strong> <span id="modal-order-user"></span></p>
+        <p><strong>Items:</strong></p>
+        <ul id="modal-order-items"></ul>
+        <p><strong>Total Amount:</strong> $<span id="modal-order-total"></span></p>
+        <p><strong>Status:</strong> <span id="modal-order-status"></span></p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const viewButtons = document.querySelectorAll('.view-order-btn');
+        const modal = document.getElementById('order-modal');
+        const modalOrderId = document.getElementById('modal-order-id');
+        const modalOrderUser = document.getElementById('modal-order-user');
+        const modalOrderItems = document.getElementById('modal-order-items');
+        const modalOrderTotal = document.getElementById('modal-order-total');
+        const modalOrderStatus = document.getElementById('modal-order-status');
+        const closeModal = document.querySelector('.close-btn');
+
+        viewButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.dataset.id;
+                fetch(`/admin/orders/${orderId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        modalOrderId.textContent = data._id;
+                        modalOrderUser.textContent = data.user.name + ' (' + data.user.email + ')';
+                        modalOrderTotal.textContent = data.totalAmount;
+                        modalOrderStatus.textContent = data.status;
+                        
+                        modalOrderItems.innerHTML = ''; // Clear the list before populating it
+                        data.items.forEach(item => {
+                            const listItem = document.createElement('li');
+                            listItem.textContent = item.title + ' x ' + item.quantity;
+                            modalOrderItems.appendChild(listItem);
+                        });
+
+                        modal.style.display = 'block';
+                    });
+            });
+        });
+
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Change Order Status Functionality
+        const changeStatusButtons = document.querySelectorAll('.change-status-btn');
+        changeStatusButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const orderId = this.dataset.id;
+                const newStatus = prompt('Enter new status (e.g., "Processing", "Shipped", "Delivered"):');
+                if (newStatus) {
+                    fetch(`/admin/orders/${orderId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: newStatus })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Error updating order status.');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .orders-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.orders-page h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.orders-table th, .orders-table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.orders-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.view-order-btn, .change-status-btn {
+    padding: 8px 12px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.view-order-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.change-status-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    text-align: left;
+}
+
+.close-btn {
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+</style>
