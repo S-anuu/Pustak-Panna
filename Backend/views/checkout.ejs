@@ -194,7 +194,10 @@
                         // Redirect to the index page
                         window.location.href = '/orders';
                     }
-                });} else {
+                });} else if (selectedPaymentMethod.value === 'esewa'){
+                    window.location.href = '/pay-with-esewa';
+                    
+                }else {
                 // Debugging: Normal form submission for other payment methods
                 console.log("Submitting form for other payment methods...");
                 form.submit();
