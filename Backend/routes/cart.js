@@ -5,6 +5,7 @@ const cartController = require('../controllers/cartController');
 //const authenticate = require('../middleware/authenticate');
 const cartMiddleware = require("../middleware/cartMiddleware");
 const couponController = require('../controllers/couponController')
+const orderController = require('../controllers/orderController')
 
 // Add item to cart
 router.post('/cart', authMiddleware, cartController.postCart); // Ensure method names match
@@ -16,5 +17,7 @@ router.delete('/cart/delete/:id', cartController.deleteCartItem);
 
 router.post('/cart/apply-coupon', couponController.applyCoupon);
 
+router.post('/checkout', cartController.postCheckout)
 
+router.post('/placeOrder', orderController.placeOrder)
 module.exports = router;

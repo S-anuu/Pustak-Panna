@@ -1,0 +1,33 @@
+<main>
+    <section class="orders">
+        <div class="container">
+            <h1>Your Orders</h1>
+            <% if (orders.length > 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% orders.forEach(order => { %>
+                            <tr>
+                                <td><%= order._id %></td>
+                                <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
+                                <td>Rs. <%= order.total %></td>
+                                <td><%= order.status %></td>
+                                <td><a href="/orders/<%= order._id %>">View Details</a></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } else { %>
+                <p>You have no orders yet.</p>
+            <% } %>
+        </div>
+    </section>
+</main>

@@ -4,6 +4,7 @@ const indexController = require('../controllers/indexController')
 const cartMiddleware = require("../middleware/cartMiddleware");
 const cartController = require('../controllers/cartController')
 const bookController = require('../controllers/bookController')
+const orderController = require('../controllers/orderController')
 
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
@@ -39,6 +40,12 @@ router.get('/new-releases', bookController.getNewReleases);
 router.get('/best-sellers', bookController.getBestSellers)
 
 router.get('/genre/:genre', indexController.getGenre);
+
+router.get('/orders', orderController.getOrders);
+
+router.get('/orderDetails', orderController.getOrderDetails)
+
+router.get('/search', bookController.searchBooks)
 
 // router.get('/404', (req, res) => {
 //     res.render('404', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });

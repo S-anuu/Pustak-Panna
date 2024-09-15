@@ -1,0 +1,86 @@
+
+    <section class="book-search">
+        <div class="container">
+            <h1>Search Books</h1>
+
+            <!-- Search Form -->
+            <form id="search-form">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" name="title" value="<%= searchParams.title || '' %>">
+                    </div>
+                    <div class="filter-group">
+                        <label for="author">Author:</label>
+                        <input type="text" id="author" name="author" value="<%= searchParams.author || '' %>">
+                    </div>
+                    <div class="filter-group">
+                        <label for="minPrice">Min Price:</label>
+                        <input type="number" id="minPrice" name="minPrice" value="<%= searchParams.minPrice || '' %>">
+                    </div>
+                    <div class="filter-group">
+                        <label for="maxPrice">Max Price:</label>
+                        <input type="number" id="maxPrice" name="maxPrice" value="<%= searchParams.maxPrice || '' %>">
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort">Sort By:</label>
+                        <select id="sort" name="sort">
+                            <option value="priceAsc" <%= searchParams.sort === 'priceAsc' ? 'selected' : '' %>>Price Low to High</option>
+                            <option value="priceDesc" <%= searchParams.sort === 'priceDesc' ? 'selected' : '' %>>Price High to Low</option>
+                            <option value="rating" <%= searchParams.sort === 'rating' ? 'selected' : '' %>>Rating</option>
+                        </select>
+                    </div>
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+
+            <!-- Search Results -->
+            <div id="book-results">
+                <% if (books.length === 0) { %>
+                    <p>No books found.</p>
+                <% } else { %>
+                    <div class="book-list">
+                        <% books.forEach(book => { %>
+                            <div class="book-item">
+                                <img src="<%= book.image %>" alt="<%= book.title %>">
+                                <h3><%= book.title %></h3>
+                                <p>by <%= book.author %></p>
+                                <p>Price: Rs. <%= book.price %></p>
+                                <p>Rating: <%= book.rating %></p>
+                                <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        $(document).ready(function() {
+            $('#search-form').on('submit', function(event) {
+                event.preventDefault();
+                const queryParams = $(this).serialize();
+                window.location.href = `/search?${queryParams}`;
+            });
+
+            $('#book-results').on('click', '.add-to-cart', function() {
+                const bookId = $(this).data('id');
+                $.post('/add-to-cart', { bookId }, function(response) {
+                    Swal.fire({
+                        title: 'Added to Cart',
+                        text: 'The book has been added to your cart.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                }).fail(function() {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'There was an error adding the book to your cart.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            });
+        });
+    </script>
