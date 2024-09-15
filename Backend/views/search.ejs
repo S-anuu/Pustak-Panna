@@ -1,86 +1,201 @@
+<section class="book-search">
+    <div class="container">
+        <h1>Search Books</h1>
 
-    <section class="book-search">
-        <div class="container">
-            <h1>Search Books</h1>
-
-            <!-- Search Form -->
-            <form id="search-form">
-                <div class="filters">
-                    <div class="filter-group">
-                        <label for="title">Title:</label>
-                        <input type="text" id="title" name="title" value="<%= searchParams.title || '' %>">
-                    </div>
-                    <div class="filter-group">
-                        <label for="author">Author:</label>
-                        <input type="text" id="author" name="author" value="<%= searchParams.author || '' %>">
-                    </div>
-                    <div class="filter-group">
-                        <label for="minPrice">Min Price:</label>
-                        <input type="number" id="minPrice" name="minPrice" value="<%= searchParams.minPrice || '' %>">
-                    </div>
-                    <div class="filter-group">
-                        <label for="maxPrice">Max Price:</label>
-                        <input type="number" id="maxPrice" name="maxPrice" value="<%= searchParams.maxPrice || '' %>">
-                    </div>
-                    <div class="filter-group">
-                        <label for="sort">Sort By:</label>
-                        <select id="sort" name="sort">
-                            <option value="priceAsc" <%= searchParams.sort === 'priceAsc' ? 'selected' : '' %>>Price Low to High</option>
-                            <option value="priceDesc" <%= searchParams.sort === 'priceDesc' ? 'selected' : '' %>>Price High to Low</option>
-                            <option value="rating" <%= searchParams.sort === 'rating' ? 'selected' : '' %>>Rating</option>
-                        </select>
-                    </div>
-                    <button type="submit">Search</button>
+        <!-- Search Form -->
+        <form id="search-form" class="search-form">
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" value="<%= searchParams.title || '' %>">
                 </div>
-            </form>
+                <div class="filter-group">
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="author" value="<%= searchParams.author || '' %>">
+                </div>
+                <div class="filter-group">
+                    <label for="minPrice">Min Price:</label>
+                    <input type="number" id="minPrice" name="minPrice" value="<%= searchParams.minPrice || '' %>">
+                </div>
+                <div class="filter-group">
+                    <label for="maxPrice">Max Price:</label>
+                    <input type="number" id="maxPrice" name="maxPrice" value="<%= searchParams.maxPrice || '' %>">
+                </div>
+                <div class="filter-group">
+                    <label for="sort">Sort By:</label>
+                    <select id="sort" name="sort">
+                        <option value="priceAsc" <%= searchParams.sort === 'priceAsc' ? 'selected' : '' %>>Price Low to High</option>
+                        <option value="priceDesc" <%= searchParams.sort === 'priceDesc' ? 'selected' : '' %>>Price High to Low</option>
+                        <option value="rating" <%= searchParams.sort === 'rating' ? 'selected' : '' %>>Rating</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Search</button>
+            </div>
+        </form>
 
-            <!-- Search Results -->
-            <div id="book-results">
-                <% if (books.length === 0) { %>
-                    <p>No books found.</p>
-                <% } else { %>
-                    <div class="book-list">
-                        <% books.forEach(book => { %>
-                            <div class="book-item">
-                                <img src="<%= book.image %>" alt="<%= book.title %>">
+        <!-- Search Results -->
+        <div id="book-results" class="book-results">
+            <% if (books.length === 0) { %>
+                <p>No books found.</p>
+            <% } else { %>
+                <div class="book-list">
+                    <% books.forEach(book => { %>
+                        <div class="book-item">
+                            <img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-image">
+                            <div class="book-details">
                                 <h3><%= book.title %></h3>
                                 <p>by <%= book.author %></p>
                                 <p>Price: Rs. <%= book.price %></p>
-                                <p>Rating: <%= book.rating %></p>
+                                <p>Rating: <%= book.rating %> <i class="fas fa-star"></i></p>
                                 <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
                             </div>
-                        <% }) %>
-                    </div>
-                <% } %>
-            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
         </div>
-    </section>
+    </div>
+</section>
 
-    <script>
-        $(document).ready(function() {
-            $('#search-form').on('submit', function(event) {
-                event.preventDefault();
-                const queryParams = $(this).serialize();
-                window.location.href = `/search?${queryParams}`;
-            });
+<script>
+    $(document).ready(function() {
+        $('#search-form').on('submit', function(event) {
+            event.preventDefault();
+            const queryParams = $(this).serialize();
+            window.location.href = `/search?${queryParams}`;
+        });
 
-            $('#book-results').on('click', '.add-to-cart', function() {
-                const bookId = $(this).data('id');
-                $.post('/add-to-cart', { bookId }, function(response) {
-                    Swal.fire({
-                        title: 'Added to Cart',
-                        text: 'The book has been added to your cart.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                }).fail(function() {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'There was an error adding the book to your cart.',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
+        $('#book-results').on('click', '.add-to-cart', function() {
+            const bookId = $(this).data('id');
+            $.post('/add-to-cart', { bookId }, function(response) {
+                Swal.fire({
+                    title: 'Added to Cart',
+                    text: 'The book has been added to your cart.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            }).fail(function() {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'There was an error adding the book to your cart.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
                 });
             });
         });
-    </script>
+    });
+</script>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.book-search {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.book-results {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.book-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.book-item {
+    flex: 1;
+    min-width: 200px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.book-details {
+    padding: 15px;
+}
+
+.book-details h3 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.book-details p {
+    margin: 5px 0;
+}
+
+.book-details .btn {
+    margin-top: 10px;
+}
+</style>
