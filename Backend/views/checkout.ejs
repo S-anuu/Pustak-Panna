@@ -72,7 +72,6 @@
                                 </div>
                             </div> -->
                         </div>
-                    </form>
                     <!--/ End Form -->
                 </div>
             </div>
@@ -94,19 +93,19 @@
                     <div class="single-widget">
                         <h2>Payments</h2>
                         <div class="content">
-                            <div class="checkbox">
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="paymentMethod" value="esewa"> eSewa
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="paymentMethod" value="khalti"> Khalti
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="paymentMethod" value="creditCard"> Credit/Debit Card
-                                </label>
-                                <label class="checkbox-inline">
-                                    <input type="radio" name="paymentMethod" value="cashOnDelivery"> Cash On Delivery
-                                </label>
+                            <div style="padding: 20px; margin: 0 10px;">
+                            <!-- <div class="checkbox"> -->
+                                <input type="radio" name="paymentMethod" value="esewa" id="esewa"> 
+                                <label for="esewa">eSewa</label> <br>
+
+                                <input type="radio" name="paymentMethod" value="khalti" id="khalti">
+                                <label for="khalti">Khalti</label> <br>
+
+                                <input type="radio" name="paymentMethod" value="creditCard" id="creditCard">
+                                <label for="creditCard">Credit/Debit Card</label> <br>
+
+                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cod">
+                                <label for="cod">Cash On Delivery</label> <br>
                             </div>
                         </div>
                     </div>
@@ -128,6 +127,7 @@
                     </div>
                     <!--/ End Button Widget -->
                 </div>
+                    </form>
             </div>
         </div>
     </div>
