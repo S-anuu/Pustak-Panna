@@ -85,7 +85,7 @@
                                     <li class="last">You Pay<span class="total-pay">Rs.<%= cartItems.reduce((acc, item) => acc + item.bookId.price * item.quantity, 0) + 200 %></span></li>
                                 </ul>
                                 <div class="button5">
-                                    <a href="/checkout" class="btn">Checkout</a>
+                                    <a href="#" id="checkout-btn" class="btn">Checkout</a>
                                     <a href="/index" class="btn">Continue shopping</a>
                                 </div>
                             </div>
@@ -225,4 +225,25 @@ document.querySelector('#remove-coupon-btn').addEventListener('click', function(
 
     alert('Coupon removed successfully!');
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const checkoutButton = document.querySelector('#checkout-btn');
+    const appliedCoupon = document.querySelector('#applied-coupon-code').innerText.trim();
+
+    if (checkoutButton) {
+        checkoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Construct the URL with the coupon code as a query parameter
+            let checkoutUrl = '/checkout';
+            if (appliedCoupon) {
+                checkoutUrl += `?coupon=${encodeURIComponent(appliedCoupon)}`;
+            }
+
+            // Redirect to the checkout page
+            window.location.href = checkoutUrl;
+        });
+    }
+});
+
 </script>

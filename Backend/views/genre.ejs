@@ -9,7 +9,9 @@
                             <% books.forEach(function(book) { %>
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                                     <div class="single-book">
+                                        <a href="/book/<%= book.slug %>">
                                         <div class="book-img">
+
                                             <img src="<%= book.imageURL %>" alt="<%= book.title %>">
                                         </div>
                                         <div class="book-info">
@@ -18,9 +20,10 @@
                                             <p class="book-price">Rs. <%= book.price %></p>
                                             <form action="/cart/add" method="POST">
                                                 <input type="hidden" name="bookId" value="<%= book._id %>">
-                                                <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                                                <button><a href="#" class="add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a></button>
                                             </form>
                                         </div>
+                                        </a>
                                     </div>
                                 </div>
                             <% }); %>
@@ -85,7 +88,7 @@
             margin-bottom: 10px;
         }
 
-        .genre .add-to-cart-btn {
+        .genre .add-to-cart{
             background: #ff4c3b;
             color: #fff;
             padding: 10px 20px;

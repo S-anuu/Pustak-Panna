@@ -5,9 +5,11 @@
                 <h2 class="section-title">Best Sellers</h2>
                 <div class="book-list">
                     <div class="row">
+                        
                         <% if (books && books.length > 0) { %>
                             <% books.forEach(function(book) { %>
                                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                                    <a href="/book/<%= book.slug %>">
                                     <div class="single-book">
                                         <div class="book-img">
                                             <img src="<%= book.imageURL %>" alt="<%= book.title %>">
@@ -18,10 +20,11 @@
                                             <p class="book-price">Rs. <%= book.price %></p>
                                             <form action="/cart/add" method="POST">
                                                 <input type="hidden" name="bookId" value="<%= book._id %>">
-                                                <button type="submit" class="btn add-to-cart-btn">Add to Cart</button>
+                                                <button><a href="#" class="add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a></button>
                                             </form>
                                         </div>
                                     </div>
+                                </a>
                                 </div>
                             <% }); %>
                         <% } else { %>
@@ -85,7 +88,7 @@
             margin-bottom: 10px;
         }
 
-        .best-sellers .add-to-cart-btn {
+        .best-sellers .add-to-cart{
             background: #ff4c3b;
             color: #fff;
             padding: 10px 20px;

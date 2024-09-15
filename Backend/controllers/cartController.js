@@ -2,6 +2,7 @@ const CartItem = require("../models/CartItem")
 //const mongoose = require('mongoose');
 const Book = require('../models/Book')
 const Cart = require('../models/Cart')
+const Coupon = require('../models/Coupon')
 
 exports.addToCart = async (req, res) => {
     const { userId, bookId, quantity } = req.body
@@ -114,34 +115,92 @@ exports.deleteCartItem = async (req, res) => {
 
 exports.getCheckout = async (req, res) => {
     try {
-        // Assuming cart items are stored in the session
-        // const cartItems = req.session.cartItems || [];
-        
-        // Alternatively, if you are using a database, fetch cart items from the database
-        // const cartItems = await Cart.find({ userId: req.user._id }).populate('book');
+        const cartItems = await CartItem.find({ userId: req.user._id }).populate('bookId');
+        const shippingCost = 200;
 
-        const cartItems = await CartItem.find({userId: req.user._id}).populate('bookId');
+        // Retrieve coupon code from request body, if available
+        const appliedCoupon = req.body.appliedCoupon; // Assumes that appliedCoupon is sent in the request body
 
-        const shippingCost = 200; // This can also be dynamic based on user location or cart value
+        // Fetch the coupon from the database if there's an applied coupon
+        let coupon = null;
+        if (appliedCoupon) {
+            coupon = await Coupon.findOne({ code: appliedCoupon, userId: req.user._id });
+        }
 
-        // Calculate subtotal
-        const subtotal = cartItems.reduce((total, item) => (total + (item.bookId.price * item.quantity)), 0);
+        console.log(coupon);
 
-        // Calculate total price
-        const total = subtotal + shippingCost;
+        const subtotal = cartItems.reduce((total, item) => total + (item.bookId.price * item.quantity), 0);
+        const discount = coupon ? coupon.discount : 0;
+        console.log(discount);
+
+        const discountedSubtotal = subtotal - discount;
+        const total = discountedSubtotal + shippingCost;
 
         res.render('checkout', { 
             title: 'Pustak-Panna', 
-            pageStyles: '', 
-            headerStyle: 'header', 
             cartItems, 
-            shippingCost: shippingCost, 
-            subtotal: subtotal, 
-            total 
+            shippingCost, 
+            subtotal: discountedSubtotal, 
+            total, 
+            discount, // Pass discount to the view
+            hasDiscount: coupon ? true : false, // Pass whether the discount was applied
+            appliedCoupon, // Pass applied coupon code to the view
+            pageStyles: '',
+            headerStyle: 'header'
         });
     } catch (error) {
         console.error('Error fetching checkout data:', error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
+exports.postCheckout = async (req, res) => {
+    try {
+        const { paymentMethod, address1, phone, email } = req.body;
+        const userId = req.user._id; // Assuming user is authenticated
+
+        // Fetch cart items
+        const cartItems = await CartItem.find({ userId }).populate('bookId');
+        const subtotal = cartItems.reduce((total, item) => total + (item.bookId.price * item.quantity), 0);
+
+        // Fetch applied coupon
+        let coupon = null;
+        if (req.body.appliedCoupon) {
+            coupon = await Coupon.findOne({ code: req.body.appliedCoupon, userId });
+        }
+        const discount = coupon ? coupon.discount : 0;
+
+        const shippingCost = 200;
+        const discountedSubtotal = subtotal - discount;
+        const total = discountedSubtotal + shippingCost;
+
+        // Create new order
+        const order = new Order({
+            userId,
+            items: cartItems.map(item => ({
+                bookId: item.bookId._id,
+                quantity: item.quantity,
+                price: item.bookId.price
+            })),
+            total,
+            shippingCost,
+            discount,
+            paymentMethod,
+            address: address1,
+            phone,
+            email
+        });
+
+        await order.save();
+
+        // Optionally, clear cart items after order is placed
+        await CartItem.deleteMany({ userId });
+
+        // Redirect to a confirmation page or show success message
+        res.redirect('/order-success'); // You should define this route to show the success message
+
+    } catch (error) {
+        console.error('Error placing order:', error);
+        res.status(500).send('Internal Server Error');
+    }
+}

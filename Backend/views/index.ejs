@@ -33,7 +33,7 @@
                                 <div class="button-head">
                                     <div class="product-action">
                                         <a data-toggle="modal" data-target="#exampleModal" title="Quick View" href="/book/<%= book.slug %>"><i class="ti-eye"></i><span>Quick Shop</span></a>
-                                        <a title="Wishlist" href="cart.html"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
+                                        <a title="Wishlist" href="/cart"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
                                     </div>
                                     <div class="product-action-2">
                                         <a href="#" class="buy add-to-cart" data-id="<%= book._id %>" title="Add to cart">Add to cart</a>
@@ -62,7 +62,7 @@
 <!-- End Most Popular Area -->
 
 <!-- Start Voucher Section -->
-<section class="voucher-section section">
+<div class="voucher-section">
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -72,24 +72,37 @@
             </div>
         </div>
         <div class="row">
-            <% if (coupons && coupons.length > 0) { %>
-                <% coupons.forEach(coupon => { %>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <div class="single-voucher">
-                            <h4 class="voucher-code">Code: <%= coupon.code %></h4>
-                            <p class="voucher-description"><%= coupon.description %></p>
-                            <p class="voucher-discount">Discount: <%= coupon.discount %>%</p>
-                            <p class="voucher-validity">Valid Until: <%= coupon.expiresAt.toDateString() %></p>
+            <% coupons.forEach(coupon => { %>
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="single-voucher">
+                        <div class="voucher-info">
+                            <p class="voucher-code" id="code-<%= coupon._id %>">
+                                <%= coupon.code %>
+                            </p>
+                            <textarea id="hidden-code-<%= coupon._id %>" style="position: absolute; left: -9999px;">
+                                <%= coupon.code %>
+                            </textarea>
+                            <button class="copy-btn" data-target="#hidden-code-<%= coupon._id %>">
+                                Copy
+                            </button>
+                        </div>
+                        <div class="voucher-description">
+                            <p><%= coupon.description %></p>
+                        </div>
+                        <div class="voucher-discount">
+                            <p>Discount: <%= coupon.discount %></p>
+                        </div>
+                        <div class="voucher-validity">
+                            <p>Valid until: <%= coupon.expiresAt %></p>
                         </div>
                     </div>
-                <% }); %>
-            <% } else { %>
-                <p>No coupons available at the moment.</p>
-            <% } %>
+                </div>
+            <% }); %>
         </div>
     </div>
-</section>
+</div>
 <!-- End Voucher Section -->
+
 
 <!-- Start Shop Home List  -->
 <section class="shop-home-list section">
@@ -197,7 +210,29 @@
 <!-- End Shop Home List  -->
 
 
-<!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize ClipboardJS
+        const clipboard = new ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+                return document.querySelector(trigger.getAttribute('data-target'));
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            // Optionally show a message or animation to indicate the code has been copied
+            alert('Coupon code copied to clipboard!');
+        });
+
+        clipboard.on('error', function(e) {
+            // Optionally show an error message if copying fails
+            alert('Failed to copy coupon code.');
+        });
+    });
+</script>
+
+
 <style>
     /* Start Voucher Section Styling */
 .voucher-section {

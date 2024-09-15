@@ -7,7 +7,10 @@
                     <h2>Checkout</h2>
                     <p>Fill in the details below to complete your purchase.</p>
                     <!-- Form -->
-                    <form class="form" method="post" action="/checkout">
+                    <form class="form" method="post" action="/placeOrder">
+                        <!-- Hidden input for coupon code -->
+                        <input type="hidden" name="appliedCoupon" id="applied-coupon-input" value="<%= appliedCoupon %>">
+                        
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
@@ -24,7 +27,7 @@
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>Middle Name</label>
-                                    <input type="text" name="middlename" value="<%= user.middlename %>" placeholder="Enter your last name" >
+                                    <input type="text" name="middlename" value="<%= user.middlename %>" placeholder="Enter your middle name">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12">
@@ -39,12 +42,6 @@
                                     <input type="text" name="lastName" value="<%= user.lastname %>" placeholder="Enter your last name" required="required">
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label>Country<span>*</span></label>
-                                    <input type="text" name="country" value="<%= user.country %>" placeholder="Enter your country" required="required">
-                                </div>
-                            </div> -->
                             <div class="col-lg-6 col-md-6 col-12">
                                 <div class="form-group">
                                     <label>City<span>*</span></label>
@@ -65,14 +62,8 @@
                                     <input type="text" name="address1" value="<%= user.address %>" placeholder="Enter your address" required="required">
                                 </div>
                             </div>
-                            <!-- <div class="col-lg-6 col-md-6 col-12">
-                                <div class="form-group">
-                                    <label>Address Line 2</label>
-                                    <input type="text" name="address2" value="<%= user.address2 %>" placeholder="Enter your address">
-                                </div>
-                            </div> -->
                         </div>
-                    <!--/ End Form -->
+                        <!-- / End Form -->
                 </div>
             </div>
             <div class="col-lg-4 col-12">
@@ -84,17 +75,21 @@
                             <ul>
                                 <li>Sub Total<span>Rs.<%= subtotal %></span></li>
                                 <li>(+) Shipping<span>Rs.<%= shippingCost %></span></li>
+
+                                <% if (hasDiscount) { %>
+                                    <li>(-) Discount<span>Rs.<%= subtotal * (discount / 100) %></span></li>
+                                <% } %>
+
                                 <li class="last">Total<span>Rs.<%= total %></span></li>
                             </ul>
                         </div>
                     </div>
-                    <!--/ End Order Widget -->
+                    <!-- / End Order Widget -->
                     <!-- Order Widget -->
                     <div class="single-widget">
                         <h2>Payments</h2>
                         <div class="content">
                             <div style="padding: 20px; margin: 0 10px;">
-                            <!-- <div class="checkbox"> -->
                                 <input type="radio" name="paymentMethod" value="esewa" id="esewa"> 
                                 <label for="esewa">eSewa</label> <br>
 
@@ -109,14 +104,14 @@
                             </div>
                         </div>
                     </div>
-                    <!--/ End Order Widget -->
+                    <!-- / End Order Widget -->
                     <!-- Payment Method Widget -->
                     <div class="single-widget payment-method">
                         <!-- <div class="content">
                             <img src="images/payment-method.png" alt="Payment Methods">
                         </div> -->
                     </div>
-                    <!--/ End Payment Method Widget -->
+                    <!-- / End Payment Method Widget -->
                     <!-- Button Widget -->
                     <div class="single-widget get-button">
                         <div class="content">
@@ -125,14 +120,15 @@
                             </div>
                         </div>
                     </div>
-                    <!--/ End Button Widget -->
+                    <!-- / End Button Widget -->
                 </div>
                     </form>
             </div>
         </div>
     </div>
 </section>
-<!--/ End Checkout -->
+<!-- / End Checkout -->
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Debugging: Check if the script is running
@@ -141,6 +137,7 @@
         const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
         const proceedButton = document.querySelector('.get-button .btn');
         const form = document.querySelector('.form');
+        const appliedCouponInput = document.querySelector('#applied-coupon-input');
 
         if (!proceedButton) {
             console.error("Proceed button not found!");
@@ -194,12 +191,10 @@
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Debugging: Confirm that the form will be submitted
-                        console.log("Submitting form...");
-                        form.submit();
+                        // Redirect to the index page
+                        window.location.href = '/orders';
                     }
-                });
-            } else {
+                });} else {
                 // Debugging: Normal form submission for other payment methods
                 console.log("Submitting form for other payment methods...");
                 form.submit();
