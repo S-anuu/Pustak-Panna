@@ -12,12 +12,18 @@
         <h3>Books Ordered</h3>
         <ul>
             <% order.items.forEach(item => { %>
-                <li><%= item.bookId.title %> (x<%= item.quantity %>) - Rs. <%= item.price %></li>
+                <li>
+                    <span class="book-title"><%= item.bookId.title %></span>
+                    <span class="item-quantity"> (x<%= item.quantity %>)</span>
+                    <span class="item-price"> - Rs. <%= item.price %></span>
+                </li>
             <% }) %>
         </ul>
-        <p><strong>Total Price:</strong> Rs. <%= order.total %></p>
-        <p><strong>Shipping Cost:</strong> Rs. <%= order.shippingCost %></p>
-        <p><strong>Discount:</strong> Rs. <%= order.discount %></p>
+        <div class="summary">
+            <p><strong>Total Price:</strong> Rs. <%= order.total %></p>
+            <p><strong>Shipping Cost:</strong> Rs. <%= order.shippingCost %></p>
+            <p><strong>Discount:</strong> Rs. <%= order.discount %></p>
+        </div>
     </div>
 
     <div class="order-status">
@@ -32,52 +38,84 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7f9fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 .order-details-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
     text-align: center;
+    color: #007bff;
     margin-bottom: 20px;
 }
 
 .order-info,
 .items-info,
 .order-status {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.order-info h2,
+.items-info h3,
+.order-status h3 {
+    color: #333;
 }
 
 .order-info p,
 .items-info p,
 .order-status p {
     font-size: 1.1em;
+    line-height: 1.6;
 }
 
 .items-info ul {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
+    margin: 0;
 }
 
 .items-info li {
-    margin: 0;
-    padding: 5px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.book-title {
+    font-weight: bold;
+}
+
+.item-quantity,
+.item-price {
+    color: #555;
+}
+
+.summary p {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
 }
 
 .btn {
     background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 4px;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 6px;
     text-decoration: none;
+    font-size: 1em;
+    text-align: center;
+    display: inline-block;
 }
 
 .btn:hover {
