@@ -799,7 +799,8 @@ pre code {
     width: 100%;
     min-height: 1px;
     padding-right: 15px;
-    padding-left: 15px
+    padding-left: 15px;
+    max-block-size: 50%;
 }
 
 .col {
@@ -886,7 +887,7 @@ pre code {
 .col-12 {
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
-    max-width: 100%
+    max-width: 100%;
 }
 
 .order-first {
