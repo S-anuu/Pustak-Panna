@@ -38,6 +38,20 @@
         <div id="book-results" class="book-results">
             <% if (books.length === 0) { %>
                 <p>No books found.</p>
+                <div class="suggestion-box">
+                    <h2>Suggest a Book</h2>
+                    <form id="suggestion-form" class="suggestion-form">
+                        <div class="form-group">
+                            <label for="suggestion-title">Book Title:</label>
+                            <input type="text" id="suggestion-title" name="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="suggestion-author">Author:</label>
+                            <input type="text" id="suggestion-author" name="author" required>
+                        </div>
+                        <button type="submit" class="btn">Submit Suggestion</button>
+                    </form>
+                </div>
             <% } else { %>
                 <div class="book-list">
                     <% books.forEach(book => { %>
@@ -58,33 +72,36 @@
     </div>
 </section>
 
-<script>
-    $(document).ready(function() {
-        $('#search-form').on('submit', function(event) {
-            event.preventDefault();
-            const queryParams = $(this).serialize();
-            window.location.href = `/search?${queryParams}`;
-        });
 
-        $('#book-results').on('click', '.add-to-cart', function() {
-            const bookId = $(this).data('id');
-            $.post('/add-to-cart', { bookId }, function(response) {
-                Swal.fire({
-                    title: 'Added to Cart',
-                    text: 'The book has been added to your cart.',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            }).fail(function() {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'There was an error adding the book to your cart.',
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                });
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+$(document).ready(function() {
+    $('#suggestion-form').on('submit', function(event) {
+        event.preventDefault();
+        const suggestionData = $(this).serialize();
+        
+        $.post('/suggestion', suggestionData, function(response) {
+            Swal.fire({
+                title: 'Success!',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                // Redirect to the home page after success
+                window.location.href = '/'; // Redirecting to the home page
+            });
+        }).fail(function() {
+            Swal.fire({
+                title: 'Error',
+                text: 'There was an error submitting your suggestion.',
+                icon: 'error',
+                confirmButtonText: 'OK'
             });
         });
     });
+});
+
 </script>
 
 <style>
@@ -197,5 +214,34 @@ h1 {
 
 .book-details .btn {
     margin-top: 10px;
+}
+
+.suggestion-box {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.suggestion-box h2 {
+    margin-bottom: 15px;
+}
+
+.suggestion-form .form-group {
+    margin-bottom: 15px;
+}
+
+.suggestion-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.suggestion-form .form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 </style>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // Import the User model
 const authenticateToken = require('../middleware/auth'); // Ensure the path is correct
+const Suggestion = require('../models/Suggestion')
 
 // Route to get user profile
 router.get('/profile', authenticateToken, async (req, res) => {

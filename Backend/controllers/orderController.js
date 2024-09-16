@@ -120,7 +120,7 @@ exports.getOrders = async (req, res) => {
     console.log(req.user)
     try {
         const orders = await Order.find({ userId: req.user._id }).populate('items.bookId');
-        console.log(orders)
+        
         res.render('orders', {
             title: 'Your Orders',
             orders,
@@ -147,16 +147,22 @@ exports.getIndividualOrder = async (req, res) => {
 
 exports.getOrderDetails = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.orderId).populate('items.bookId');
+        const order = await Order.findById(req.params.id).populate('items.bookId');
+        console.log("params:",req.params)
+
         if (!order) {
             return res.status(404).send('Order not found');
         }
+        console.log(req.params)
+        console.log(order)
+
         res.render('orderDetails', {
             title: 'Order Details',
             order,
             pageStyles: '',
             headerStyle: 'header'
         });
+
     } catch (error) {
         console.error('Error fetching order details:', error);
         res.status(500).send('Internal Server Error');
