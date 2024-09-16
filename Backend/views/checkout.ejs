@@ -75,7 +75,7 @@
                             <ul>
                                 <li>Sub Total<span>Rs.<%= subtotal %></span></li>
                                 <li>(+) Shipping<span>Rs.<%= shippingCost %></span></li>
-                                
+
                                 <% if (hasDiscount) { %>
                                     <li>(-) Discount<span>Rs.<%= subtotal * (discount / 100) %></span></li>
                                 <% } %>
@@ -99,8 +99,8 @@
                                 <input type="radio" name="paymentMethod" value="creditCard" id="creditCard">
                                 <label for="creditCard">Credit/Debit Card</label> <br>
 
-                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cod">
-                                <label for="cod">Cash On Delivery</label> <br>
+                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery">
+                                <label for="cashOnDelivery">Cash On Delivery</label> <br>
                             </div>
                         </div>
                     </div>
@@ -133,9 +133,6 @@
     document.addEventListener("DOMContentLoaded", function() {
         // Debugging: Check if the script is running
         console.log("Script loaded and running.");
-
-        const applyCouponButton = document.querySelector('#apply-coupon-btn'); //2
-        const couponInput = document.querySelector('#coupon-code');
 
         const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
         const proceedButton = document.querySelector('.get-button .btn');
@@ -185,27 +182,25 @@
             }
 
             // If Cash on Delivery is selected
-            //if (selectedPaymentMethod.value === 'cashOnDelivery') {
+            if (selectedPaymentMethod.value === 'cashOnDelivery') {
                 // Show SweetAlert for successful order placement
                 Swal.fire({
                     title: 'Order Placed!',
                     text: 'Your order has been placed successfully.',
                     icon: 'success',
                     confirmButtonText: 'OK'
-                }).then((result) => {
+                })
+                .then((result) => {
                     if (result.isConfirmed) {
                         // Redirect to the index page
-                        // window.location.href = '/orders';
                         form.submit();
                     }
-                // });} else if (selectedPaymentMethod.value === 'esewa'){
-                //     window.location.href = '/pay-with-esewa';
-                    
-                // }else {
-                // // Debugging: Normal form submission for other payment methods
-                // console.log("Submitting form for other payment methods...");
-                // 
-            
+
+                });
+            } 
+             else {
+                form.submit();
+            }
         });
     });
 </script>
