@@ -22,10 +22,6 @@ router.post('/checkout', cartController.postCheckout)
 router.post('/placeOrder', orderController.placeOrder)
 
 router.get('/orderpay/success', orderController.paySuccess)
-
 router.get('/orderpay/faliure', orderController.payFail)
-
-// Route to cancel an order
-router.post("/orders/cancel/:orderId", orderController.postCancelOrder);
 
 module.exports = router;

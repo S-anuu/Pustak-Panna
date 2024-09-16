@@ -57,7 +57,7 @@ exports.deleteCoupon = async (req, res) => {
 
 exports.applyCoupon = async (req, res) => {
     const { couponCode } = req.body;
-    console.log(couponCode)
+
     // Basic validation for couponCode
     if (!couponCode || typeof couponCode !== 'string') {
         return res.status(400).json({ success: false, message: 'Invalid coupon code' });

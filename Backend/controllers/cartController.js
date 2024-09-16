@@ -5,31 +5,15 @@ const Cart = require('../models/Cart')
 const Coupon = require('../models/Coupon')
 const Order = require('../models/Order')
 
-exports.addToCart = async (req, res, next) => {
-    try {
-        const { userId, bookId, quantity } = req.body;
+exports.addToCart = async (req, res) => {
+    const { userId, bookId, quantity } = req.body
+    const cartItem = new CartItem({
+        userId, bookId, quantity
+    })
+    await cartItem.save()
+    res.json(cartItem)
 
-        // Fetch the book title from the Book model
-        const book = await Book.findById(bookId);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-
-        const cartItem = new CartItem({
-            userId,
-            bookId,
-            quantity,
-            title: book.bookName // Assuming bookName is the field in the Book model
-        });
-
-        await cartItem.save();
-
-        res.status(201).send('Item added to cart');
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Error adding item to cart');
-    }
-};
+}
 
 exports.getCartItems = async (req, res) => {
     const cartItems = await CartItem.find({userId: req.params.userId}).populate('bookId')
