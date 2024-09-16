@@ -205,3 +205,54 @@ exports.postCheckout = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+exports.getCheckoutForBook = async (req, res) => {
+    try {
+        const bookId = req.params.id; // Get book ID from request parameters
+        const book = await Book.findById(bookId); // Assuming Book is your Mongoose model
+
+        if (!book) {
+            return res.status(404).send('Book not found');
+        }
+
+        // Set a default shipping cost
+        const shippingCost = 200;
+
+        // Retrieve coupon code from request body, if available
+        const appliedCoupon = req.body.appliedCoupon; // Assumes that appliedCoupon is sent in the request body
+
+        // Fetch the coupon from the database if there's an applied coupon
+        let coupon = null;
+        if (appliedCoupon) {
+            coupon = await Coupon.findOne({ code: appliedCoupon, userId: req.user._id });
+        }
+
+        console.log(coupon);
+
+        // Calculate subtotal for the specific book
+        const quantity = 1; // Since it's a single book, quantity is 1
+        const subtotal = book.price * quantity;
+        const discount = coupon ? coupon.discount : 0;
+        console.log(discount);
+
+        const discountedSubtotal = subtotal - discount;
+        const total = discountedSubtotal + shippingCost;
+
+        res.render('checkout', { 
+            title: 'Pustak-Panna', 
+            book, 
+            shippingCost, 
+            subtotal: discountedSubtotal, 
+            total, 
+            discount, // Pass discount to the view
+            hasDiscount: coupon ? true : false, // Pass whether the discount was applied
+            appliedCoupon, // Pass applied coupon code to the view
+            pageStyles: '',
+            headerStyle: 'header'
+        });
+    } catch (error) {
+        console.error('Error fetching checkout data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+

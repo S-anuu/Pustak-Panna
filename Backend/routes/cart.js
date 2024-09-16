@@ -16,6 +16,7 @@ router.get('/cart', authMiddleware, cartMiddleware,cartController.getCart);
 router.delete('/cart/delete/:id', cartController.deleteCartItem);
 
 router.post('/checkout/apply-coupon', couponController.applyCoupon);
+router.get('/checkout/:id', cartController.getCheckoutForBook);
 
 router.post('/checkout', cartController.postCheckout)
 

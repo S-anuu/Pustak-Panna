@@ -133,8 +133,10 @@ exports.searchBooks = async (req, res) => {
         const filter = {};
         if (title) filter.title = new RegExp(title, 'i'); // Case-insensitive search
         if (author) filter.author = new RegExp(author, 'i');
-        if (minPrice) filter.price = { $gte: minPrice };
-        if (maxPrice) filter.price = { ...filter.price, $lte: maxPrice };
+        if (minPrice && !isNaN(minPrice)) filter.price = { $gte: parseFloat(minPrice) };
+        if (maxPrice && !isNaN(maxPrice)) filter.price = { ...filter.price, $lte: parseFloat(maxPrice) };
+
+        console.log('Filter used for search:', filter); // For debugging
 
         let sortOption = {};
         switch (sort) {
@@ -151,8 +153,14 @@ exports.searchBooks = async (req, res) => {
                 sortOption = {};
         }
 
-        const books = await Book.find(filter).sort(sortOption);
-        
+
+        // For pagination (Optional)
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10; // Set the limit of books per page
+        const books = await Book.find(filter)
+            .sort(sortOption)
+            .skip((page - 1) * limit)
+            .limit(limit);
         
         res.render('search', {
             title: 'Search Results',
@@ -162,7 +170,7 @@ exports.searchBooks = async (req, res) => {
             headerStyle: 'header'
         });
     } catch (error) {
-        console.error('Error searching for books:', error);
+        console.error('Error searching for books:', error.message, error.stack);
         res.status(500).send('Internal Server Error');
     }
 };
