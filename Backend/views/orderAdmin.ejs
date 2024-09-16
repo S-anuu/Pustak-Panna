@@ -25,7 +25,13 @@
                         <td>
                             <ul>
                                 <% order.items.forEach(item => { %>
-                                    <li><%= item.bookId.title %> (x<%= item.quantity %>)</li>
+                                    <li>
+                                        <% if (item.bookId && item.bookId.title) { %>
+                                            <%= item.bookId.title %> (x<%= item.quantity %>)
+                                        <% } else { %>
+                                            Unknown Book (x<%= item.quantity %>)
+                                        <% } %>
+                                    </li>
                                 <% }) %>
                             </ul>
                         </td>
@@ -34,7 +40,7 @@
                         <td><%= new Date(order.createdAt).toLocaleString() %></td>
                         <td>
                             <a href="/admin/orders/<%= order._id %>" class="btn btn-details">Order Details</a>
-
+            
                             <% if (order.status === 'Pending') { %>
                                 <form action="/admin/orders/<%= order._id %>/deliver" method="POST" style="display: inline;">
                                     <button type="submit" class="btn btn-delivered">Mark as Delivered</button>

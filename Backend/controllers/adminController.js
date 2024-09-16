@@ -69,9 +69,11 @@ exports.getDashboard = (req, res) => {
 
 exports.getOrdersAdmin = async (req, res) => {
     try {
-        // Populating the userId field (referencing the User model)
-        const orders = await Order.find().populate('userId', 'name email');
-        
+        // Populating the userId and the bookId for each item in the order
+        const orders = await Order.find()
+            .populate('userId', 'firstname middlename lastname email')
+            .populate('items.bookId', 'title'); // Populating bookId with title
+
         res.render('orderAdmin', {
             orders,
             title: 'PustakPanna',
@@ -86,8 +88,8 @@ exports.getOrdersAdmin = async (req, res) => {
 
 exports.getOrderDetails = async (req, res) => {
     try {
-        console.log("Order ID:", req.params._id);
-        const order = await Order.findById(req.params._id)
+        console.log("Order ID:", req.params.id);
+        const order = await Order.findById(req.params.id)
             .populate('userId', 'name email')
             .populate('items.bookId', 'title');
 
@@ -95,7 +97,11 @@ exports.getOrderDetails = async (req, res) => {
             return res.status(404).send('Order not found');
         }
 
-        res.render('orderDetailsAdmin', { order });
+        res.render('orderDetailsAdmin', { order,
+            title: 'PustakPanna',
+            pageStyles: '',
+            headerStyle: 'admin-header'
+         });
     } catch (error) {
         console.error('Error fetching order details:', error);
         res.status(500).send('Internal Server Error');
