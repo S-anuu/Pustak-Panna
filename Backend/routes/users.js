@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // Import the User model
 const authenticateToken = require('../middleware/auth'); // Ensure the path is correct
+const Suggestion = require('../models/Suggestion')
 
 // Route to get user profile
 router.get('/profile', authenticateToken, async (req, res) => {
@@ -18,4 +19,15 @@ router.get('/profile', authenticateToken, async (req, res) => {
     }
 });
 
+router.post('/suggestion', async (req, res) => {
+    try {
+        const { title, author } = req.body;
+        const newSuggestion = new Suggestion({ title, author });
+        await newSuggestion.save();
+        res.status(200).json({ message: 'Suggestion submitted successfully!' });
+    } catch (error) {
+        console.error('Error submitting suggestion:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 module.exports = router;

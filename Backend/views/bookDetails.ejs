@@ -51,33 +51,37 @@
             </div>
 
             <!-- Reviews Section -->
-            <section class="reviews section">
-                <div class="row">
-                    <div class="col-12">
-                        <h3>Reviews</h3>
-                        <% if (reviews.length > 0) { %>
-                            <% reviews.forEach(review => { %>
-                                <div class="review">
-                                    <div class="review-header">
-                                        <strong><%= review.userName %></strong>
-                                        <span class="review-date"><%= new Date(review.date).toLocaleDateString() %></span>
-                                    </div>
-                                    <div class="review-body">
-                                        <p><%= review.comment %></p>
-                                        <div class="review-rating">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <i class="fa <% if (review.rating >= i) { %>fa-star<% } else { %>fa-star-o<% } %>"></i>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        <% } else { %>
-                            <p>No reviews yet. Be the first to review!</p>
-                        <% } %>
+<section class="reviews section">
+    <div class="row">
+        <div class="col-12">
+            <h3>Reviews</h3>
+            <% if (reviews.length > 0) { %>
+                <% reviews.forEach(review => { %>
+                    <div class="review">
+                        <div class="review-header">
+                            <div class="name">
+                            <strong><%= review.userId.firstname %> <%= review.userId.lastname %></strong>
+                            </div>
+                            <div class="date">
+                            <span class="review-date"><%= new Date(review.date).toLocaleDateString() %></span>
+                            </div>
+                        </div>
+                        <div class="review-body">
+                            <p><%= review.comment %></p>
+                            <div class="review-rating">
+                                <% for (let i = 1; i <= 5; i++) { %>
+                                    <i class="fa <% if (review.rating >= i) { %>fa-star<% } else { %>fa-star-o<% } %>"></i>
+                                <% } %>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                <% }); %>
+            <% } else { %>
+                <p>No reviews yet. Be the first to review!</p>
+            <% } %>
+        </div>
+    </div>
+</section>
         </div>
     </section>
 </main>

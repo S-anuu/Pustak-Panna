@@ -13,6 +13,7 @@ const path = require('path');
 const bookController = require('../controllers/bookController');
 const couponController = require('../controllers/couponController')
 const adminController = require('../controllers/adminController')
+const Suggestion = require('../models/Suggestion')
 
 router.get('/api/dashboard-stats', async (req, res) => {
     try {
@@ -106,12 +107,19 @@ router.post('/refresh-token', (req, res) => {
 });
 
 // Admin dashboard route (protected)
-router.get('/admin-dashboard', isAdmin, (req, res) => {
-    res.render('admin-dashboard', {
-        title: 'Admin Dashboard',
-        pageStyles: 'admin-dashboard.css',
-        headerStyle: 'admin-header'
-    });
+router.get('/admin-dashboard', isAdmin, async (req, res) => {
+    try {
+        const suggestions = await Suggestion.find();
+        res.render('admin-dashboard', {
+            title: 'Admin Dashboard',
+            pageStyles: 'admin-dashboard.css',
+            headerStyle: 'admin-header',
+            suggestions // Pass the suggestions to the view if needed
+        });
+    } catch (error) {
+        console.error('Error fetching suggestions:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 router.get('/admin/books', bookController.getAllBooks);
@@ -162,6 +170,10 @@ router.post('/admin/coupons/add', couponController.addCoupon);
 router.delete('/admin/coupons/delete/:id', couponController.deleteCoupon);
 
 router.post('/admin/orders/:orderId/deliver', adminController.postDeliver);
+
+router.get('/suggestions', async (req, res) => {
+    
+});
 
 module.exports = router;
 

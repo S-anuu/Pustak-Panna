@@ -28,6 +28,28 @@
         </section>
     </main>
 </div>
+<section class="suggestions">
+    <h2>Book Suggestions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% suggestions.forEach(suggestion => { %>
+                <tr>
+                    <td><%= suggestion.title %></td>
+                    <td><%= suggestion.author %></td>
+                    <td><%= new Date(suggestion.date).toLocaleDateString() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</section>
+
 
 <script>
 // scripts/dashboard.js

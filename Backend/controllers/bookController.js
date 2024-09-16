@@ -141,7 +141,9 @@ exports.deleteBook = async(req, res, next) => {
     res.redirect('/admin/books')
 }
 
-exports.getBookDetails = async(req, res, next) => {
+const Review = require('../models/Review'); // Make sure to import the Review model
+
+exports.getBookDetails = async (req, res, next) => {
     try {
         // Extract the slug from the URL parameter
         const slug = req.params.slug;
@@ -153,21 +155,23 @@ exports.getBookDetails = async(req, res, next) => {
             return res.status(404).send('Book not found');
         }
 
-        // Fetch reviews if applicable
-        const reviews = []; 
+        // Fetch reviews for the book and populate user information (firstname, middlename, lastname)
+        const reviews = await Review.find({ bookId: book._id }).populate('userId', 'firstname middlename lastname');
 
+        // Render the book details page and pass the reviews
         res.render('bookDetails', {
             title: book.title,
             pageStyles: '',
             headerStyle: 'header',
             book,
-            reviews,
+            reviews,  // Pass reviews to the template
         });
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching book details:', err);
         res.status(500).send('Server Error');
     }
-}
+};
+
 
 // bookController.js
 exports.getNewReleases = async (req, res) => {
