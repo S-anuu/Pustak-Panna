@@ -105,104 +105,115 @@
 </script>
 
 <style>
-    .btn-secondary {
-        color: #fff;
-    }
+    
     .product-details {
-        padding: 40px 0;
-    }
-    .product-title {
-        font-size: 2em;
-        margin-bottom: 15px;
-    }
-    .product-info .author,
-    .product-info .genre,
-    .product-info .price,
-    .product-info .description {
-        margin-bottom: 15px;
-    }
-    .product-info .price .old {
-        text-decoration: line-through;
-        color: #888;
-        margin-right: 10px;
-    }
-    .product-info .price .discounted {
-        font-size: 1.5em;
-        color: #007bff;
-    }
-    .button-group {
-        margin-top: 20px;
-    }
-    .button-group .btn {
-        margin-right: 10px;
-    }
-    .rating-section {
-        margin-top: 20px;
-    }
-    .rating-section .rating {
-        font-size: 1.2em;
-        color: #f39c12;
-    }
-    .reviews {
-        margin-top: 40px;
-    }
-    .review {
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
-    .review-header {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    .review-date {
-        font-size: 0.9em;
-        color: #888;
-    }
-    .review-body {
-        margin-top: 10px;
-    }
-    .review-rating {
-        font-size: 1.2em;
-        color: #f39c12;
-    }
-    .fa-star {
-        color: #f39c12;
-    }
-    .fa-star-o {
-        color: #ccc;
-    }
-
-    .description-container {
-    position: relative;
+    padding: 40px 0;
+    max-width: 1200px; /* Adjust based on your design needs */
+    margin: 0 auto; /* Center the container */
 }
 
-.description {
+.product-images {
+    width: 100%;
+    height: 300px; /* Adjust as needed for consistent box size */
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* Show 5 lines */
-    -webkit-box-orient: vertical;
-    max-height: 7.5em; /* Adjust based on line height */
-    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.description.expanded {
-    -webkit-line-clamp: unset; /* Show all lines */
-    max-height: none;
+.product-images .main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images cover the container area */
 }
 
-.read-more {
+.product-info {
+    max-width: 100%; /* Ensure info does not exceed container width */
+}
+
+
+.product-title {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+.product-info .description {
+    max-height: 200px; /* Optional: Limit the height if description is too long */
+    overflow: auto; /* Add scroll if needed */
+}
+.product-info .author,
+.product-info .genre,
+.product-info .price,
+.product-info .description {
+    margin-bottom: 15px;
+}
+
+.product-info .genre {
+    font-style: italic;
+    color: #555; /* Make genre stand out */
+}
+
+.product-info .price .old {
+    text-decoration: line-through;
+    color: #888;
+    margin-right: 10px;
+}
+
+.product-info .price .discounted {
+    font-size: 1.5em;
     color: #007bff;
-    cursor: pointer;
-    display: inline-block;
+}
+
+.button-group {
+    margin-top: 20px;
+}
+
+.button-group .btn {
+    margin-right: 10px;
+}
+
+.rating-section {
+    margin-top: 20px;
+}
+
+.rating-section .rating {
+    font-size: 1.2em;
+    color: #f39c12;
+}
+
+.reviews {
+    margin-top: 40px;
+}
+
+.review {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.review-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.review-date {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.review-body {
     margin-top: 10px;
-    text-decoration: underline;
 }
 
-.read-more:hover {
-    color: #0056b3;
+.review-rating {
+    font-size: 1.2em;
+    color: #f39c12;
 }
 
+.fa-star {
+    color: #f39c12;
+}
 
+.fa-star-o {
+    color: #ccc;
+}
 </style>
