@@ -1,0 +1,126 @@
+<main class="orders-container">
+    <h1>All Orders</h1>
+    <% if (orders.length === 0) { %>
+        <p>No orders have been placed yet.</p>
+    <% } else { %>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Email</th>
+                    <th>Books Ordered</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% orders.forEach(order => { %>
+                    <tr>
+                        <td><%= order._id %></td>
+                        <td><%= order.userId.firstname %> <%= order.userId.middlename %> <%= order.userId.lastname %></td>
+                        <td><%= order.userId.email %></td>
+                        <td>
+                            <ul>
+                                <% order.items.forEach(item => { %>
+                                    <li><%= item.bookId.title %> (x<%= item.quantity %>)</li>
+                                <% }) %>
+                            </ul>
+                        </td>
+                        <td>Rs. <%= order.total %></td>
+                        <td><%= order.status %></td>
+                        <td><%= new Date(order.createdAt).toLocaleString() %></td>
+                        <td>
+                            <a href="/admin/orders/<%= order._id %>" class="btn btn-details">Order Details</a>
+
+                            <% if (order.status === 'Pending') { %>
+                                <form action="/admin/orders/<%= order._id %>/deliver" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-delivered">Mark as Delivered</button>
+                                </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } %>
+</main>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.orders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.orders-table th {
+    background-color: #007bff;
+    color: white;
+}
+
+.orders-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.orders-table ul {
+    list-style: none;
+    padding: 0;
+}
+
+.orders-table li {
+    margin: 0;
+    padding: 0;
+}
+
+.btn-details {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn-details:hover {
+    background-color: #218838;
+}
+
+.btn-delivered {
+    background-color: #ffc107;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-delivered:hover {
+    background-color: #e0a800;
+}
+</style>
