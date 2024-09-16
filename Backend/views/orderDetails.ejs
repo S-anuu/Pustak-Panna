@@ -2,25 +2,203 @@
     <section class="order-details">
         <div class="container">
             <h1>Order Details</h1>
+
             <div class="order-summary">
                 <h2>Order ID: <%= order._id %></h2>
-                <p>Date: <%= new Date(order.orderDate).toLocaleDateString() %></p>
-                <p>Total: Rs. <%= order.total %></p>
-                <p>Status: <%= order.status %></p>
+                <p><strong>Order Date:</strong> <%= new Date(order.orderDate).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                <p><strong>Status:</strong> <span class="status <%= order.status.toLowerCase() %>"><%= order.status %></span></p>
             </div>
 
-            <h2>Items:</h2>
-            <% if (order.items.length > 0) { %>
-                <ul>
-                    <% order.items.forEach(item => { %>
-                        <li>
-                            <strong><%= item.book.title %></strong> - Rs. <%= item.book.price %> x <%= item.quantity %>
-                        </li>
-                    <% }) %>
-                </ul>
-            <% } else { %>
-                <p>No items found.</p>
-            <% } %>
+            <div class="user-info">
+                <h3>User Information</h3>
+                <p><strong>Name:</strong> <%= order.userId.firstname %> <%= order.userId.middlename %> <%= order.userId.lastname %></p>
+                <p><strong>Email:</strong> <%= order.userId.email %></p>
+                <p><strong>Shipping Address:</strong> <%= order.address %></p>
+            </div>
+
+            <div class="order-items">
+                <h3>Order Items</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% order.items.forEach(item => { %>
+                            <tr>
+                                <td><%= item.bookId.title%></td>
+                                <td><%= item.quantity %></td>
+                                <td>Rs. <%= item.price %></td>
+                                <td>Rs. <%= item.price * item.quantity %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="payment-info">
+                <h3>Payment Details</h3>
+                <p><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+                <p><strong>Total Amount:</strong> Rs. <%= order.total %></p>
+            </div>
+
+            <div class="order-actions">
+                <button id="cancel-order-btn" class="btn btn-danger">Cancel Order</button>
+            </div>
         </div>
     </section>
 </main>
+
+<script>
+    document.getElementById('cancel-order-btn').addEventListener('click', function() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, cancel it!',
+            cancelButtonText: 'No, keep it'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/orders/cancel/<%= order._id %>`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire('Cancelled!', 'Your order has been cancelled.', 'success');
+                        window.location.href = '/orders';
+                    } else {
+                        Swal.fire('Error!', 'There was an issue cancelling your order.', 'error');
+                    }
+                });
+            }
+        });
+    });
+</script>
+<style>
+    /* Global Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+} */
+
+/* Heading Styling */
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #007bff;
+}
+
+h2, h3 {
+    font-size: 24px;
+    margin-top: 10px;
+    color: #495057;
+}
+
+/* Section Styles */
+.order-summary, .user-info, .order-items, .payment-info {
+    margin-bottom: 30px;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #dee2e6;
+}
+
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+table td {
+    font-size: 16px;
+}
+
+/* Status Styling */
+.status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.status.pending {
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.status.completed {
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.status.cancelled {
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2, h3 {
+        font-size: 20px;
+    }
+
+    table th, table td {
+        font-size: 14px;
+    }
+}
+
+</style>

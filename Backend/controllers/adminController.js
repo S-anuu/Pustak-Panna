@@ -69,17 +69,39 @@ exports.getDashboard = (req, res) => {
 
 exports.getOrdersAdmin = async (req, res) => {
     try {
-        const orders = await Order.find().populate('user');
-        res.render('orders', { 
+        // Populating the userId field (referencing the User model)
+        const orders = await Order.find().populate('userId', 'name email');
+        
+        res.render('orderAdmin', {
             orders,
             title: 'PustakPanna',
             pageStyles: '',
-            headerStyle: 'admin-header' });
+            headerStyle: 'admin-header'
+        });
     } catch (error) {
         console.error('Error fetching orders:', error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
+
+exports.getOrderDetails = async (req, res) => {
+    try {
+        console.log("Order ID:", req.params._id);
+        const order = await Order.findById(req.params._id)
+            .populate('userId', 'name email')
+            .populate('items.bookId', 'title');
+
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        res.render('orderDetailsAdmin', { order });
+    } catch (error) {
+        console.error('Error fetching order details:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
 
 // exports.getOrderById = async (req, res) => {
 //     try {
@@ -107,5 +129,24 @@ exports.updateOrderStatus = async (req, res) => {
     } catch (error) {
         console.error('Error updating order status:', error);
         res.status(500).send('Internal Server Error');
+    }
+}
+
+exports.postDeliver = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.orderId);
+        if (!order) {
+            return res.status(404).send('Order not found');
+        }
+
+        // Update the status to "Delivered"
+        order.status = 'Delivered';
+        await order.save();
+
+        // Redirect back to the orders page
+        res.redirect('/admin/orders');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
     }
 }
