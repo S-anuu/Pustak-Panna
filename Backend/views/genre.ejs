@@ -38,67 +38,82 @@
 
     <!-- Inline CSS for Genre Page -->
     <style>
-        .genre .section-title {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 30px;
-        }
+.genre .section-title {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+}
 
-        .genre .book-list {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
+.genre .book-list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px; /* Add space between items */
+    padding: 10px; /* Add padding to the container */
+}
 
-        .genre .single-book {
-            background: #f5f5f5;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding: 15px;
-            text-align: center;
-            transition: box-shadow 0.3s ease;
-        }
+.genre .single-book {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 100px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+    flex: 1;
+    min-width: 250px; /* Adjust as needed */
+    max-height: 500px; /* Ensure consistent height */
+    display: flex;
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: space-between; /* Distribute space evenly */
+    box-sizing: border-box;
+}
 
-        .genre .single-book:hover {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
+.genre .single-book:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 
-        .genre .book-img img {
-            width: 100%;
-            height: auto;
-            max-height: 300px;
-            object-fit: cover;
-        }
+.genre .book-img {
+    max-height: 200px; /* Adjust as needed */
+    overflow: hidden;
+    margin-bottom: 10px;
+}
 
-        .genre .book-title {
-            font-size: 1.2em;
-            margin: 10px 0 5px;
-            color: #333;
-        }
+.genre .book-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
 
-        .genre .book-author {
-            font-size: 1em;
-            margin-bottom: 5px;
-            color: #777;
-        }
+.genre .book-title {
+    font-size: 1.2em;
+    margin: 10px 0 5px;
+    color: #333;
+}
 
-        .genre .book-price {
-            font-size: 1.1em;
-            color: #ff4c3b;
-            margin-bottom: 10px;
-        }
+.genre .book-author {
+    font-size: 1em;
+    margin-bottom: 5px;
+    color: #777;
+}
 
-        .genre .add-to-cart{
-            background: #ff4c3b;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+.genre .book-price {
+    font-size: 1.1em;
+    color: #ff4c3b;
+    margin-bottom: 10px;
+}
 
-        .genre .add-to-cart-btn:hover {
-            background: #e43e2d;
-        }
+.genre .add-to-cart {
+    background: #ff4c3b;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.genre .add-to-cart:hover {
+    background: #e43e2d;
+}
+
     </style>
 </section>
