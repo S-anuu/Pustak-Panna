@@ -82,6 +82,8 @@ app.use('/', authRoutes);
 app.use('/', require('../routes/cart'));
 app.use('/', require('../routes/admin'));
 app.use('/', require('../routes/book'));
+app.use('/', require('../routes/suggestion'))
+// app.use('/', require('../routes/users'))
 
 
 

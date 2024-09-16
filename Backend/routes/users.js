@@ -19,15 +19,4 @@ router.get('/profile', authenticateToken, async (req, res) => {
     }
 });
 
-router.post('/suggestion', async (req, res) => {
-    try {
-        const { title, author } = req.body;
-        const newSuggestion = new Suggestion({ title, author });
-        await newSuggestion.save();
-        res.status(200).json({ message: 'Suggestion submitted successfully!' });
-    } catch (error) {
-        console.error('Error submitting suggestion:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
 module.exports = router;
