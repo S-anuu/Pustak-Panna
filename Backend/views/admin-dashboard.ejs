@@ -1,194 +1,113 @@
-<h1>Admin Dashboard</h1>
-<p>Welcome back, Admin!</p>
-<main>
-    <section class="metrics">
-        <div class="metric">
-            <h2>Total Sales Today</h2>
-            <p id="totalSales">$0</p>
-        </div>
-        <div class="metric">
-            <h2>Total Orders Today</h2>
-            <p id="totalOrders">0</p>
-        </div>
-        <div class="metric">
-            <h2>New Users Today</h2>
-            <p id="newUsers">0</p>
-        </div>
-        <div class="metric">
-            <h2>Pending Orders</h2>
-            <p id="pendingOrders">0</p>
-        </div>
-    </section>
+<div class="dashboard">
 
-    <section class="charts">
-        <div class="chart-container">
-            <h2>Sales Trend</h2>
-            <canvas id="salesTrendChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h2>Order Volume</h2>
-            <canvas id="orderVolumeChart"></canvas>
-        </div>
-        <div class="chart-container">
-            <h2>Product Performance</h2>
-            <canvas id="productPerformanceChart"></canvas>
-        </div>
-    </section>
+    <main class="content">
+        <header>
+            <h1>Welcome, Admin!</h1>
+        </header>
 
-    <section class="recent-activity">
-        <h2>Recent Orders</h2>
-        <ul id="recentOrders">
-            <!-- Recent orders will be dynamically inserted here -->
-        </ul>
-        <h2>Recent User Registrations</h2>
-        <ul id="recentRegistrations">
-            <!-- Recent user registrations will be dynamically inserted here -->
-        </ul>
-    </section>
-
-    <section class="quick-actions">
-        <h2>Quick Actions</h2>
-        <ul>
-            <li><a href="/admin/orders">Manage Orders</a></li>
-            <li><a href="/admin/users">Manage Users</a></li>
-            <li><a href="/admin/reports">View Reports</a></li>
-            <li><a href="/admin/add-book" class="btn btn-primary">Add Book</a></li>
-        </ul>
-    </section>
-</main>
-
-<footer class="footer">
-    <!-- Footer content here -->
-</footer>
+        <!-- Dashboard Widgets -->
+        <section class="widgets1">
+            <div class="widget">
+                <h3>Total Users</h3>
+                <p id="total-users">5</p>
+            </div>
+            <div class="widget">
+                <h3>Total Books</h3>
+                <p id="total-books">12</p>
+            </div>
+        </section>
+            <section class="widgets1">
+            <div class="widget">
+                <h3>Total Orders</h3>
+                <p id="total-orders">4</p>
+            </div>
+            <div class="widget">
+                <h3>Total coupons</h3>
+                <p id="total-coupons">3</p>
+            </div>
+        </section>
+    </main>
+</div>
 
 <script>
-    // Initialize Sales Trend Chart
-    const ctxSalesTrend = document.getElementById('salesTrendChart').getContext('2d');
-    const salesTrendChart = new Chart(ctxSalesTrend, {
-        type: 'line',
-        data: {
-            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-            datasets: [{
-                label: 'Sales',
-                data: [1200, 1500, 1800, 1300, 1600, 1900, 2000],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
+// scripts/dashboard.js
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/dashboard-stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-users').textContent = data.totalUsers;
+            document.getElementById('total-books').textContent = data.totalBooks;
+            document.getElementById('total-orders').textContent = data.totalOrders;
 
-    // Initialize other charts similarly
-    // const ctxOrderVolume = document.getElementById('orderVolumeChart').getContext('2d');
-    // const orderVolumeChart = new Chart(ctxOrderVolume, { /* Chart config */ });
-
-    // const ctxProductPerformance = document.getElementById('productPerformanceChart').getContext('2d');
-    // const productPerformanceChart = new Chart(ctxProductPerformance, { /* Chart config */ });
-
-    // Fetch and update metrics and charts dynamically
-    async function fetchData() {
-        try {
-            const response = await fetch('/api/dashboard-data');
-            const data = await response.json();
-            
-            // Update metrics
-            document.getElementById('totalSales').innerText = `$${data.totalSales}`;
-            document.getElementById('totalOrders').innerText = data.totalOrders;
-            document.getElementById('newUsers').innerText = data.newUsers;
-            document.getElementById('pendingOrders').innerText = data.pendingOrders;
-
-            // Update charts with fetched data
-            salesTrendChart.data.datasets[0].data = data.salesTrend;
-            salesTrendChart.update();
-
-            // Similarly update orderVolumeChart and productPerformanceChart
-            // orderVolumeChart.data.datasets[0].data = data.orderVolume;
-            // orderVolumeChart.update();
-            
-            // productPerformanceChart.data.datasets[0].data = data.productPerformance;
-            // productPerformanceChart.update();
-            
-        } catch (error) {
-            console.error('Error fetching dashboard data:', error);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', fetchData);
+            const recentActivityList = document.getElementById('recent-activity-list');
+            data.recentActivity.forEach(activity => {
+                const li = document.createElement('li');
+                li.textContent = `${activity.timestamp} - ${activity.description}`;
+                recentActivityList.appendChild(li);
+            });
+        })
+        .catch(error => console.error('Error fetching dashboard data:', error));
+});
 </script>
-<!-- <script>
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+
+<style>
+    body, html{
+        margin: 0;
+        padding: 0;
+        height: 100%;
     }
 
-    async function fetchProtectedData() {
-        let token = getCookie('adminToken'); // Retrieve token from cookies
-        console.log('Token from cookies:', token);
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
 
-        if (!token) {
-            alert('No token found. Please log in again.');
-            window.location.href = '/admin-login';
-            return;
-        }
+.dashboard {
+    display: flex;
+}
 
-        // Decode the token to check expiration
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const now = Math.floor(Date.now() / 1000);
-        
-        if (payload.exp < now) {
-            // Token expired, attempt to refresh
-            const refreshResponse = await fetch('/refresh-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ token })
-            });
+.content {
+    margin-left: 250px;
+    padding: 20px;
+    flex: 1;
+}
 
-            if (refreshResponse.ok) {
-                const result = await refreshResponse.json();
-                token = result.token;
-                document.cookie = `adminToken=${token}; path=/`; // Update cookie with new token
-                // Retry the original request with the new token
-                return fetchProtectedData();
-            } else {
-                alert('Session expired. Please log in again.');
-                window.location.href = '/admin-login';
-                return;
-            }
-        }
+.widgets1 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid with a minimum width of 200px for each widget */
+    gap: 20px; /* Space between widgets */
+    padding: 20px;
+}
 
-        try {
-            const response = await fetch('/admin-dashboard', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+/* Individual widget styling */
+.widget {
+    background-color: #fff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-            if (!response.ok) {
-                const text = await response.text();
-                console.error('Error response:', text);
-                alert('Error fetching protected data: ' + text);
-                return;
-            }
+/* Hover effect for widgets */
+.widget:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+}
 
-            const result = await response.json();
-            console.log('Protected data:', result);
-            document.getElementById('protectedData').innerText = JSON.stringify(result, null, 2);
-        } catch (error) {
-            console.error('Error:', error);
-            alert('There was an error fetching protected data.');
-        }
-    }
+/* Styling for widget headings */
+.widget h3 {
+    margin-top: 0;
+    color: #333; /* Dark text color */
+    font-size: 18px;
+}
 
-    document.addEventListener('DOMContentLoaded', fetchProtectedData);
-</script> -->
+/* Styling for widget stats */
+.widget p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0 0; /* Margin only at top and bottom */
+    color: #007bff; /* Primary color */
+}
+</style>

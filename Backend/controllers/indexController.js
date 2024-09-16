@@ -36,7 +36,8 @@ exports.index = async (req, res) => {
         .limit(3)
 
         const coupons = await Coupon.find({});
-        
+        const { title, author, minPrice, maxPrice, sort } = req.query;
+
         // Render the index page with books and newArrivals data
         res.render('index', { 
             title: 'Pustak-Panna', 
@@ -48,7 +49,8 @@ exports.index = async (req, res) => {
             usedBooks,
             bestSeller,
             trending,
-            coupons
+            coupons,
+            searchParams: req.query
         });
 
     } catch (error) {
@@ -124,4 +126,43 @@ exports.getGenre = async (req, res) => {
     }
 }
 
+exports.searchBooks = async (req, res) => {
+    try {
+        const { title, author, minPrice, maxPrice, sort } = req.query;
+        
+        const filter = {};
+        if (title) filter.title = new RegExp(title, 'i'); // Case-insensitive search
+        if (author) filter.author = new RegExp(author, 'i');
+        if (minPrice) filter.price = { $gte: minPrice };
+        if (maxPrice) filter.price = { ...filter.price, $lte: maxPrice };
 
+        let sortOption = {};
+        switch (sort) {
+            case 'priceAsc':
+                sortOption.price = 1;
+                break;
+            case 'priceDesc':
+                sortOption.price = -1;
+                break;
+            case 'rating':
+                sortOption.rating = -1;
+                break;
+            default:
+                sortOption = {};
+        }
+
+        const books = await Book.find(filter).sort(sortOption);
+        
+        
+        res.render('search', {
+            title: 'Search Results',
+            books,
+            searchParams: req.query,
+            pageStyles: '',
+            headerStyle: 'header'
+        });
+    } catch (error) {
+        console.error('Error searching for books:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};

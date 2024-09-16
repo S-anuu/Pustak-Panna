@@ -20,6 +20,8 @@ router.post('/cart/apply-coupon', couponController.applyCoupon);
 router.post('/checkout', cartController.postCheckout)
 
 router.post('/placeOrder', orderController.placeOrder)
+
 router.get('/orderpay/success', orderController.paySuccess)
 router.get('/orderpay/faliure', orderController.payFail)
+
 module.exports = router;
