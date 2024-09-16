@@ -136,9 +136,7 @@ router.get('/admin/users', (req, res) => {
 // Check if a book with the same title and author exists
 router.post('/admin/check-book', bookController.checkBook);
 
-// router.get('/admin/orders', (req, res) => {
-//     res.render('orders', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
-// });
+router.get('/admin/orders', adminController.getOrdersAdmin);
 
 // router.get('/admin/reports', (req, res) => {
 //     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
