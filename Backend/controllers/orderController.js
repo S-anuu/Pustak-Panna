@@ -162,3 +162,25 @@ exports.getOrderDetails = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+exports.postCancelOrder = async (req, res) => {
+    const orderId = req.params.orderId;
+
+    try {
+        // Find the order and update its status to "Cancelled"
+        let order = await Order.findById(orderId);
+        if (order.status === 'Pending' || order.status === 'Processing') {
+            order.status = 'Cancelled';
+            await order.save();
+            req.flash('success', 'Order has been cancelled successfully.');
+        } else {
+            req.flash('error', 'Order cannot be cancelled.');
+        }
+        res.redirect('/orders');
+    } catch (error) {
+        console.error('Error cancelling the order:', error);
+        req.flash('error', 'An error occurred while cancelling the order.');
+        res.redirect('/orders');
+    }
+}
+
