@@ -1,0 +1,86 @@
+<main class="order-details-container">
+    <h1>Order Details</h1>
+    <div class="order-info">
+        <h2>Order ID: <%= order._id %></h2>
+        <p><strong>Customer Name:</strong> <%= order.userId.name %></p>
+        <p><strong>Email:</strong> <%= order.userId.email %></p>
+        <p><strong>Phone:</strong> <%= order.phone %></p>
+        <p><strong>Address:</strong> <%= order.address %></p>
+    </div>
+
+    <div class="items-info">
+        <h3>Books Ordered</h3>
+        <ul>
+            <% order.items.forEach(item => { %>
+                <li><%= item.bookId.title %> (x<%= item.quantity %>) - Rs. <%= item.price %></li>
+            <% }) %>
+        </ul>
+        <p><strong>Total Price:</strong> Rs. <%= order.total %></p>
+        <p><strong>Shipping Cost:</strong> Rs. <%= order.shippingCost %></p>
+        <p><strong>Discount:</strong> Rs. <%= order.discount %></p>
+    </div>
+
+    <div class="order-status">
+        <h3>Order Status</h3>
+        <p><%= order.status %></p>
+    </div>
+
+    <div class="back-btn">
+        <a href="/admin/orders" class="btn">Back to Orders</a>
+    </div>
+</main>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.order-details-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.order-info,
+.items-info,
+.order-status {
+    margin-bottom: 20px;
+}
+
+.order-info p,
+.items-info p,
+.order-status p {
+    font-size: 1.1em;
+}
+
+.items-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.items-info li {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+</style>
