@@ -51,25 +51,26 @@
             flex-wrap: wrap;
         }
 
-        .new-releases .single-book {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding: 15px;
-            text-align: center;
-            transition: box-shadow 0.3s ease;
-        }
+        
+    .new-releases .single-book {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 15px;
+    text-align: center;
+    width: 250px; /* Fixed width */
+    height: 450px; /* Fixed height */
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+    
 
         .new-releases .single-book:hover {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
-        .new-releases .book-img img {
-            width: 100%;
-            height: auto;
-            max-height: 300px;
-            object-fit: cover;
-        }
 
         .new-releases .book-title {
             font-size: 1.2em;
@@ -77,29 +78,28 @@
             color: #333;
         }
 
-        .new-releases .book-author {
-            font-size: 1em;
-            margin-bottom: 5px;
-            color: #777;
-        }
+        .new-releases .book-img img {
+    width: 100%;
+    height: 250px; /* Fixed height */
+    object-fit: contain; /* Ensure the image scales without being distorted */
+}
 
         .new-releases .book-price {
             font-size: 1.1em;
-            color: #ff4c3b;
+            color:#001f3f;
             margin-bottom: 10px;
         }
 
         .new-releases .add-to-cart {
-            background: #ff4c3b;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+	font-weight: 500;
+	background: #f7941d;
+	color: #fff;
+	padding: 2px 18px;
+	font-size: 14px;
+	font-weight: 500; }
 
         .new-releases .add-to-cart-btn:hover {
-            background: #e43e2d;
+            background: #f39c12;
         }
     </style>
 </section>

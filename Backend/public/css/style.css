@@ -3767,7 +3767,7 @@ Version:1.0
 	font-weight: 600;
 	text-transform: uppercase;
 	line-height: 22px;
-	color: #333;
+	color: rgb(44, 44, 227);
 }
 .shop-services .single-service p {
 	color: #898989;
