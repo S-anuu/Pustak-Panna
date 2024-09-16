@@ -99,8 +99,8 @@
                                 <input type="radio" name="paymentMethod" value="creditCard" id="creditCard">
                                 <label for="creditCard">Credit/Debit Card</label> <br>
 
-                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cod">
-                                <label for="cod">Cash On Delivery</label> <br>
+                                <input type="radio" name="paymentMethod" value="cashOnDelivery" id="cashOnDelivery">
+                                <label for="cashOnDelivery">Cash On Delivery</label> <br>
                             </div>
                         </div>
                     </div>
@@ -189,17 +189,16 @@
                     text: 'Your order has been placed successfully.',
                     icon: 'success',
                     confirmButtonText: 'OK'
-                }).then((result) => {
+                })
+                .then((result) => {
                     if (result.isConfirmed) {
                         // Redirect to the index page
-                        window.location.href = '/orders';
+                        form.submit();
                     }
-                });} else if (selectedPaymentMethod.value === 'esewa'){
-                    window.location.href = '/pay-with-esewa';
-                    
-                }else {
-                // Debugging: Normal form submission for other payment methods
-                console.log("Submitting form for other payment methods...");
+
+                });
+            } 
+             else {
                 form.submit();
             }
         });
