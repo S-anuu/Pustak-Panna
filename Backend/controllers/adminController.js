@@ -112,20 +112,6 @@ exports.getOrderDetails = async (req, res) => {
 };
 
 
-// exports.getOrderById = async (req, res) => {
-//     try {
-//         const order = await Order.findById(req.params.id).populate('user');
-//         if (order) {
-//             res.json(order);
-//         } else {
-//             res.status(404).send('Order not found');
-//         }
-//     } catch (error) {
-//         console.error('Error fetching order:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// }
-
 exports.updateOrderStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -157,5 +143,42 @@ exports.postDeliver = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');
+    }
+}
+
+exports.getApiRecentActivities = async (req, res) => {
+    try {
+        const recentActivities = await Order.find()
+            .sort({ createdAt: -1 })
+            .limit(4)
+            .populate({
+                path: 'userId',
+                select: 'firstname lastname' // Ensure lastname is included
+            })
+            .populate({
+                path: 'items.bookId',
+                select: 'title'
+            })
+            .select('createdAt userId items'); // Adjust the select as needed
+
+        // Construct descriptions
+        const activities = recentActivities.map(order => {
+            // Ensure userId and its fields are populated
+            const firstName = order.userId.firstname || 'Unknown';
+            const lastName = order.userId.lastname || '';
+            const fullName = `${firstName} ${lastName}`.trim();
+
+            const bookTitles = order.items.map(item => item.bookId.title).join(', ');
+
+            return {
+                createdAt: order.createdAt,
+                description: `${fullName} ordered ${bookTitles}`
+            };
+        });
+
+        res.json(activities);
+    } catch (error) {
+        console.error('Error fetching recent activities:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 }
