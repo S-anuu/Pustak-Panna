@@ -7,6 +7,7 @@ const bookController = require('../controllers/bookController')
 const orderController = require('../controllers/orderController')
 const Order = require('../models/Order')
 const Review = require('../models/Review')
+const Book = require('../models/Book')
 const {authMiddleware} = require('../middleware/authMiddleware')
 
 // Public routes
@@ -75,8 +76,13 @@ router.post('/my-orders/review/:orderId', authMiddleware, async (req, res) => {
 
         await review.save();
 
-        // Redirect or respond
-        res.redirect(`/orders/${orderId}`);
+        // Update book's average rating (optional, if you are doing this here)
+        const reviews = await Review.find({ bookId });
+        const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
+        await Book.findByIdAndUpdate(bookId, { rating: averageRating });
+
+        // Redirect to the book details page
+        res.redirect(`/my-orders`);
     } catch (error) {
         console.error('Error submitting review:', error);
         res.status(500).send('Internal Server Error');

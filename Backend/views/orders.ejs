@@ -6,7 +6,7 @@
                 <table class="orders-table">
                     <thead>
                         <tr>
-                            <th>Order ID</th>
+                            <th>Book Title</th> <!-- Changed from Order ID to Book Title -->
                             <th>Date</th>
                             <th>Total</th>
                             <th>Status</th>
@@ -16,39 +16,41 @@
                     </thead>
                     <tbody>
                         <% orders.forEach(order => { %>
-                            <tr>
-                                <td><%= order._id %></td>
-                                <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
-                                <td>Rs. <%= order.total %></td>
-                                <td><%= order.status %></td>
-                                <td><a href="/my-orders/<%= order._id %>" class="btn-details">View Details</a></td>
-                                <td>
-                                    <% if (order.status === 'Pending' || order.status === 'Processing') { %>
-                                        <form action="/my-orders/cancel/<%= order._id %>" method="POST" style="display:inline;">
-                                            <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</button>
-                                        </form>
-                                    <% } else if (order.status === 'Delivered') { %>
-                                        <button class="btn-review" onclick="toggleReviewForm('<%= order._id %>')">Review</button>
-                                        <div id="review-form-<%= order._id %>" class="review-form" style="display: none;">
-                                            <form action="/my-orders/review/<%= order._id %>" method="POST">
-                                                <label for="rating">Rate this book:</label>
-                                                <select name="rating" id="rating">
-                                                    <option value="1">1 Star</option>
-                                                    <option value="2">2 Stars</option>
-                                                    <option value="3">3 Stars</option>
-                                                    <option value="4">4 Stars</option>
-                                                    <option value="5">5 Stars</option>
-                                                </select>
-                                                <label for="comment">Comment:</label>
-                                                <textarea name="comment" id="comment" rows="4" placeholder="Write your review here..."></textarea>
-                                                <button type="submit" class="btn-submit-review">Submit Review</button>
+                            <% order.items.forEach(item => { %>
+                                <tr>
+                                    <td><%= item.bookId.title %></td> <!-- Display book title -->
+                                    <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
+                                    <td>Rs. <%= order.total %></td>
+                                    <td><%= order.status %></td>
+                                    <td><a href="/my-orders/<%= order._id %>" class="btn-details">View Details</a></td>
+                                    <td>
+                                        <% if (order.status === 'Pending' || order.status === 'Processing') { %>
+                                            <form action="/my-orders/cancel/<%= order._id %>" method="POST" style="display:inline;">
+                                                <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</button>
                                             </form>
-                                        </div>
-                                    <% } else { %>
-                                        <button disabled class="btn-disabled">Cannot Review</button>
-                                    <% } %>
-                                </td>
-                            </tr>
+                                        <% } else if (order.status === 'Delivered') { %>
+                                            <button class="btn-review" onclick="toggleReviewForm('<%= order._id %>')">Review</button>
+                                            <div id="review-form-<%= order._id %>" class="review-form" style="display: none;">
+                                                <form action="/my-orders/review/<%= order._id %>" method="POST">
+                                                    <label for="rating">Rate this book:</label>
+                                                    <select name="rating" id="rating">
+                                                        <option value="1">1 Star</option>
+                                                        <option value="2">2 Stars</option>
+                                                        <option value="3">3 Stars</option>
+                                                        <option value="4">4 Stars</option>
+                                                        <option value="5">5 Stars</option>
+                                                    </select>
+                                                    <label for="comment">Comment:</label>
+                                                    <textarea name="comment" id="comment" rows="4" placeholder="Write your review here..."></textarea>
+                                                    <button type="submit" class="btn-submit-review">Submit Review</button>
+                                                </form>
+                                            </div>
+                                        <% } else { %>
+                                            <button disabled class="btn-disabled">Cannot Review</button>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% }) %>
                         <% }) %>
                     </tbody>
                 </table>
@@ -58,6 +60,7 @@
         </div>
     </section>
 </main>
+
 
 <style>
     /* General Styles */
@@ -140,6 +143,15 @@
         color: white;
     }
 
+    /* Ensures review button and form don't distort other elements */
+    td {
+        vertical-align: middle; /* Aligns content in the middle */
+    }
+
+    table {
+        position: relative;
+    }
+    
     .btn-submit-review:hover {
         background-color: #0056b3;
     }
