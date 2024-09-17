@@ -65,7 +65,7 @@
         }
 
         try {
-            const response = await fetch('/admin/coupons/add', {
+            const response = await fetch('/coupons/add', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +96,7 @@
 
             if (confirmDelete) {
                 try {
-                    const response = await fetch(`/admin/coupons/delete/${couponId}`, {
+                    const response = await fetch(`/coupons/delete/${couponId}`, {
                         method: 'DELETE',
                     });
                     const result = await response.json();
