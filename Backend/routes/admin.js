@@ -163,59 +163,55 @@ router.get('/admin-dashboard', isAdmin, async (req, res) => {
     }
 });
 
-router.get('/books', bookController.getAllBooks);
+router.get('/books', isAdmin, bookController.getAllBooks);
 
 //Fetch a single book
-router.get('/books/:id', async (req, res) => {
+router.get('/books/:id', isAdmin, async (req, res) => {
     const book = await Book.findById(req.params.id)
     res.json(book)
 })
 
-router.get('/books/edit/:_id', bookController.getEditPage)
+router.get('/books/edit/:_id', isAdmin, bookController.getEditPage)
 
 
-router.get('/books/delete/:_id', bookController.deleteBook)
+router.get('/books/delete/:_id', isAdmin, bookController.deleteBook)
 
-
-router.get('/users', (req, res) => {
-    res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', currentPath: '/users' });
-});
 
 // Check if a book with the same title and author exists
-router.post('/admin/check-book', bookController.checkBook);
+router.post('/books/check', isAdmin, bookController.checkBook);
 
-router.get('/orders', adminController.getOrdersAdmin);
+router.get('/orders', isAdmin, adminController.getOrdersAdmin);
 
-router.get('/orders/:id', adminController.getOrderDetails);
+router.get('/orders/:id', isAdmin, adminController.getOrderDetails);
 
 // router.get('/admin/reports', (req, res) => {
 //     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
 // });
 
 // Add book
-router.post('/books/add', upload.single('imageURL'), bookController.addBook);
+router.post('/books/add', isAdmin, upload.single('imageURL'), bookController.addBook);
 
-router.get('/books/add', bookController.getAddBookPage);
+router.get('/books/add', isAdmin, bookController.getAddBookPage);
 
 // Edit book
-router.post('/books/edit/:_id', upload.single('imageURL'), bookController.editBook);
+router.post('/books/edit/:_id', isAdmin, upload.single('imageURL'), bookController.editBook);
 
 // Display coupons management page
-router.get('/coupons', couponController.getCoupons);
+router.get('/coupons', isAdmin, couponController.getCoupons);
 
 // Add new coupon
-router.post('/coupons/add', couponController.addCoupon);
+router.post('/coupons/add', isAdmin, couponController.addCoupon);
 
 // Delete coupon
-router.delete('/coupons/delete/:id', couponController.deleteCoupon);
+router.delete('/coupons/delete/:id', isAdmin, couponController.deleteCoupon);
 
-router.post('/orders/:orderId/deliver', adminController.postDeliver);
+router.post('/orders/:orderId/deliver', isAdmin, adminController.postDeliver);
 
-router.get('/suggestions', async (req, res) => {
+router.get('/suggestions', isAdmin, async (req, res) => {
     
 });
 
-router.post('/orders/:orderId/return/accept', async (req, res) => {
+router.post('/orders/:orderId/return/accept', isAdmin, async (req, res) => {
     try {
         const { orderId } = req.params;
 
@@ -242,7 +238,7 @@ router.post('/orders/:orderId/return/accept', async (req, res) => {
 });
 
 // Reject return request
-router.post('/orders/:orderId/return/reject', async (req, res) => {
+router.post('/orders/:orderId/return/reject', isAdmin, async (req, res) => {
     try {
         const { orderId } = req.params;
 
