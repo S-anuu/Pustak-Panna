@@ -58,16 +58,15 @@
                 <div class="book-list">
                     <% books.forEach(book => { %>
                         <div class="book-item">
-                            <img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-image">
-                            <div class="book-details">
-                                <h3><%= book.title %></h3>
-                                <p>by <%= book.author %></p>
-                                <p>Price: Rs. <%= book.price %></p>
-                                <p>Rating: <%= book.rating %> <i class="fas fa-star"></i></p>
-                                <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
-                            </div>
+                            <a href="/book/<%= book.slug %>"><img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-image"></a>
                         </div>
-                       
+                        <div class="book-details">
+                            <h3><a href="/book/<%= book.slug %>"><%= book.title %></a></h3>
+                            <p>by <%= book.author %></p>
+                            <p>Price: Rs. <%= book.price %></p>
+                            <p>Rating: <%= book.rating %> <i class="fas fa-star"></i></p>
+                            <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
+                        </div>
                     <% }) %>
                 </div>
             <% } %>
