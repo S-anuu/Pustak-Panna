@@ -4,6 +4,7 @@ const Admin = require('../models/Admin');
 const Book = require('../models/Book'); 
 const User = require('../models/User')
 const Order = require('../models/Order')
+const Coupon = require('../models/Coupon')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET_KEY;
@@ -15,19 +16,57 @@ const couponController = require('../controllers/couponController')
 const adminController = require('../controllers/adminController')
 const Suggestion = require('../models/Suggestion')
 
+router.get('/api/recent-activities', async (req, res) => {
+    try {
+        const recentActivities = await Order.find()
+            .sort({ createdAt: -1 })
+            .limit(4)
+            .populate({
+                path: 'userId',
+                select: 'firstname lastname' // Ensure lastname is included
+            })
+            .populate({
+                path: 'items.bookId',
+                select: 'title'
+            })
+            .select('createdAt userId items'); // Adjust the select as needed
+
+        // Construct descriptions
+        const activities = recentActivities.map(order => {
+            // Ensure userId and its fields are populated
+            const firstName = order.userId.firstname || 'Unknown';
+            const lastName = order.userId.lastname || '';
+            const fullName = `${firstName} ${lastName}`.trim();
+
+            const bookTitles = order.items.map(item => item.bookId.title).join(', ');
+
+            return {
+                createdAt: order.createdAt,
+                description: `${fullName} ordered ${bookTitles}`
+            };
+        });
+
+        res.json(activities);
+    } catch (error) {
+        console.error('Error fetching recent activities:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 router.get('/api/dashboard-stats', async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
         const totalBooks = await Book.countDocuments();
         const totalOrders = await Order.countDocuments();
+        const totalCoupons = await Coupon.countDocuments();
 
-        const recentActivity = await Order.find().sort({ createdAt: -1 }).limit(5).select('createdAt description');
         
         res.json({
             totalUsers,
             totalBooks,
-            totalOrders,
-            recentActivity
+            totalOrders,           
+            totalCoupons
         });
     } catch (error) {
         console.error(error);

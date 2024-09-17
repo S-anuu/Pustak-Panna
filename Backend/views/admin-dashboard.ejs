@@ -8,25 +8,32 @@
         <section class="widgets">
             <div class="widget">
                 <h3>Total Users</h3>
-                <p id="total-users">5</p>
+                <p id="total-users">0</p>
             </div>
             <div class="widget">
                 <h3>Total Books</h3>
-                <p id="total-books">12</p>
+                <p id="total-books">0</p>
             </div>
         </section>
         <section class="widgets">
             <div class="widget">
                 <h3>Total Orders</h3>
-                <p id="total-orders">4</p>
+                <p id="total-orders">0</p>
             </div>
             <div class="widget">
                 <h3>Total Coupons</h3>
-                <p id="total-coupons">3</p>
+                <p id="total-coupons">0</p>
             </div>
         </section>
     </main>
 </div>
+
+<section class="recent-activities">
+    <h2>Recent Activities</h2>
+    <ul id="recent-activity-list">
+        <!-- Recent activities will be dynamically inserted here -->
+    </ul>
+</section>
 
 <section class="suggestions">
     <h2>Book Suggestions</h2>
@@ -50,6 +57,7 @@
     </table>
 </section>
 
+
 <script>
     // scripts/dashboard.js
     document.addEventListener('DOMContentLoaded', function() {
@@ -59,102 +67,153 @@
                 document.getElementById('total-users').textContent = data.totalUsers;
                 document.getElementById('total-books').textContent = data.totalBooks;
                 document.getElementById('total-orders').textContent = data.totalOrders;
+                document.getElementById('total-coupons').textContent = data.totalCoupons;
+            })
+            .catch(error => console.error('Error fetching dashboard data:', error));
 
+        fetch('/api/recent-activities')
+            .then(response => response.json())
+            .then(data => {
                 const recentActivityList = document.getElementById('recent-activity-list');
-                data.recentActivity.forEach(activity => {
+                data.forEach(activity => {
                     const li = document.createElement('li');
-                    li.textContent = `${activity.timestamp} - ${activity.description}`;
+                    li.innerHTML = `
+                        <time>${new Date(activity.createdAt).toLocaleDateString()} ${new Date(activity.createdAt).toLocaleTimeString()}</time>
+                        <p>${activity.description}</p>
+                    `;
                     recentActivityList.appendChild(li);
                 });
             })
-            .catch(error => console.error('Error fetching dashboard data:', error));
+            .catch(error => console.error('Error fetching recent activities:', error));
     });
 </script>
 
 <style>
-    body, html {
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: #f0f2f5;
-    }
+   body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+}
 
-    .dashboard-header h1 {
-        font-size: 28px;
-        margin-bottom: 20px;
-        color: #333;
-    }
+.dashboard-header h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
 
-    .widgets {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-        margin-bottom: 40px;
-    }
+.widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
 
-    .widget {
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        text-align: center;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+.widget {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .widget:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-    }
+.widget:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
 
-    .widget h3 {
-        margin: 0;
-        font-size: 16px;
-        color: #888;
-    }
+.widget h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #888;
+}
 
-    .widget p {
-        font-size: 36px;
-        color: #007bff;
-        font-weight: 700;
-        margin: 10px 0 0;
-    }
+.widget p {
+    font-size: 36px;
+    color: #007bff;
+    font-weight: 700;
+    margin: 10px 0 0;
+}
 
-    .suggestions {
-        margin: 40px 20px;
-    }
+.recent-activities {
+    margin: 40px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
 
-    .suggestions h2 {
-        font-size: 22px;
-        margin-bottom: 20px;
-        color: #333;
-    }
+.recent-activities h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+}
 
-    .suggestions-table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+.recent-activities ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
-    .suggestions-table th, .suggestions-table td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+.recent-activities li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
 
-    .suggestions-table th {
-        background-color: #f8f8f8;
-        color: #555;
-        font-weight: 600;
-    }
+.recent-activities li:last-child {
+    border-bottom: none;
+}
 
-    .suggestions-table td {
-        font-size: 14px;
-        color: #555;
-    }
+.recent-activities time {
+    display: block;
+    font-size: 14px;
+    color: #888;
+}
 
-    .suggestions-table tr:hover {
-        background-color: #f1f1f1;
-    }
+.recent-activities p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.suggestions {
+    margin: 40px 20px;
+}
+
+.suggestions h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.suggestions-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-table th, .suggestions-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.suggestions-table th {
+    background-color: #f8f8f8;
+    color: #555;
+    font-weight: 600;
+}
+
+.suggestions-table td {
+    font-size: 14px;
+    color: #555;
+}
+
+.suggestions-table tr:hover {
+    background-color: #f1f1f1;
+}
+
 </style>

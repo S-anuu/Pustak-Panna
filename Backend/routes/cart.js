@@ -13,16 +13,18 @@ router.post('/cart', authMiddleware, cartController.postCart); // Ensure method 
 // Get cart items for a user
 router.get('/cart', authMiddleware, cartMiddleware,cartController.getCart);
 
-router.delete('/cart/delete/:id', cartController.deleteCartItem);
+router.delete('/cart/delete/:id',authMiddleware, cartController.deleteCartItem);
 
-router.post('/checkout/apply-coupon', couponController.applyCoupon);
-router.get('/checkout/:id', cartController.getCheckoutForBook);
+router.post('/checkout/apply-coupon',authMiddleware, couponController.applyCoupon);
 
-router.post('/checkout', cartController.postCheckout)
+router.get('/checkout/:id',authMiddleware, cartController.getCheckoutForBook);
 
-router.post('/placeOrder', orderController.placeOrder)
+router.post('/checkout',authMiddleware, cartController.postCheckout)
 
-router.get('/orderpay/success', orderController.paySuccess)
-router.get('/orderpay/faliure', orderController.payFail)
+router.post('/placeOrder', authMiddleware, orderController.placeOrder)
+
+router.get('/orderpay/success', authMiddleware, orderController.paySuccess)
+
+router.get('/orderpay/faliure', authMiddleware, orderController.payFail)
 
 module.exports = router;
