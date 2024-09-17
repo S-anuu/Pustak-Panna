@@ -714,7 +714,7 @@ Version:1.0
 	text-align: center;
 	font-size: 18px;
 	color: #fff;
-	background: #333333;
+	background: #000;
 	position: absolute;
 	right: -2px;
 	top: -1px;
@@ -748,7 +748,7 @@ Version:1.0
 	border:none;
 }
 .header.shop .header-inner {
-	background: #333;
+	background: #000;
 }
 .header.shop.v3 .header-inner {
 	background: transparent;
@@ -4883,7 +4883,7 @@ Version:1.0
 	20. Start Footer CSS
 ===============================*/
 .footer{
-	background:#222;
+	background:#000;
 }
 .footer .about {
 	padding-right: 50px;
