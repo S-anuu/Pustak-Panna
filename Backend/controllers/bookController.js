@@ -148,10 +148,10 @@ exports.getBookDetails = async (req, res, next) => {
     try {
         // Extract the slug from the URL parameter
         const slug = req.params.slug;
-
+        
         // Find the book by slug
         const book = await Book.findOne({ slug });
-        
+
         if (!book) {
             return res.status(404).send('Book not found');
         }
@@ -166,7 +166,7 @@ exports.getBookDetails = async (req, res, next) => {
             headerStyle: 'header',
             book,
             reviews,
-            currentPath: '/book/:id'  // Pass reviews to the template
+            currentPath: '/book/:id'  
         });
     } catch (err) {
         console.error('Error fetching book details:', err);

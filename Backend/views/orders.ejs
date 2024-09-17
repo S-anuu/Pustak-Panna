@@ -29,11 +29,12 @@
                                                 <button type="submit" class="btn-cancel" onclick="return confirm('Are you sure you want to cancel this order?');">Cancel Order</button>
                                             </form>
                                         <% } else if (order.status === 'Delivered') { %>
-                                            <button class="btn-review" onclick="toggleReviewForm('<%= order._id %>')">Review</button>
+                                            <button class="btn-review" onclick="toggleReviewForm('<%= order._id %>', '<%= item.bookId._id %>')">Review</button>
                                             <button class="btn-return" onclick="toggleReturnForm('<%= order._id %>')">Return</button>
-                                            
-                                            <div id="review-form-<%= order._id %>" class="review-form" style="display: none;">
-                                                <form action="/my-orders/review/<%= order._id %>" method="POST">
+
+                                            <!-- Review Form -->
+                                            <div id="review-form-<%= order._id %>-<%= item.bookId._id %>" class="review-form" style="display: none;">
+                                                <form action="/my-orders/review/<%= item.bookId._id %>" method="POST">
                                                     <label for="rating">Rate this book:</label>
                                                     <select name="rating" id="rating">
                                                         <option value="1">1 Star</option>
@@ -47,7 +48,8 @@
                                                     <button type="submit" class="btn-submit-review">Submit Review</button>
                                                 </form>
                                             </div>
-                                            
+
+                                            <!-- Return Form -->
                                             <div id="return-form-<%= order._id %>" class="return-form" style="display: none;">
                                                 <form action="/my-orders/return/<%= order._id %>" method="POST">
                                                     <label for="reason">Reason for Return:</label>
@@ -70,6 +72,27 @@
         </div>
     </section>
 </main>
+
+<script>
+    function toggleReviewForm(orderId, bookId) {
+        const reviewForm = document.getElementById(`review-form-${orderId}-${bookId}`);
+        if (reviewForm.style.display === 'none') {
+            reviewForm.style.display = 'block';
+        } else {
+            reviewForm.style.display = 'none';
+        }
+    }
+
+    function toggleReturnForm(orderId) {
+        const returnForm = document.getElementById(`return-form-${orderId}`);
+        if (returnForm.style.display === 'none') {
+            returnForm.style.display = 'block';
+        } else {
+            returnForm.style.display = 'none';
+        }
+    }
+</script>
+
 
 <style>
     /* General Styles */
@@ -208,14 +231,3 @@
     }
 </style>
 
-<script>
-    function toggleReviewForm(orderId) {
-        const reviewForm = document.getElementById(`review-form-${orderId}`);
-        reviewForm.style.display = reviewForm.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function toggleReturnForm(orderId) {
-        const returnForm = document.getElementById(`return-form-${orderId}`);
-        returnForm.style.display = returnForm.style.display === 'none' ? 'block' : 'none';
-    }
-</script>

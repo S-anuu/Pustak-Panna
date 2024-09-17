@@ -50,17 +50,15 @@ router.get('/search', indexController.searchBooks)
 
 router.post('/my-orders/cancel/:id', authMiddleware, orderController.postCancelOrder)
 
-router.post('/my-orders/review/:orderId', authMiddleware, async (req, res) => {
+router.post('/my-orders/review/:bookId', authMiddleware, async (req, res) => {
     try {
-        const { orderId } = req.params;
+        const { bookId } = req.params;
+
         const { rating, comment } = req.body;
 
-        // Find the order and the book in the order
-        const order = await Order.findById(orderId);
-        if (!order) return res.status(404).send('Order not found');
-
-        // Assuming `bookId` is stored in the order's items
-        const bookId = order.items[0].bookId; // Adjust according to your schema
+        // Find the book by ID
+        const book = await Book.findById(bookId);
+        if (!book) return res.status(404).send('Book not found');
 
         // Create a new review
         const review = new Review({
@@ -73,12 +71,12 @@ router.post('/my-orders/review/:orderId', authMiddleware, async (req, res) => {
 
         await review.save();
 
-        // Update book's average rating (optional, if you are doing this here)
+        // Update book's average rating (optional)
         const reviews = await Review.find({ bookId });
         const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
         await Book.findByIdAndUpdate(bookId, { rating: averageRating });
 
-        // Redirect to the book details page
+        // Redirect or respond
         res.redirect(`/my-orders`);
     } catch (error) {
         console.error('Error submitting review:', error);
