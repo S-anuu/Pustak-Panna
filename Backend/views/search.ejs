@@ -29,9 +29,11 @@
                         <option value="rating" <%= searchParams.sort === 'rating' ? 'selected' : '' %>>Rating</option>
                     </select>
                 </div>
-                
-                <button type="submit" class="btn">Search</button>
+                <div class="search-btn">
+                    <button type="submit" class="btn">Search</button>
+                </div>
             </div>
+                
         </form>
 
         <!-- Search Results -->
@@ -57,13 +59,13 @@
                     <% books.forEach(book => { %>
                         <div class="book-item">
                             <img src="<%= book.imageURL %>" alt="<%= book.title %>" class="book-image">
-                            <div class="book-details">
-                                <h3><%= book.title %></h3>
-                                <p>by <%= book.author %></p>
-                                <p>Price: Rs. <%= book.price %></p>
-                                <p>Rating: <%= book.rating %> <i class="fas fa-star"></i></p>
-                                <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
-                            </div>
+                        </div>
+                        <div class="book-details">
+                            <h3><%= book.title %></h3>
+                            <p>by <%= book.author %></p>
+                            <p>Price: Rs. <%= book.price %></p>
+                            <p>Rating: <%= book.rating %> <i class="fas fa-star"></i></p>
+                            <button class="btn add-to-cart" data-id="<%= book._id %>">Add to Cart</button>
                         </div>
                     <% }) %>
                 </div>
@@ -132,6 +134,9 @@ h1 {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     margin-bottom: 20px;
 }
+.search-btn{
+    margin-top: 30px;
+}
 
 .filters {
     display: flex;
@@ -186,7 +191,7 @@ h1 {
 
 .book-item {
     flex: 1;
-    min-width: 200px;
+    max-width:258px;
     background-color: #f9f9f9;
     border-radius: 8px;
     overflow: hidden;
@@ -194,18 +199,19 @@ h1 {
 }
 
 .book-image {
-    width: 100%;
-    height: auto;
+    
+    height: 400px;
     object-fit: cover;
 }
 
 .book-details {
     padding: 15px;
+    margin-left: 40px;
 }
 
 .book-details h3 {
     margin: 0 0 10px;
-    font-size: 1.2em;
+    font-size: 2em;
 }
 
 .book-details p {
