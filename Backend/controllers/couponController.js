@@ -8,6 +8,7 @@ exports.getCoupons = async (req, res) => {
             title: 'Pustak-Panna',
             pageStyles: '', 
             headerStyle: 'admin-header',
+            currentPath: '/coupons'
          }); // Render EJS page
     } catch (error) {
         console.error('Error fetching coupons:', error);

@@ -39,10 +39,10 @@
                         <td><%= order.status %></td>
                         <td><%= new Date(order.createdAt).toLocaleString() %></td>
                         <td>
-                            <a href="/admin/orders/<%= order._id %>" class="btn btn-details">Order Details</a>
+                            <a href="/orders/<%= order._id %>" class="btn btn-details">Order Details</a>
             
                             <% if (order.status === 'Pending') { %>
-                                <form action="/admin/orders/<%= order._id %>/deliver" method="POST" style="display: inline;">
+                                <form action="/orders/<%= order._id %>/deliver" method="POST" style="display: inline;">
                                     <button type="submit" class="btn btn-delivered">Mark as Delivered</button>
                                 </form>
                             <% } %>

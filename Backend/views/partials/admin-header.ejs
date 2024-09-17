@@ -8,7 +8,6 @@
                     <div class="logo">
                         <a href="/admin-dashboard"><img src="/images/logo3.png" alt="PustakPanna" style="align-self: right; width:300px; height:80px;"></a>
                     </div>
-                    
                     <!--/ End Logo -->
                 </div>
                 
@@ -34,14 +33,10 @@
                                 <div class="navbar-collapse">    
                                     <div class="nav-inner">    
                                         <ul class="nav main-menu menu navbar-nav">
-                                            <!-- <li><a href="/">Home</a></li> -->
-                                            <li class="active"><a href="/admin-dashboard">Dashboard</a></li>
-                                            <!-- <li><a href="/admin/users">Users</a></li> -->
-                                            <li><a href="/admin/books">Books</a></li>
-                                            <li><a href="/admin/coupons">Coupons</a></li>
-                                            <li><a href="/admin/orders">Orders</a></li>
-                                            <!-- <li><a href="/admin/reports">Reports</a></li> -->
-                                            <!-- <li><a href="/admin/settings">Settings</a></li> -->
+                                            <li class="<%= currentPath && currentPath === '/admin-dashboard' ? 'active' : '' %>"><a href="/admin-dashboard">Dashboard</a></li>
+                                            <li class="<%= currentPath && currentPath === '/books' ? 'active' : '' %>"><a href="/books">Books</a></li>
+                                            <li class="<%= currentPath && currentPath === '/coupons' ? 'active' : '' %>"><a href="/coupons">Coupons</a></li>
+                                            <li class="<%= currentPath && currentPath.startsWith('/orders') ? 'active' : '' %>"><a href="/orders">Orders</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -53,4 +48,5 @@
         </div>
     </div>
 </header>
+
 
