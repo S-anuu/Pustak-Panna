@@ -35,16 +35,7 @@
                             <a href="/checkout/<%= book._id %>" class="btn btn-secondary">Buy Now</a>
                         </div>
 
-                        <!-- Rating Section -->
-                        <div class="rating-section">
-                            <h4>Rating</h4>
-                            <div class="rating">
-                                <% for (let i = 1; i <= 5; i++) { %>
-                                    <i class="fa <% if (book.rating >= i) { %>fa-star<% } else { %>fa-star-o<% } %>"></i>
-                                <% } %>
-                                <span><%= book.rating || 'No rating yet' %></span>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>

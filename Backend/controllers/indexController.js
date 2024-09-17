@@ -169,7 +169,8 @@ exports.searchBooks = async (req, res) => {
             books,
             searchParams: req.query,
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header',
+            currentPath: 'null'
         });
     } catch (error) {
         console.error('Error searching for books:', error.message, error.stack);

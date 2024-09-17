@@ -153,7 +153,7 @@ exports.postDeliver = async (req, res) => {
         await order.save();
 
         // Redirect back to the orders page
-        res.redirect('/admin/orders');
+        res.redirect('/orders');
     } catch (err) {
         console.error(err);
         res.status(500).send('Server error');

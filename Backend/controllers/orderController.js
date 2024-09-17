@@ -120,7 +120,9 @@ exports.payFail= async(req,res) => {
 exports.getOrders = async (req, res) => {
     console.log(req.user)
     try {
-        const orders = await Order.find({ userId: req.user._id }).populate('items.bookId');
+        const orders = await Order.find({ userId: req.user._id }).populate({
+            path: 'items.bookId',
+            select: 'title'});
         
         res.render('orders', {
             title: 'Your Orders',
