@@ -22,7 +22,8 @@ exports.getAllBooks = async (req, res) => {
             books, 
             currentPage, 
             pageSize, 
-            totalPages 
+            totalPages,
+            currentPath: '/books' 
         });
     } catch (err) {
         console.error(err);
@@ -31,7 +32,7 @@ exports.getAllBooks = async (req, res) => {
 };
 
 exports.getAddBookPage =  (req, res) => {
-    res.render('addBook', { title: 'Pustak-Panna', pageStyles: 'addBook.css', headerStyle: 'admin-header' });
+    res.render('addBook', { title: 'Pustak-Panna', pageStyles: 'addBook.css', headerStyle: 'admin-header', currentPath: '/books/add' });
 };
 
 exports.addBook = async (req, res) => {
@@ -80,7 +81,7 @@ exports.checkBook = async (req, res, next) => {
 
 exports.getEditPage = async (req, res, next) => {
     const book = await Book.findOne({_id: req.params._id})
-    res.render('editBooks', {title: 'Edit Books', book, pageStyles: '', headerStyle: 'admin-header'}, )
+    res.render('editBooks', {title: 'Edit Books', book, pageStyles: '', headerStyle: 'admin-header', currentPath:'/books/edit'} )
     //console.log(book)   
 }
 
@@ -164,7 +165,8 @@ exports.getBookDetails = async (req, res, next) => {
             pageStyles: '',
             headerStyle: 'header',
             book,
-            reviews,  // Pass reviews to the template
+            reviews,
+            currentPath: '/book/:id'  // Pass reviews to the template
         });
     } catch (err) {
         console.error('Error fetching book details:', err);
@@ -184,7 +186,8 @@ exports.getNewReleases = async (req, res) => {
             title: 'Pustak-Panna',
             books,
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header',
+            currentPath:'/product/new-releases'
         });
     } catch (error) {
         console.error('Error fetching new releases:', error);
@@ -202,7 +205,8 @@ exports.getBestSellers = async (req, res) => {
             { title: 'Pustak-Panna',
               books,
               pageStyles: '',
-              headerStyle: 'header'
+              headerStyle: 'header',
+              currentPath: '/product/best-sellers'
             });
     } catch (error) {
         console.error('Error fetching best sellers:', error);

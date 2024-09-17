@@ -18,38 +18,38 @@ router.get('/', cartMiddleware, indexController.index);
 router.get('/checkout', cartController.getCheckout);
 
 router.get('/contact', (req, res) => {
-    res.render('contact', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header' });
+    res.render('contact', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header', currentPath: '/contact' });
 });
 
 router.get('/about', (req, res) => {
-    res.render('about', { title: 'Pustak-Panna', pageStyles: 'about', headerStyle: 'header' });
+    res.render('about', { title: 'Pustak-Panna', pageStyles: 'about', headerStyle: 'header', currentPath: '/about' });
 });
 
 router.get('/admin-login', (req, res) => {
-    res.render('admin-login', { title: 'Pustak-Panna', pageStyles: 'admin-login.css', headerStyle: 'header' });
+    res.render('admin-login', { title: 'Pustak-Panna', pageStyles: 'admin-login.css', headerStyle: 'header', currentPath: null });
 });
 
 router.get('/login', (req, res) => {
-    res.render('login', { title: 'Pustak-Panna', pageStyles: 'Login.css', headerStyle: 'header' });
+    res.render('login', { title: 'Pustak-Panna', pageStyles: 'Login.css', headerStyle: 'header', currentPath: null });
 });
 
 router.get('/forgot-password', (req, res) => {
-    res.render('forgot-password', { title: 'Pustak-Panna', pageStyles: 'forgot-password.css', headerStyle: 'header' });
+    res.render('forgot-password', { title: 'Pustak-Panna', pageStyles: 'forgot-password.css', headerStyle: 'header', currentPath: null });
 });
 
-router.get('/new-releases', bookController.getNewReleases);
+router.get('/product/new-releases', bookController.getNewReleases);
 
-router.get('/best-sellers', bookController.getBestSellers)
+router.get('/product/best-sellers', bookController.getBestSellers)
 
 router.get('/genre/:genre', indexController.getGenre);
 
-router.get('/orders', orderController.getOrders);
+router.get('/my-orders', orderController.getOrders);
 
-router.get('/orders/:id', orderController.getOrderDetails);
+router.get('/my-orders/:id', orderController.getOrderDetails);
 
 router.get('/search', indexController.searchBooks)
 
-router.post('/orders/review/:orderId', async (req, res) => {
+router.post('/my-orders/review/:orderId', async (req, res) => {
     try {
         const { orderId } = req.params;
         const { rating, comment } = req.body;

@@ -63,7 +63,8 @@ exports.getDashboard = (req, res) => {
     res.render('admin-dashboard', {
         title: 'Admin Dashboard',
         pageStyles: 'admin-dashboard.css',
-        headerStyle: 'admin-header'
+        headerStyle: 'admin-header',
+        currentPath: '/admin-dashboard'
     });
 }
 
@@ -78,7 +79,8 @@ exports.getOrdersAdmin = async (req, res) => {
             orders,
             title: 'PustakPanna',
             pageStyles: '',
-            headerStyle: 'admin-header'
+            headerStyle: 'admin-header',
+            currentPath: '/orders'
         });
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -100,7 +102,8 @@ exports.getOrderDetails = async (req, res) => {
         res.render('orderDetailsAdmin', { order,
             title: 'PustakPanna',
             pageStyles: '',
-            headerStyle: 'admin-header'
+            headerStyle: 'admin-header',
+            currentPath: '/orders/:id'
          });
     } catch (error) {
         console.error('Error fetching order details:', error);

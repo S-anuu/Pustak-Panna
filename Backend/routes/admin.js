@@ -114,6 +114,7 @@ router.get('/admin-dashboard', isAdmin, async (req, res) => {
             title: 'Admin Dashboard',
             pageStyles: 'admin-dashboard.css',
             headerStyle: 'admin-header',
+            currentPath: '/admin-dashboard',
             suggestions // Pass the suggestions to the view if needed
         });
     } catch (error) {
@@ -122,54 +123,53 @@ router.get('/admin-dashboard', isAdmin, async (req, res) => {
     }
 });
 
-router.get('/admin/books', bookController.getAllBooks);
+router.get('/books', bookController.getAllBooks);
 
 //Fetch a single book
-router.get('/admin/books/:id', async (req, res) => {
+router.get('/books/:id', async (req, res) => {
     const book = await Book.findById(req.params.id)
     res.json(book)
 })
 
-router.get('/admin/edit-book/:_id', bookController.getEditPage)
+router.get('/books/edit/:_id', bookController.getEditPage)
 
 
-router.get('/admin/delete/:_id', bookController.deleteBook)
+router.get('/books/delete/:_id', bookController.deleteBook)
 
-router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
 
-router.get('/admin/users', (req, res) => {
-    res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
+router.get('/users', (req, res) => {
+    res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', currentPath: '/users' });
 });
 
 // Check if a book with the same title and author exists
 router.post('/admin/check-book', bookController.checkBook);
 
-router.get('/admin/orders', adminController.getOrdersAdmin);
+router.get('/orders', adminController.getOrdersAdmin);
 
-router.get('/admin/orders/:id', adminController.getOrderDetails);
+router.get('/orders/:id', adminController.getOrderDetails);
 
 // router.get('/admin/reports', (req, res) => {
 //     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
 // });
 
 // Add book
-router.post('/admin/add-book', upload.single('imageURL'), bookController.addBook);
+router.post('/books/add', upload.single('imageURL'), bookController.addBook);
 
-router.get('/admin/add-book', bookController.getAddBookPage);
+router.get('/books/add', bookController.getAddBookPage);
 
 // Edit book
-router.post('/admin/edit-book/:_id', upload.single('imageURL'), bookController.editBook);
+router.post('/books/edit/:_id', upload.single('imageURL'), bookController.editBook);
 
 // Display coupons management page
-router.get('/admin/coupons', couponController.getCoupons);
+router.get('/coupons', couponController.getCoupons);
 
 // Add new coupon
-router.post('/admin/coupons/add', couponController.addCoupon);
+router.post('/coupons/add', couponController.addCoupon);
 
 // Delete coupon
-router.delete('/admin/coupons/delete/:id', couponController.deleteCoupon);
+router.delete('/coupons/delete/:id', couponController.deleteCoupon);
 
-router.post('/admin/orders/:orderId/deliver', adminController.postDeliver);
+router.post('/orders/:orderId/deliver', adminController.postDeliver);
 
 router.get('/suggestions', async (req, res) => {
     

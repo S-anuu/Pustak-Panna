@@ -5,7 +5,8 @@ exports.register = (req, res) => {
     res.render('register', {
         title: 'Pustak-Panna',
         pageStyles: 'register.css',
-        headerStyle: ''
+        headerStyle: '',
+        currentPath: null
     });
 }
 
@@ -22,6 +23,7 @@ exports.getCart = async (req, res) => {
             title: 'Pustak-Panna',
             pageStyles: '', 
             headerStyle: 'header',
+            currentPath: '/cart'
          });
     } catch (err) {
         res.status(500).json({ message: 'Server error', error: err.message });
@@ -32,7 +34,8 @@ exports.profile = (req, res) => {
     res.render('profile', {
         title: 'My Account',
         pageStyles: '',
-        headerStyle: 'header'
+        headerStyle: 'header',
+        currentPath: null
     })
 }
 
@@ -40,7 +43,8 @@ exports.getEditProfile = (req, res) => {
     res.render('editProfile', {
         title: 'My Account',
         pageStyles: '',
-        headerStyle: 'header'
+        headerStyle: 'header',
+        currentPath: null
     })
 }
 exports.editProfile = async (req, res) => {

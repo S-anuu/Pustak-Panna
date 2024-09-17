@@ -36,6 +36,7 @@ exports.placeOrder = async (req, res) => {
                 price: item.bookId.price
             })),
             shippingCost,
+            
         });
 
         const newOrder = await order.save();
@@ -90,7 +91,7 @@ exports.placeOrder = async (req, res) => {
         }
         else {
 
-            res.redirect('/orders'); // Redirect to a success page or home
+            res.redirect('/my-orders'); 
         }
 
 
@@ -107,7 +108,7 @@ exports.paySuccess = async(req,res) => {
     if(queryBody.status !== "COMPLETE")
         return res.status(400).send("Error.");
 
-    return res.redirect("/orders");
+    return res.redirect("/my-orders");
 }
 
 
@@ -125,7 +126,8 @@ exports.getOrders = async (req, res) => {
             title: 'Your Orders',
             orders,
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header',
+            currentPath: '/my-orders'
         });
     } catch (error) {
         console.error('Error fetching orders:', error);
@@ -160,7 +162,8 @@ exports.getOrderDetails = async (req, res) => {
             title: 'Order Details',
             order,
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header',
+            currentPath: '/my-orders/:id'
         });
 
     } catch (error) {
@@ -182,11 +185,11 @@ exports.postCancelOrder = async (req, res) => {
         } else {
             req.flash('error', 'Order cannot be cancelled.');
         }
-        res.redirect('/orders');
+        res.redirect('/my-orders');
     } catch (error) {
         console.error('Error cancelling the order:', error);
         req.flash('error', 'An error occurred while cancelling the order.');
-        res.redirect('/orders');
+        res.redirect('/my-orders');
     }
 }
 

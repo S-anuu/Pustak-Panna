@@ -80,6 +80,7 @@ exports.getCart = async (req, res) => {
             title: 'Pustak-Panna',
             pageStyles: '', 
             headerStyle: 'header',
+            currentPath: '/cart'
         });
     } catch (err) {
         console.error('Error fetching cart:', err); // Log the error
@@ -147,7 +148,8 @@ exports.getCheckout = async (req, res) => {
             hasDiscount: coupon ? true : false, // Pass whether the discount was applied
             appliedCoupon, // Pass applied coupon code to the view
             pageStyles: '',
-            headerStyle: 'header'
+            headerStyle: 'header',
+            currentPath: '/checkout'
         });
     } catch (error) {
         console.error('Error fetching checkout data:', error);

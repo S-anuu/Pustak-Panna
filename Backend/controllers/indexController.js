@@ -50,7 +50,7 @@ exports.index = async (req, res) => {
             bestSeller,
             trending,
             coupons,
-            searchParams: req.query
+            currentPath: '/'
         });
 
     } catch (error) {
@@ -98,7 +98,8 @@ exports.bestSellers = async (req, res) => {
         headerStyle: 'header',
         bestSellers,
         totalBooks,
-        totalPages
+        totalPages,
+        currentPath: '/best-sellers'
        
     })
 }
@@ -118,6 +119,7 @@ exports.getGenre = async (req, res) => {
             pageStyles: '',
             headerStyle: 'header',
             title: 'Pustak-panna',
+            currentPath:'/genre/:genre'
 
         });
     } catch (error) {

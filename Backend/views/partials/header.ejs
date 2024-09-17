@@ -61,14 +61,16 @@
                                 <div class="navbar-collapse">    
                                     <div class="nav-inner">    
                                         <ul class="nav main-menu menu navbar-nav">
-                                            <li class="active"><a href="/">Home</a></li>
-                                            <li><a>Product<i class="ti-angle-down"></i><span class="new">New</span></a>
+                                            <li class="<%= currentPath && currentPath === '/' ? 'active' : '' %>"><a href="/">Home</a></li>
+                                            <li class="<%= currentPath && currentPath.startsWith('/product') ? 'active' : '' %>">
+                                                <a>Product<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                 <ul class="dropdown">
-                                                    <li><a href="/new-releases">New Releases</a></li>
-                                                    <li><a href="/best-sellers">Best Sellers</a></li>
+                                                    <li><a href="/product/new-releases">New Releases</a></li>
+                                                    <li><a href="/product/best-sellers">Best Sellers</a></li>
                                                 </ul>
                                             </li>
-                                            <li><a>Genres<i class="ti-angle-down"></i></a>
+                                            <li class="<%= currentPath && currentPath.startsWith('/genre') ? 'active' : '' %>">
+                                                <a>Genres<i class="ti-angle-down"></i></a>
                                                 <ul class="dropdown">
                                                     <li><a href="/genre/Fiction">Fiction</a></li>
                                                     <li><a href="/genre/Non-Fiction">Non-Fiction</a></li>
@@ -80,21 +82,16 @@
                                                     <li><a href="/genre/History">History</a></li>
                                                     <li><a href="/genre/Auto Biography">Auto-Biography</a></li>
                                                 </ul>
-                                            </li>                                      <li><a>Shop<i class="ti-angle-down"></i></a>
-                                                <ul class="dropdown">
-                                                    <li><a href="/cart">Cart</a></li>
-                                                    <li><a href="/checkout">Checkout</a></li>
-                                                </ul>
                                             </li>
-                                            <li><a href="/about">About</a></li>
-                                            <li><a href="/contact">Contact Us</a></li>
-                                            <li><a href="/orders">My Orders</a></li>
-                                            <!-- Shopping Cart -->
-                                            <li class="sinlge-bar shopping">
-                                                <a class="single-icon" href="/cart"><i class="ti-bag"></i> <span class="total-count"><%= cartLength %></span></a>
-                                                <!-- Shopping Item -->
-                                            </li>
+                                            
+                                            <li class="<%= currentPath && currentPath === '/about' ? 'active' : '' %>"><a href="/about">About</a></li>
+                                            <li class="<%= currentPath && currentPath === '/contact' ? 'active' : '' %>"><a href="/contact">Contact Us</a></li>
+                                            <li class="<%= currentPath && currentPath.startsWith('/my-orders') ? 'active' : '' %>"><a href="/my-orders">My Orders</a></li>
+                                            <li class="<%= currentPath && currentPath.startsWith('/cart') ? 'active' : '' %>"><a href="/cart">Cart</a></li>
+                                            
                                         </ul>
+                                        
+                                        
                                     </div>
                                 </div>
                             </nav>
@@ -132,3 +129,19 @@
         });
     }
 </script>
+<style>
+    /* Styles for Search Bar */
+.search-bar-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.search-bar {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    align-self: center;
+}
+</style>
