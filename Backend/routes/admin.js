@@ -17,42 +17,7 @@ const adminController = require('../controllers/adminController')
 const Suggestion = require('../models/Suggestion')
 const ReturnRequest = require('../models/ReturnRequest')
 
-router.get('/api/recent-activities', async (req, res) => {
-    try {
-        const recentActivities = await Order.find()
-            .sort({ createdAt: -1 })
-            .limit(4)
-            .populate({
-                path: 'userId',
-                select: 'firstname lastname' // Ensure lastname is included
-            })
-            .populate({
-                path: 'items.bookId',
-                select: 'title'
-            })
-            .select('createdAt userId items'); // Adjust the select as needed
-
-        // Construct descriptions
-        const activities = recentActivities.map(order => {
-            // Ensure userId and its fields are populated
-            const firstName = order.userId.firstname || 'Unknown';
-            const lastName = order.userId.lastname || '';
-            const fullName = `${firstName} ${lastName}`.trim();
-
-            const bookTitles = order.items.map(item => item.bookId.title).join(', ');
-
-            return {
-                createdAt: order.createdAt,
-                description: `${fullName} ordered ${bookTitles}`
-            };
-        });
-
-        res.json(activities);
-    } catch (error) {
-        console.error('Error fetching recent activities:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
+router.get('/api/recent-activities', adminController.getApiRecentActivities)
 
 
 router.get('/api/dashboard-stats', async (req, res) => {
@@ -280,6 +245,8 @@ router.get('/logout', (req, res) => {
         });
     });
 });
+
+
 module.exports = router;
 
 
