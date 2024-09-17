@@ -34,7 +34,7 @@
                                     <div class="nav-inner">    
                                         <ul class="nav main-menu menu navbar-nav">
                                             <li class="<%= currentPath && currentPath === '/admin-dashboard' ? 'active' : '' %>"><a href="/admin-dashboard">Dashboard</a></li>
-                                            <li class="<%= currentPath && currentPath === '/books' ? 'active' : '' %>"><a href="/books">Books</a></li>
+                                            <li class="<%= currentPath && currentPath.startsWith('/books') ? 'active' : '' %>"><a href="/books">Books</a></li>
                                             <li class="<%= currentPath && currentPath === '/coupons' ? 'active' : '' %>"><a href="/coupons">Coupons</a></li>
                                             <li class="<%= currentPath && currentPath.startsWith('/orders') ? 'active' : '' %>"><a href="/orders">Orders</a></li>
                                         </ul>

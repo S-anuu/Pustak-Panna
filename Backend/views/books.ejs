@@ -59,7 +59,7 @@
             <p>No new books found.</p>
         <% } %>
 
-        <a href="/add-book" class="btn btn-primary fixed-button">Add Book</a>
+        <a href="/books/add" class="btn btn-primary fixed-button">Add Book</a>
     </section>
 </main>
 
@@ -77,7 +77,7 @@
             cancelButtonText: 'No, cancel!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = `/admin/delete/${bookId}`;
+                window.location.href = `/books/delete/${bookId}`;
             }
         });
     }

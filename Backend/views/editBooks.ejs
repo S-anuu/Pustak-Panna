@@ -1,5 +1,6 @@
-<h1><%= title %></h1>    
-<form method="post" action="/admin/edit-book/<%= book._id %>" enctype="multipart/form-data">
+<h1 class="form-title"><%= title %></h1>
+
+<form method="post" action="/books/edit/<%= book._id %>" enctype="multipart/form-data" class="book-form">
     <div class="form-group">
         <label for="title">Title:</label>
         <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="<%= book.title %>" required>
@@ -30,14 +31,14 @@
     
     <div class="form-group">
         <label for="description">Description:</label>
-        <textarea id="description" name="description" rows="4" required><%= book.description %></textarea>
+        <textarea id="description" name="description" class="form-control" rows="4" placeholder="Enter book description" required><%= book.description %></textarea>
     </div>
     
     <div class="form-group">
         <label for="imageURL">Cover Image:</label>
         <% if (book.imageURL) { %>
-            <div>
-                <img src="<%= book.imageURL %>" alt="Current Cover Image" style="max-width: 200px;">
+            <div class="current-image">
+                <img src="<%= book.imageURL %>" alt="Current Cover Image" class="img-fluid">
             </div>
         <% } %>
         <label for="imageURL">Upload New Cover Image (optional):</label>
@@ -46,20 +47,86 @@
 
     <!-- New fields for used books -->
     <div class="form-group">
-        <label for="isUsed">Is it used?</label>
-        <input type="checkbox" id="isUsed" name="isUsed" <%= book.isUsed ? 'checked' : '' %>>
-        <label for="isUsed" style="margin-left: 5px;">Yes</label>
+        <div class="form-check">
+            <input type="checkbox" id="isUsed" name="isUsed" class="form-check-input" <%= book.isUsed ? 'checked' : '' %>>
+            <label for="isUsed" class="form-check-label">Is it used?</label>
+        </div>
     </div>
 
     <div class="form-group" id="condition-group" style="<%= book.isUsed ? 'display: block;' : 'display: none;' %>">
         <label for="condition">Condition (1-5):</label>
-        <input type="number" id="condition" name="condition" min="1" max="5" value="<%= book.condition %>">
+        <input type="number" id="condition" name="condition" class="form-control" min="1" max="5" value="<%= book.condition %>">
     </div>
 
-    <button type="submit" class="btn btn-primary" name="action">Submit</button>
+    <button type="submit" class="btn-submit">Submit</button>
 </form>
+
 <script>
     document.getElementById('isUsed').addEventListener('change', function() {
         document.getElementById('condition-group').style.display = this.checked ? 'block' : 'none';
     });
 </script>
+<style>
+    .form-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+
+.book-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-control, .form-control-file {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.current-image {
+    margin-bottom: 10px;
+}
+
+.current-image img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+}
+</style>

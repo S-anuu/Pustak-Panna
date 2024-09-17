@@ -56,7 +56,7 @@ exports.addBook = async (req, res) => {
         });
 
         await newBook.save();
-        res.redirect('/admin/books');
+        res.redirect('/books');
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -122,7 +122,7 @@ exports.editBook = async (req, res, next) => {
             }
         );
 
-        res.redirect('/admin/books');
+        res.redirect('/books');
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -139,7 +139,7 @@ exports.deleteBook = async(req, res, next) => {
         console.log("No documents matched the query. Deleted 0 books.");
       }
 
-    res.redirect('/admin/books')
+    res.redirect('/books')
 }
 
 const Review = require('../models/Review'); // Make sure to import the Review model
