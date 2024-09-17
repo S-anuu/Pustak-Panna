@@ -1,6 +1,6 @@
 <main>
     <section class="form-container">
-        <form id="addBookForm" action="/admin/add-book" method="post" enctype="multipart/form-data">
+        <form id="addBookForm" action="/books/add" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" required>
@@ -71,7 +71,7 @@
         const author = formData.get('author');
 
         try {
-            const response = await fetch('/admin/check-book', {
+            const response = await fetch('/books/check', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

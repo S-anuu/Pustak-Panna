@@ -130,11 +130,7 @@ router.get('/admin-dashboard', isAdmin, async (req, res) => {
 
 router.get('/books', isAdmin, bookController.getAllBooks);
 
-//Fetch a single book
-router.get('/books/:id', isAdmin, async (req, res) => {
-    const book = await Book.findById(req.params.id)
-    res.json(book)
-})
+
 
 router.get('/books/edit/:_id', isAdmin, bookController.getEditPage)
 
@@ -246,6 +242,11 @@ router.get('/logout', (req, res) => {
     });
 });
 
+//Fetch a single book
+router.get('/books/:id', isAdmin, async (req, res) => {
+    const book = await Book.findById(req.params.id)
+    res.json(book)
+})
 
 module.exports = router;
 
