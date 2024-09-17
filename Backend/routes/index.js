@@ -14,10 +14,6 @@ const ReturnRequest = require('../models/ReturnRequest');
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
 
-// router.get('/new-releases', indexController.newReleases);
-
-// router.get('/best-sellers', indexController.bestSellers);
-
 router.get('/checkout', authMiddleware, cartController.getCheckout);
 
 router.get('/contact', (req, res) => {

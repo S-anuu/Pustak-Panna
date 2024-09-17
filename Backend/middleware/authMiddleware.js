@@ -44,7 +44,7 @@ function isAdmin(req, res, next) {
             }
             return res.status(500).json({ message: 'Failed to authenticate token' });
         }
-        if (!decoded.isAdmin) return res.status(403).json({ message: 'Not authorized' });
+        if (!decoded.isAdmin) return res.redirect('/admin-login');
         req.userId = decoded.id; // Attach user ID to the request object
         next();
     });
