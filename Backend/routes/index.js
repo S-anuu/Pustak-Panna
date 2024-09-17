@@ -14,10 +14,6 @@ const ReturnRequest = require('../models/ReturnRequest');
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
 
-// router.get('/new-releases', indexController.newReleases);
-
-// router.get('/best-sellers', indexController.bestSellers);
-
 router.get('/checkout', authMiddleware, cartController.getCheckout);
 
 router.get('/contact', (req, res) => {
@@ -123,5 +119,6 @@ router.post('/my-orders/return/:orderId', authMiddleware, async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 module.exports = router;

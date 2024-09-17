@@ -80,7 +80,7 @@ router.post('/login', async (req, res) => {
 // Handle user logout
 router.get('/logout', (req, res) => {
     res.clearCookie('token'); // Clear the token cookie
-    res.redirect('/login'); // Redirect to login page or home
+    res.redirect('/'); // Redirect to login page or home
 });
 
 module.exports = router;

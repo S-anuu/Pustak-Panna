@@ -17,42 +17,7 @@ const adminController = require('../controllers/adminController')
 const Suggestion = require('../models/Suggestion')
 const ReturnRequest = require('../models/ReturnRequest')
 
-router.get('/api/recent-activities', async (req, res) => {
-    try {
-        const recentActivities = await Order.find()
-            .sort({ createdAt: -1 })
-            .limit(4)
-            .populate({
-                path: 'userId',
-                select: 'firstname lastname' // Ensure lastname is included
-            })
-            .populate({
-                path: 'items.bookId',
-                select: 'title'
-            })
-            .select('createdAt userId items'); // Adjust the select as needed
-
-        // Construct descriptions
-        const activities = recentActivities.map(order => {
-            // Ensure userId and its fields are populated
-            const firstName = order.userId.firstname || 'Unknown';
-            const lastName = order.userId.lastname || '';
-            const fullName = `${firstName} ${lastName}`.trim();
-
-            const bookTitles = order.items.map(item => item.bookId.title).join(', ');
-
-            return {
-                createdAt: order.createdAt,
-                description: `${fullName} ordered ${bookTitles}`
-            };
-        });
-
-        res.json(activities);
-    } catch (error) {
-        console.error('Error fetching recent activities:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-});
+router.get('/api/recent-activities', adminController.getApiRecentActivities)
 
 
 router.get('/api/dashboard-stats', async (req, res) => {
@@ -125,7 +90,7 @@ router.post('/admin-login', async (req, res) => {
 router.post('/refresh-token', (req, res) => {
     const token = req.cookies.token; // Get token from cookies
 
-    if (!token) return res.status(403).json({ message: 'No token provided' });
+    if (!token) return res.redirect('/admin-login') 
 
     try {
         const decoded = jwt.verify(token, secretKey);
@@ -163,59 +128,55 @@ router.get('/admin-dashboard', isAdmin, async (req, res) => {
     }
 });
 
-router.get('/books', bookController.getAllBooks);
+router.get('/books', isAdmin, bookController.getAllBooks);
 
 //Fetch a single book
-router.get('/books/:id', async (req, res) => {
+router.get('/books/:id', isAdmin, async (req, res) => {
     const book = await Book.findById(req.params.id)
     res.json(book)
 })
 
-router.get('/books/edit/:_id', bookController.getEditPage)
+router.get('/books/edit/:_id', isAdmin, bookController.getEditPage)
 
 
-router.get('/books/delete/:_id', bookController.deleteBook)
+router.get('/books/delete/:_id', isAdmin, bookController.deleteBook)
 
-
-router.get('/users', (req, res) => {
-    res.render('users', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header', currentPath: '/users' });
-});
 
 // Check if a book with the same title and author exists
-router.post('/admin/check-book', bookController.checkBook);
+router.post('/books/check', isAdmin, bookController.checkBook);
 
-router.get('/orders', adminController.getOrdersAdmin);
+router.get('/orders', isAdmin, adminController.getOrdersAdmin);
 
-router.get('/orders/:id', adminController.getOrderDetails);
+router.get('/orders/:id', isAdmin, adminController.getOrderDetails);
 
 // router.get('/admin/reports', (req, res) => {
 //     res.render('reports', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'admin-header' });
 // });
 
 // Add book
-router.post('/books/add', upload.single('imageURL'), bookController.addBook);
+router.post('/books/add', isAdmin, upload.single('imageURL'), bookController.addBook);
 
-router.get('/books/add', bookController.getAddBookPage);
+router.get('/books/add', isAdmin, bookController.getAddBookPage);
 
 // Edit book
-router.post('/books/edit/:_id', upload.single('imageURL'), bookController.editBook);
+router.post('/books/edit/:_id', isAdmin, upload.single('imageURL'), bookController.editBook);
 
 // Display coupons management page
-router.get('/coupons', couponController.getCoupons);
+router.get('/coupons', isAdmin, couponController.getCoupons);
 
 // Add new coupon
-router.post('/coupons/add', couponController.addCoupon);
+router.post('/coupons/add', isAdmin, couponController.addCoupon);
 
 // Delete coupon
-router.delete('/coupons/delete/:id', couponController.deleteCoupon);
+router.delete('/coupons/delete/:id', isAdmin, couponController.deleteCoupon);
 
-router.post('/orders/:orderId/deliver', adminController.postDeliver);
+router.post('/orders/:orderId/deliver', isAdmin, adminController.postDeliver);
 
-router.get('/suggestions', async (req, res) => {
+router.get('/suggestions', isAdmin, async (req, res) => {
     
 });
 
-router.post('/orders/:orderId/return/accept', async (req, res) => {
+router.post('/orders/:orderId/return/accept', isAdmin, async (req, res) => {
     try {
         const { orderId } = req.params;
 
@@ -242,7 +203,7 @@ router.post('/orders/:orderId/return/accept', async (req, res) => {
 });
 
 // Reject return request
-router.post('/orders/:orderId/return/reject', async (req, res) => {
+router.post('/orders/:orderId/return/reject', isAdmin, async (req, res) => {
     try {
         const { orderId } = req.params;
 
@@ -267,6 +228,25 @@ router.post('/orders/:orderId/return/reject', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        
+        // Clear the session
+        req.session.destroy((err) => {
+            if (err) return next(err);
+            
+            // Clear cookies if used
+            res.clearCookie('connect.sid'); // Adjust the cookie name based on your setup
+
+            // Redirect to the home page
+            res.redirect('/');
+        });
+    });
+});
+
+
 module.exports = router;
 
 

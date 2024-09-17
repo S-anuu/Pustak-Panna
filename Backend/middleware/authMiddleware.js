@@ -35,7 +35,7 @@ async function authMiddleware(req, res, next) {
 function isAdmin(req, res, next) {
     // Extract token from cookies
     const token = req.cookies.token;
-    if (!token) return res.status(403).json({ message: 'No token provided' });
+    if (!token) return res.redirect('/admin-login') //status(403).json({ message: 'No token provided' });
 
     jwt.verify(token, secretKey, (err, decoded) => {
         if (err) {
@@ -44,7 +44,7 @@ function isAdmin(req, res, next) {
             }
             return res.status(500).json({ message: 'Failed to authenticate token' });
         }
-        if (!decoded.isAdmin) return res.status(403).json({ message: 'Not authorized' });
+        if (!decoded.isAdmin) return res.redirect('/admin-login');
         req.userId = decoded.id; // Attach user ID to the request object
         next();
     });

@@ -63,6 +63,16 @@
 </div>
 <!-- End Most Popular Area -->
 
+<section>
+    <div id="trivia-section">
+        <button id="show-trivia-btn" class="btn-trivia">🎉 Show Book Trivia</button>
+        <div id="trivia-content" class="trivia-hidden">
+            <p id="trivia-text"></p>
+            <button id="hide-trivia-btn" class="btn-hide">Hide Trivia</button>
+        </div>
+    </div>
+</section>
+
 <!-- Start Voucher Section -->
 <div class="voucher-section">
     <div class="container">
@@ -231,6 +241,34 @@
             // Optionally show an error message if copying fails
             alert('Failed to copy coupon code.');
         });
+
+        const triviaButton = document.getElementById('show-trivia-btn');
+        const triviaContent = document.getElementById('trivia-content');
+        const triviaText = document.getElementById('trivia-text');
+        const hideTriviaButton = document.getElementById('hide-trivia-btn');
+
+        const triviaArray = [
+            "📚 Did you know? The longest novel ever written is 'In Search of Lost Time' by Marcel Proust, which has around 1.2 million words.",
+            "🎨 Fun Fact: The world’s smallest book is 'Teeny Ted from Turnip Town,' measuring 0.7mm x 0.7mm.",
+            "🚀 Trivia: The famous book 'Don Quixote' was published in two parts, with the first part released in 1605 and the second part in 1615.",
+            "💰 Did you know? The most expensive book ever sold is 'The Codex Leicester' by Leonardo da Vinci, which sold for $30.8 million in 1994.",
+            "🧙‍♂️ Fun Fact: J.K. Rowling's 'Harry Potter and the Philosopher's Stone' was rejected by 12 publishers before it was finally accepted.",
+            "📜📚Books have been around for thousands of years! The oldest known book is the 'Epic of Gilgamesh,' which dates back to around 2100 BC.",
+            "📖🔍The longest novel ever written is 'In Search of Lost Time' by Marcel Proust. It has about 1.2 million words and is often cited as the longest novel ever.", 
+            "📜🔠The world's largest library is the Library of Congress in Washington, D.C. It holds over 170 million items, including books, manuscripts, maps, and more. ", 
+            "🕵️‍♂️📖The famous fictional detective Sherlock Holmes never actually said the phrase 'Elementary, my dear Watson' in Sir Arthur Conan Doyle's original stories. ",
+        ];
+
+        triviaButton.addEventListener('click', function() {
+            // Randomly select a trivia fact
+            const randomIndex = Math.floor(Math.random() * triviaArray.length);
+            triviaText.textContent = triviaArray[randomIndex];
+            triviaContent.classList.remove('trivia-hidden'); // Show the trivia content
+        });
+
+        hideTriviaButton.addEventListener('click', function() {
+            triviaContent.classList.add('trivia-hidden'); // Hide the trivia content
+        });
     });
 </script>
 
@@ -364,4 +402,60 @@
 .search-bar .btnn i {
     font-size: 18px;
 }
+
+#trivia-section {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.btn-trivia {
+    background-color: #ff6f61; /* Coral */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-trivia:hover {
+    background-color: #ff3d2e;
+    transform: scale(1.05);
+}
+
+.trivia-hidden {
+    display: none;
+}
+
+#trivia-content {
+    margin-top: 20px;
+    padding: 15px;
+    border-top: 2px solid #ff6f61;
+    background-color: #fff3e0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.5s ease;
+}
+
+.btn-hide {
+    background-color: #4caf50; /* Green */
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-hide:hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
 </style>
