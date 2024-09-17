@@ -46,6 +46,15 @@
                                     <button type="submit" class="btn btn-delivered">Mark as Delivered</button>
                                 </form>
                             <% } %>
+
+                            <% if (order.status === 'Return Requested') { %>
+                                <form action="/orders/<%= order._id %>/return/accept" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-accept">Accept Return</button>
+                                </form>
+                                <form action="/orders/<%= order._id %>/return/reject" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-reject">Reject Return</button>
+                                </form>
+                            <% } %>
                         </td>
                     </tr>
                 <% }) %>
@@ -55,7 +64,7 @@
 </main>
 
 <style>
-body {
+    body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
 }
@@ -108,9 +117,11 @@ h1 {
 .btn-details {
     background-color: #28a745;
     color: white;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     text-decoration: none;
+    display: inline-block;
+    margin-right: 8px;
 }
 
 .btn-details:hover {
@@ -120,13 +131,45 @@ h1 {
 .btn-delivered {
     background-color: #ffc107;
     color: white;
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 4px;
     border: none;
     cursor: pointer;
+    display: inline-block;
+    margin-right: 8px;
 }
 
 .btn-delivered:hover {
     background-color: #e0a800;
 }
+
+.btn-accept {
+    background-color: #28a745; /* Green */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.btn-accept:hover {
+    background-color: #218838;
+}
+
+.btn-reject {
+    background-color: #dc3545; /* Red */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-reject:hover {
+    background-color: #c82333;
+}
+
 </style>

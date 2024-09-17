@@ -9,6 +9,7 @@ const Order = require('../models/Order')
 const Review = require('../models/Review')
 const Book = require('../models/Book')
 const {authMiddleware} = require('../middleware/authMiddleware')
+const ReturnRequest = require('../models/ReturnRequest');
 
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
@@ -89,12 +90,38 @@ router.post('/my-orders/review/:orderId', authMiddleware, async (req, res) => {
     }
 });
 
-// router.get('/404', (req, res) => {
-//     res.render('404', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });
-// });
+router.post('/my-orders/return/:orderId', authMiddleware, async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { reason } = req.body;
 
-// router.get('/500', (req, res) => {
-//     res.render('500', { title: 'Pustak-Panna', pageStyles: 'errors.css', headerStyle: 'header' });
-// });
+        // Find the order
+        const order = await Order.findById(orderId);
+        if (!order) return res.status(404).send('Order not found');
+
+        // Assuming `bookId` is stored in the order's items
+        const bookId = order.items[0].bookId; // Adjust according to your schema
+
+        // Create a new return request
+        const returnRequest = new ReturnRequest({
+            orderId,
+            itemId: bookId,
+            reason,
+            status: 'Pending'
+        });
+
+        await returnRequest.save();
+
+        // Optionally update the order status if necessary
+        order.status = 'Return Requested';
+        await order.save();
+
+        // Redirect or respond
+        res.redirect(`/my-orders`);
+    } catch (error) {
+        console.error('Error submitting return request:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 module.exports = router;

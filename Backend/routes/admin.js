@@ -15,6 +15,7 @@ const bookController = require('../controllers/bookController');
 const couponController = require('../controllers/couponController')
 const adminController = require('../controllers/adminController')
 const Suggestion = require('../models/Suggestion')
+const ReturnRequest = require('../models/ReturnRequest')
 
 router.get('/api/recent-activities', async (req, res) => {
     try {
@@ -214,6 +215,58 @@ router.get('/suggestions', async (req, res) => {
     
 });
 
+router.post('/orders/:orderId/return/accept', async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Find the order
+        const order = await Order.findById(orderId);
+        if (!order) return res.status(404).send('Order not found');
+
+        // Find the return request and update its status
+        const returnRequest = await ReturnRequest.findOne({ orderId: orderId });
+        if (!returnRequest) return res.status(404).send('Return request not found');
+
+        returnRequest.status = 'Accepted';
+        await returnRequest.save();
+
+        // Optionally, update the order status if needed
+        order.status = 'Return Accepted';
+        await order.save();
+
+        res.redirect('/orders'); // Redirect to the orders page or another relevant page
+    } catch (error) {
+        console.error('Error accepting return request:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Reject return request
+router.post('/orders/:orderId/return/reject', async (req, res) => {
+    try {
+        const { orderId } = req.params;
+
+        // Find the order
+        const order = await Order.findById(orderId);
+        if (!order) return res.status(404).send('Order not found');
+
+        // Find the return request and update its status
+        const returnRequest = await ReturnRequest.findOne({ orderId: orderId });
+        if (!returnRequest) return res.status(404).send('Return request not found');
+
+        returnRequest.status = 'Rejected';
+        await returnRequest.save();
+
+        // Optionally, update the order status if needed
+        order.status = 'Return Rejected';
+        await order.save();
+
+        res.redirect('/orders'); // Redirect to the orders page or another relevant page
+    } catch (error) {
+        console.error('Error rejecting return request:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 module.exports = router;
 
 
