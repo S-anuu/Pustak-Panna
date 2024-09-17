@@ -4,13 +4,12 @@ const secretKey = process.env.SECRET_KEY || 'default_secret_key'; // Fallback fo
 const Cart = require('../models/Cart');
 
 async function authMiddleware(req, res, next) {
-    //console.log('Request Headers:', req.headers);
-    //console.log('Request Cookies:', req.cookies);
     // Extract token from cookies or authorization header
     const token = req.cookies.token || req.headers['authorization']?.split(' ')[1];
-    console.log('token:', token)
+    
     if (!token) {
-        return res.status(401).json({ message: 'No token provided' });
+        // Redirect to login page if no token is provided
+        return res.redirect('/login');
     }
 
     try {
@@ -25,9 +24,11 @@ async function authMiddleware(req, res, next) {
         next();
     } catch (err) {
         if (err.name === 'TokenExpiredError') {
-            return res.status(401).json({ message: 'Token expired' });
+            // Redirect to login page if token expired
+            return res.redirect('/login');
         }
-        res.status(401).json({ message: 'Invalid token' });
+        // Redirect to login page if token is invalid
+        return res.redirect('/login');
     }
 }
 

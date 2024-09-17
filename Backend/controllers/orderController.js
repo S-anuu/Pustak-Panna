@@ -173,11 +173,12 @@ exports.getOrderDetails = async (req, res) => {
 };
 
 exports.postCancelOrder = async (req, res) => {
-    const orderId = req.params.orderId;
+    const orderId = req.params.id;
 
     try {
         // Find the order and update its status to "Cancelled"
         let order = await Order.findById(orderId);
+
         if (order.status === 'Pending' || order.status === 'Processing') {
             order.status = 'Cancelled';
             await order.save();

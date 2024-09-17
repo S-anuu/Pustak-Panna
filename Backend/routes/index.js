@@ -7,6 +7,7 @@ const bookController = require('../controllers/bookController')
 const orderController = require('../controllers/orderController')
 const Order = require('../models/Order')
 const Review = require('../models/Review')
+const {authMiddleware} = require('../middleware/authMiddleware')
 
 // Public routes
 router.get('/', cartMiddleware, indexController.index);
@@ -15,7 +16,7 @@ router.get('/', cartMiddleware, indexController.index);
 
 // router.get('/best-sellers', indexController.bestSellers);
 
-router.get('/checkout', cartController.getCheckout);
+router.get('/checkout', authMiddleware, cartController.getCheckout);
 
 router.get('/contact', (req, res) => {
     res.render('contact', { title: 'Pustak-Panna', pageStyles: '', headerStyle: 'header', currentPath: '/contact' });
@@ -43,13 +44,15 @@ router.get('/product/best-sellers', bookController.getBestSellers)
 
 router.get('/genre/:genre', indexController.getGenre);
 
-router.get('/my-orders', orderController.getOrders);
+router.get('/my-orders', authMiddleware, orderController.getOrders);
 
-router.get('/my-orders/:id', orderController.getOrderDetails);
+router.get('/my-orders/:id', authMiddleware, orderController.getOrderDetails);
 
 router.get('/search', indexController.searchBooks)
 
-router.post('/my-orders/review/:orderId', async (req, res) => {
+router.post('/my-orders/cancel/:id', authMiddleware, orderController.postCancelOrder)
+
+router.post('/my-orders/review/:orderId', authMiddleware, async (req, res) => {
     try {
         const { orderId } = req.params;
         const { rating, comment } = req.body;
