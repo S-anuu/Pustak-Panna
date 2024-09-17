@@ -632,6 +632,7 @@ Version:1.0
 }
 
 
+
 /* Header Middle */
 .header.shop .search-bar-top {
 	text-align: center;
@@ -4896,7 +4897,7 @@ Version:1.0
 	margin-bottom: 30px;
 }
 .footer .about .logo{
-	margin-bottom:20px;
+	margin-bottom:0px;
 }
 .footer .about .logo img{}
 .footer .about .text{
