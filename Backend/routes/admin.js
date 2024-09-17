@@ -263,6 +263,23 @@ router.post('/orders/:orderId/return/reject', isAdmin, async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) return next(err);
+        
+        // Clear the session
+        req.session.destroy((err) => {
+            if (err) return next(err);
+            
+            // Clear cookies if used
+            res.clearCookie('connect.sid'); // Adjust the cookie name based on your setup
+
+            // Redirect to the home page
+            res.redirect('/');
+        });
+    });
+});
 module.exports = router;
 
 
