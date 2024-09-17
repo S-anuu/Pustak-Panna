@@ -90,7 +90,7 @@ router.post('/admin-login', async (req, res) => {
 router.post('/refresh-token', (req, res) => {
     const token = req.cookies.token; // Get token from cookies
 
-    if (!token) return res.status(403).json({ message: 'No token provided' });
+    if (!token) return res.redirect('/admin-login') 
 
     try {
         const decoded = jwt.verify(token, secretKey);
