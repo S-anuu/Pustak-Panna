@@ -38,7 +38,7 @@ exports.adminLogin = async (req, res) => {
 exports.refreshToken = (req, res) => {
     const token = req.cookies.token; // Get token from cookies
 
-    if (!token) return res.status(403).json({ message: 'No token provided' });
+    if (!token) return res.redirect('/login')             //status(403).json({ message: 'No token provided' });
 
     try {
         const decoded = jwt.verify(token, secretKey);
