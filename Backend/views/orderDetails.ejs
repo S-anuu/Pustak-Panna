@@ -5,7 +5,7 @@
 
             <div class="order-summary">
                 <h2>Order ID: <%= order._id %></h2>
-                <p><strong>Order Date:</strong> <%= new Date(order.orderDate).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                <p><strong>Order Date:</strong> <%= new Date(order.createdAt).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
                 <p><strong>Status:</strong> <span class="status <%= order.status.toLowerCase() %>"><%= order.status %></span></p>
             </div>
 

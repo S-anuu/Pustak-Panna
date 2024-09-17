@@ -62,6 +62,7 @@
                                     <div class="nav-inner">    
                                         <ul class="nav main-menu menu navbar-nav">
                                             <li class="<%= currentPath && currentPath === '/' ? 'active' : '' %>"><a href="/">Home</a></li>
+                                            
                                             <li class="<%= currentPath && currentPath.startsWith('/product') ? 'active' : '' %>">
                                                 <a>Product<i class="ti-angle-down"></i><span class="new">New</span></a>
                                                 <ul class="dropdown">
@@ -69,6 +70,7 @@
                                                     <li><a href="/product/best-sellers">Best Sellers</a></li>
                                                 </ul>
                                             </li>
+                                            
                                             <li class="<%= currentPath && currentPath.startsWith('/genre') ? 'active' : '' %>">
                                                 <a>Genres<i class="ti-angle-down"></i></a>
                                                 <ul class="dropdown">
@@ -87,9 +89,15 @@
                                             <li class="<%= currentPath && currentPath === '/about' ? 'active' : '' %>"><a href="/about">About</a></li>
                                             <li class="<%= currentPath && currentPath === '/contact' ? 'active' : '' %>"><a href="/contact">Contact Us</a></li>
                                             <li class="<%= currentPath && currentPath.startsWith('/my-orders') ? 'active' : '' %>"><a href="/my-orders">My Orders</a></li>
-                                            <li class="<%= currentPath && currentPath.startsWith('/cart') ? 'active' : '' %>"><a href="/cart">Cart</a></li>
                                             
+                                            <!-- Cart Icon Section -->
+                                            <li class="<%= currentPath && currentPath.startsWith('/cart') ? 'active' : '' %> cart-menu" style="margin-left:auto; float: right;">
+                                                <a href="/cart">
+                                                    Cart<i class="ti-shopping-cart"></i> 
+                                                </a>
+                                            </li>
                                         </ul>
+                                        
                                         
                                         
                                     </div>

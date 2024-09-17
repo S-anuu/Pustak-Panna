@@ -18,7 +18,7 @@
                         <% orders.forEach(order => { %>
                             <tr>
                                 <td><%= order._id %></td>
-                                <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
+                                <td><%= new Date(order.createdAt).toLocaleDateString() %></td>
                                 <td>Rs. <%= order.total %></td>
                                 <td><%= order.status %></td>
                                 <td><a href="/my-orders/<%= order._id %>" class="btn-details">View Details</a></td>
