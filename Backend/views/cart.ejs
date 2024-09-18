@@ -166,7 +166,7 @@ applyCouponButton.addEventListener('click', function(e) {
     }
 
     // Send coupon code to the server to validate
-    fetch('/cart/apply-coupon', {
+    fetch('/checkout/apply-coupon', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ applyCouponButton.addEventListener('click', function(e) {
 
             // Set the applied coupon
             appliedCoupon = couponCode;
-
+            console.log(appliedCoupon)
             // Show applied coupon and remove button
             document.querySelector('#applied-coupon').style.display = 'block';
             document.querySelector('#applied-coupon-code').innerText = appliedCoupon;

@@ -121,8 +121,8 @@ exports.getCheckout = async (req, res) => {
         const shippingCost = 200;
 
         // Retrieve coupon code from request body, if available
-        const appliedCoupon = req.body.appliedCoupon; // Assumes that appliedCoupon is sent in the request body
-
+        const appliedCoupon = req.body.appliedCoupon; 
+        console.log(req.body)
         // Fetch the coupon from the database if there's an applied coupon
         let coupon = null;
         if (appliedCoupon) {
