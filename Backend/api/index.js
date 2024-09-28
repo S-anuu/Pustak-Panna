@@ -109,10 +109,14 @@ const upload = multer({
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0')
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log('MongoDB connection error:', err));
-
+mongoose.connect(process.env.MONGO_URI, {
+    serverSelectionTimeoutMS: 30000
+  }).then(() => {
+    console.log("Connected to db");
+  }).catch(err => {
+    console.error("MongoDB connection error:", err);
+  });
+  
 // Public files
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
