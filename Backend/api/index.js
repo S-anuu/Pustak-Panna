@@ -23,11 +23,11 @@ const port = process.env.PORT || 3000;
 
 // Session configuration
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'default_session_secret',
+    secret: process.env.SESSION_SECRET || 'default_session_secret',  // Use SESSION_SECRET from .env
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ 
-        mongoUrl: 'mongodb+srv://anuusapkota10:ow7d3ZyV6CpN0SHe@cluster0.3m1dv67.mongodb.net/PustakPanna?retryWrites=true&w=majority&appName=Cluster0' 
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGO_URI  // Use MONGO_URI from .env
     }),
     cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 } // 1 day
 }));
@@ -116,7 +116,7 @@ mongoose.connect(process.env.MONGO_URI, {
   }).catch(err => {
     console.error("MongoDB connection error:", err);
   });
-  
+
 // Public files
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
